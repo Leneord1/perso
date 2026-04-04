@@ -25,7 +25,7 @@ const navItems = [
         to: '/projects',
         dropdown: [
             { label: 'All Projects', to: '/projects' },
-            { label: 'Open Source', to: '/projects/open-source' },
+            { label: 'Professional', to: '/projects/professional' },
             { label: 'Personal', to: '/projects/personal' },
         ],
     },
