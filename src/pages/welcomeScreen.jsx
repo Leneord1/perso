@@ -5,7 +5,7 @@ import '../global.css'
 function WelcomeScreen() {
     return (
         <div className="welcome-screen">
-            <h1>Hi, my name is Sankalp Amaravadi</h1>
+            <h1>Hi, I'm name is Sankalp Amaravadi</h1>
             <p>A senior at Kennesaw State University working towards a Bachelor's in Software Engineering with a minor in Computer Science.</p>
 
             <ul>

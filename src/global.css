@@ -38,7 +38,7 @@ html, body {
 }
 
 body {
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
     background-color: var(--pw-background);
     color: var(--pw-dark-text);
     line-height: 1.6;
