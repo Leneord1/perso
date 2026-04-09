@@ -10,7 +10,6 @@ function AllProjects() {
 
     <div className="all-projects-container">
       <h1>All Projects</h1>
-      <p>This is the All Projects page.</p>
       <p>Links to all projects</p>
       <button className="button-primary"
           onClick={() => navigate('/projects/personal')}>
@@ -22,6 +21,7 @@ function AllProjects() {
           View Professional Projects
       </button>
 
+        <p>List of all projects</p>
       <table>
           <tbody>
           <tr>

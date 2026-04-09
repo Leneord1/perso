@@ -302,13 +302,18 @@ table button:hover {
    All Personal Projects
    ------------------------------------------------------------ */
 .all-projects-container {
-    padding: 40px 20px;
-    max-width: 12px;
+    padding: 40px 100px;
+    max-width: 100%;
     margin: 0.5rem auto;
-    text-align: center;
+    text-align: justify-all;
     background-color: var(--pw-light-text);
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    display: inline-table;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    font-size: 16px;
 }
 
 .all-projects-container h1 {
@@ -317,10 +322,15 @@ table button:hover {
     margin-bottom: 20px;
 }
 
+.all-projects-container p {
+    font-size: 1.1rem;
+    color: var(--pw-dark-text);
+    line-height: 1.8;
+}
 .button-primary{
-    margin-top: 20px;
+    margin: 20px;
     padding: 10px 20px;
-    font-size: 1.2rem;
+    font-size: 16px;
 }
 
 

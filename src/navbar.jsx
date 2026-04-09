@@ -5,13 +5,6 @@ import logo from './assets/Logo.jpg';
 
 const navItems = [
     {
-        label: 'Home',
-        to: '/',
-        dropdown: [
-            { label: 'Welcome', to: '/' },
-        ],
-    },
-    {
         label: 'About',
         to: '/about',
         dropdown: [
