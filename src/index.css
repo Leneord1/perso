@@ -11,9 +11,9 @@
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: 'Comic Sans MS', 'Comic Sans', cursive;
-  --heading: 'Comic Sans MS', 'Comic Sans', cursive;
-  --mono: 'Comic Sans MS', 'Comic Sans', cursive;
+  --sans: 'SansSerif', 'SansSerif', serif;
+  --heading: 'SansSerif', 'SansSerif', serif;
+  --mono: 'SansSerif', 'SansSerif', serif;
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;

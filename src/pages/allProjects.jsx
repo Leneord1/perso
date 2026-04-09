@@ -8,17 +8,17 @@ function AllProjects() {
 
   return (
 
-    <div>
+    <div className="all-projects-container">
       <h1>All Projects</h1>
       <p>This is the All Projects page.</p>
       <p>Links to all projects</p>
-      <button onClick={() => navigate('/projects/personal')}
-              style={{backgroundColor: 'lightblue', padding: '10px', borderRadius: '5px'}}>
+      <button className="button-primary"
+          onClick={() => navigate('/projects/personal')}>
           View Personal Projects
       </button>
 
-      <button onClick={() => navigate('/projects/professional')}
-              style={{backgroundColor: 'lightblue', padding: '10px', borderRadius: '5px', marginLeft: '10px'}}>
+      <button className="button-primary"
+          onClick={() => navigate('/projects/professional')}>
           View Professional Projects
       </button>
 

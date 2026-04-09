@@ -38,7 +38,7 @@ html, body {
 }
 
 body {
-    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-family: 'SansSerif', 'SansSerif', serif;
     background-color: var(--pw-background);
     color: var(--pw-dark-text);
     line-height: 1.6;
@@ -296,6 +296,33 @@ table button:hover {
     color: var(--pw-secondary);
     text-decoration: underline;
 }
+
+
+/*  ------------------------------------------------------------
+   All Personal Projects
+   ------------------------------------------------------------ */
+.all-projects-container {
+    padding: 40px 20px;
+    max-width: 12px;
+    margin: 0.5rem auto;
+    text-align: center;
+    background-color: var(--pw-light-text);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.all-projects-container h1 {
+    font-size: 2.5rem;
+    color: var(--pw-primary);
+    margin-bottom: 20px;
+}
+
+.button-primary{
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+}
+
 
 /* ------------------------------------------------------------
    Responsive Overrides
