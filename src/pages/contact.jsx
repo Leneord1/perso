@@ -22,11 +22,6 @@ function Contact() {
                     <span className="contact-label">GitHub:</span>
                     <a href="https://github.com/Leneord1" target="_blank" rel="noopener noreferrer" className="contact-value link">github.com/Leneord1</a>
                 </div>
-                
-                <div className="contact-item">
-                    <span className="contact-label">Location:</span>
-                    <span className="contact-value">Remote / City, Country</span>
-                </div>
             </div>
         </div>
     );
