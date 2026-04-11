@@ -1,7 +1,7 @@
 :root {
     /* Brand Colors */
-    --pw-primary:        #0052cc;
-    --pw-secondary:      #CFB53B;
+    --pw-primary:        #042069;
+    --pw-secondary:      #694D04;
     --pw-button-hover:   #2563EB;
     --pw-accent:         #FFF8DC;
 
@@ -10,7 +10,7 @@
     --pw-light-text:     white;
 
     /* Backgrounds & Borders */
-    --pw-background:     #f5f7fb;
+    --pw-background:     #e0e0e1;
     --pw-border:         #D1D5DB;
 
     /* Table */
@@ -184,7 +184,7 @@ table {
 
 table .header-row {
     background-color: var(--pw-primary);
-    color: white;
+    color: var(--pw-light-text);
 }
 
 table th,
@@ -242,7 +242,7 @@ table button:hover {
 
 .contact-container h1 {
     font-size: 2.5rem;
-    color: var(--pw-primary);
+    color: var(--pw-secondary);
     margin-bottom: 20px;
 }
 
@@ -318,7 +318,7 @@ table button:hover {
 
 .all-projects-container h1 {
     font-size: 2.5rem;
-    color: var(--pw-primary);
+    color: var(--pw-secondary);
     margin-bottom: 20px;
 }
 
