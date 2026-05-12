@@ -1,6 +1,11 @@
 import React from 'react';
 import '../global.css';
 import { useNavigate } from 'react-router-dom';
+import ProjectTable from '../components/ProjectTable.jsx';
+import {
+  githubProfileUrl,
+  highlightedProjectRows,
+} from '../data/githubProjects.js';
 
 function AllProjects() {
   const navigate = useNavigate();
@@ -8,7 +13,13 @@ function AllProjects() {
   return (
     <main className="all-projects-container">
       <h1>Projects</h1>
-      <p>Browse professional and personal work, or use the table as a running list of highlights.</p>
+      <p>
+        Highlights from public work on{' '}
+        <a href={githubProfileUrl} className="link" target="_blank" rel="noopener noreferrer">
+          GitHub
+        </a>
+        . Open a section for the full lists.
+      </p>
       <div>
         <button
           type="button"
@@ -25,24 +36,8 @@ function AllProjects() {
           Professional projects
         </button>
       </div>
-      <p style={{ marginTop: '1.5rem', marginBottom: '0.5rem' }}>Highlights</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Project</th>
-            <th>Description</th>
-            <th>Stack</th>
-            <th>Link</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colSpan={4} className="all-projects-placeholder">
-              Add rows here as you document projects.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <p className="projects-lead">Highlights</p>
+      <ProjectTable rows={highlightedProjectRows} />
     </main>
   );
 }

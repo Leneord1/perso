@@ -1,28 +1,20 @@
 import React from 'react';
 import '../global.css';
+import ProjectTable from '../components/ProjectTable.jsx';
+import { githubProfileUrl, professionalProjectRows } from '../data/githubProjects.js';
 
 function ProfessionalProjects() {
   return (
     <main className="page">
       <h1>Professional projects</h1>
-      <p>Work shipped in professional roles—use this table to summarize scope and outcomes.</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Project</th>
-            <th>Description</th>
-            <th>Stack</th>
-            <th>Link</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colSpan={4} className="all-projects-placeholder">
-              Add your professional projects here.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <p>
+        Course and team repositories (SWE, OS/Docker, grouped project work) from your public{' '}
+        <a href={githubProfileUrl} className="link" target="_blank" rel="noopener noreferrer">
+          GitHub
+        </a>
+        .
+      </p>
+      <ProjectTable rows={professionalProjectRows} />
     </main>
   );
 }
