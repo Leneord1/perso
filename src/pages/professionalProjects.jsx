@@ -1,24 +1,29 @@
 import React from 'react';
 import '../global.css';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
 
 function ProfessionalProjects() {
   return (
-    <div>
-      <h1>Professional Projects</h1>
-      <p>This is the Professional Projects page.</p>
-        <table>
-            <tbody>
-            <tr>
-                <th>Project Name</th>
-                <th>Description</th>
-                <th>Technologies Used</th>
-                <th>Link</th>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <main className="page">
+      <h1>Professional projects</h1>
+      <p>Work shipped in professional roles—use this table to summarize scope and outcomes.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Description</th>
+            <th>Stack</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colSpan={4} className="all-projects-placeholder">
+              Add your professional projects here.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
   );
 }
 

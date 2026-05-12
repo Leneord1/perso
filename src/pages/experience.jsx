@@ -3,10 +3,13 @@ import '../global.css';
 
 function Experience() {
     return (
-        <div>
+        <main className="page">
             <h1>Experience</h1>
-            <p>This is the Experience page.</p>
-        </div>
+            <p>
+                Summarize roles, impact, and technologies here. Consider mirroring your résumé with a bit
+                more room for outcomes and lessons learned.
+            </p>
+        </main>
     );
 }
 

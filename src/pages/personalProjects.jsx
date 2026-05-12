@@ -1,26 +1,29 @@
 import React from 'react';
 import '../global.css';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
 
 function PersonalProjects() {
   return (
-    <div>
-      <h1>Personal Projects</h1>
-      <p>
-          This is the Personal Projects page.
-      </p>
-        <table>
-            <tbody>
-            <tr>
-                <th>Project Name</th>
-                <th>Description</th>
-                <th>Technologies Used</th>
-                <th>Link</th>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <main className="page">
+      <h1>Personal projects</h1>
+      <p>Side projects, experiments, and learning builds.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Description</th>
+            <th>Stack</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colSpan={4} className="all-projects-placeholder">
+              Add your personal projects here.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
   );
 }
 

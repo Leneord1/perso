@@ -1,7 +1,6 @@
 import './navbar.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import logo from './assets/Logo.jpg';
 
 const navItems = [
     {
@@ -36,7 +35,6 @@ const navItems = [
 function Navbar() {
     const [show, setShow] = useState(false);
     const [openDropdown, setOpenDropdown] = useState(null);
-    useNavigate();
 
     const toggleMenu = () => setShow(!show);
 
@@ -50,20 +48,29 @@ function Navbar() {
     };
 
     return (
-        <nav className="navbar">
+        <nav className="navbar" aria-label="Main navigation">
             <div className="navbar-container">
-                <Link to="/" className="navbar-logo" onClick={closeAll}>
-                    <img src={logo} alt="Logo" className="navbar-logo-img" />
-                    <span className="navbar-brand">Sankalp Amaravadi</span>
+                <Link to="/" className="navbar-wordmark" onClick={closeAll}>
+                    Sankalp Amaravadi
                 </Link>
 
-                <div className="hamburger" onClick={toggleMenu}>
-                    <span className={show ? 'open' : ''}></span>
-                    <span className={show ? 'open' : ''}></span>
-                    <span className={show ? 'open' : ''}></span>
-                </div>
+                <button
+                    type="button"
+                    className="hamburger"
+                    onClick={toggleMenu}
+                    aria-expanded={show}
+                    aria-controls="primary-navigation"
+                    aria-label={show ? 'Close menu' : 'Open menu'}
+                >
+                    <span className={show ? 'open' : ''} />
+                    <span className={show ? 'open' : ''} />
+                    <span className={show ? 'open' : ''} />
+                </button>
 
-                <ul className={show ? 'nav-menu active' : 'nav-menu'}>
+                <ul
+                    id="primary-navigation"
+                    className={show ? 'nav-menu active' : 'nav-menu'}
+                >
                     {navItems.map((item, index) => (
                         <li
                             key={index}
@@ -72,12 +79,15 @@ function Navbar() {
                             onMouseLeave={() => setOpenDropdown(null)}
                         >
                             <button
+                                type="button"
                                 className="nav-link nav-dropdown-btn"
                                 onClick={() => handleDropdownToggle(index)}
                                 aria-expanded={openDropdown === index}
                             >
                                 {item.label}
-                                <span className="dropdown-arrow">▾</span>
+                                <span className="dropdown-arrow" aria-hidden>
+                                    ▾
+                                </span>
                             </button>
                             <ul className={`dropdown-menu${openDropdown === index ? ' visible' : ''}`}>
                                 {item.dropdown.map((sub, subIndex) =>

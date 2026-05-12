@@ -15,17 +15,19 @@ export default function App() {
   return (
     <>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<WelcomeScreen />}></Route>
-        <Route path="/contact" element={<Contact />}></Route>
-        <Route path="/Navbar" element={<Navbar />}></Route>
-        <Route path="/projects" element={<AllProjects />}></Route>
-        <Route path="/projects/personal" element={<PersonalProjects />}></Route>
-        <Route path="/projects/professional" element={<ProfessionalProjects />}></Route>
-        <Route path="/experience" element={<Experience />}></Route>
-        <Route path="/skills" element={<Skills />}></Route>
-        <Route path="/story" element={<Story />}></Route>
-      </Routes>
+      <div className="app-main">
+        <Routes>
+          <Route path="/" element={<WelcomeScreen />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/Navbar" element={<Navbar />} />
+          <Route path="/projects" element={<AllProjects />} />
+          <Route path="/projects/personal" element={<PersonalProjects />} />
+          <Route path="/projects/professional" element={<ProfessionalProjects />} />
+          <Route path="/experience" element={<Experience />} />
+          <Route path="/skills" element={<Skills />} />
+          <Route path="/story" element={<Story />} />
+        </Routes>
+      </div>
     </>
   )
 }
