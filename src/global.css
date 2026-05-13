@@ -107,6 +107,32 @@ img {
   line-height: 1.65;
 }
 
+.page > p + p {
+  margin-top: 1.1em;
+}
+
+.page-section {
+  margin-top: 2.25rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--pw-border);
+}
+
+.page-section h2 {
+  font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+  margin-bottom: 0.5rem;
+  color: var(--pw-dark-text);
+}
+
+.page-section p {
+  color: var(--pw-muted-text);
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.page-section p + p {
+  margin-top: 0.85em;
+}
+
 .page table {
   margin-top: 1.5rem;
 }
