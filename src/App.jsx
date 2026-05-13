@@ -2,7 +2,8 @@ import './App.css'
 import Navbar from './navbar.jsx';
 import WelcomeScreen from './pages/welcomeScreen.jsx';
 import Contact from './pages/contact.jsx';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import React from 'react';
 import AllProjects from './pages/allProjects.jsx';
 import PersonalProjects from './pages/personalProjects.jsx';
@@ -12,8 +13,11 @@ import Skills from './pages/skills.jsx';
 import Story from './pages/story.jsx';
 
 export default function App() {
+  const { pathname } = useLocation();
+
   return (
     <>
+      <SpeedInsights route={pathname} />
       <Navbar />
       <div className="app-main">
         <Routes>
