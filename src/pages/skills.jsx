@@ -79,7 +79,7 @@ function Skills() {
                             <td>2 years</td>
                         </tr>
                         <tr>
-                            <td>Command line prompt</td>
+                            <td>Command line Interfaces</td>
                             <td>2 years</td>
                         </tr>
                         <tr>
