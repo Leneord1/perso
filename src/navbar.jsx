@@ -38,8 +38,8 @@ function Navbar() {
 
     const toggleMenu = () => setShow(!show);
 
-    const handleDropdownToggle = (index) => {
-        setOpenDropdown(openDropdown === index ? null : index);
+    const handleDropdownToggle = (navKey) => {
+        setOpenDropdown(openDropdown === navKey ? null : navKey);
     };
 
     const closeAll = () => {
@@ -59,28 +59,28 @@ function Navbar() {
                         id="primary-navigation"
                         className={show ? 'nav-menu active' : 'nav-menu'}
                     >
-                    {navItems.map((item, index) => (
+                    {navItems.map((item) => (
                         <li
-                            key={index}
-                            className={`nav-item${openDropdown === index ? ' open' : ''}`}
-                            onMouseEnter={() => setOpenDropdown(index)}
+                            key={item.to}
+                            className={`nav-item${openDropdown === item.to ? ' open' : ''}`}
+                            onMouseEnter={() => setOpenDropdown(item.to)}
                             onMouseLeave={() => setOpenDropdown(null)}
                         >
                             <button
                                 type="button"
                                 className="nav-link nav-dropdown-btn"
-                                onClick={() => handleDropdownToggle(index)}
-                                aria-expanded={openDropdown === index}
+                                onClick={() => handleDropdownToggle(item.to)}
+                                aria-expanded={openDropdown === item.to}
                             >
                                 {item.label}
                                 <span className="dropdown-arrow" aria-hidden>
                                     ▾
                                 </span>
                             </button>
-                            <ul className={`dropdown-menu${openDropdown === index ? ' visible' : ''}`}>
-                                {item.dropdown.map((sub, subIndex) =>
+                            <ul className={`dropdown-menu${openDropdown === item.to ? ' visible' : ''}`}>
+                                {item.dropdown.map((sub) =>
                                     sub.external ? (
-                                        <li key={subIndex} className="dropdown-item">
+                                        <li key={sub.to} className="dropdown-item">
                                             <a
                                                 href={sub.to}
                                                 className="dropdown-link"
@@ -92,7 +92,7 @@ function Navbar() {
                                             </a>
                                         </li>
                                     ) : (
-                                        <li key={subIndex} className="dropdown-item">
+                                        <li key={sub.to} className="dropdown-item">
                                             <Link to={sub.to} className="dropdown-link" onClick={closeAll}>
                                                 {sub.label}
                                             </Link>

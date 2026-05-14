@@ -44,7 +44,13 @@
   height: 1.35rem;
 }
 
-.pw-chat__panel {
+/* <dialog> is taken out of flex flow when opened with .show(); pin like the old stacked panel */
+dialog.pw-chat__panel {
+  position: fixed;
+  right: max(0.5rem, env(safe-area-inset-right, 0px));
+  bottom: calc(max(0.75rem, env(safe-area-inset-bottom, 0px)) + 3.25rem + 0.5rem);
+  margin: 0;
+  padding: 0;
   width: min(22rem, calc(100vw - 1.25rem));
   max-height: min(28rem, calc(100vh - 6rem));
   display: flex;
@@ -57,11 +63,10 @@
 }
 
 /*
-  Author `display: flex` can override the [hidden] attribute’s implied display:none in some browsers,
-  leaving the panel inert and still hit-testing — which blocks clicks on the FAB below. Force closed
-  panels out of the interaction tree.
+  Same issue as with [hidden]: author `display: flex` can prevent a closed dialog from being
+  display:none in some engines — keep closed dialogs off the hit-test tree.
 */
-.pw-chat__panel[hidden] {
+dialog.pw-chat__panel:not([open]) {
   display: none !important;
 }
 

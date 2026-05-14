@@ -26,6 +26,7 @@ export default function Chatbot() {
   const [input, setInput] = useState('')
   const [messages, setMessages] = useState(() => [getWelcomeMessage()])
   const chatBodyRef = useRef(null)
+  const dialogRef = useRef(null)
 
   useEffect(() => {
     const el = chatBodyRef.current
@@ -33,6 +34,19 @@ export default function Chatbot() {
       el.scrollTop = el.scrollHeight
     }
   }, [messages, open])
+
+  useEffect(() => {
+    const d = dialogRef.current
+    if (!d) return
+    if (open) {
+      if (!d.open) d.show()
+    } else if (d.open) {
+      d.close()
+    }
+    return () => {
+      if (d.open) d.close()
+    }
+  }, [open])
 
   const handleSend = useCallback(() => {
     const text = input.trim()
@@ -53,94 +67,84 @@ export default function Chatbot() {
     }
   }
 
-  useEffect(() => {
-    if (!open) return
-    const onEsc = (e) => {
-      if (e.key === 'Escape') setOpen(false)
-    }
-    window.addEventListener('keydown', onEsc)
-    return () => window.removeEventListener('keydown', onEsc)
-  }, [open])
-
   return (
     <aside className="pw-chat" aria-label="Site assistant">
-      <div
+      <dialog
+        ref={dialogRef}
         id="pw-chat-panel"
         className="pw-chat__panel"
-        role="dialog"
-        aria-modal="false"
         aria-labelledby="pw-chat-title"
-        hidden={!open}
+        onClose={() => setOpen(false)}
       >
-          <div className="pw-chat__header">
-            <span id="pw-chat-title" className="pw-chat__title">
-              Site assistant
-            </span>
-            <button
-              type="button"
-              className="pw-chat__close"
-              onClick={() => setOpen(false)}
-              aria-label="Close assistant"
-            >
-              ×
-            </button>
-          </div>
-          <div className="pw-chat__body" ref={chatBodyRef} aria-live="polite">
-            {messages.map((msg) => (
-              <div key={msg.id} className={`pw-chat__msg pw-chat__msg--${msg.role}`}>
-                <div>{msg.content}</div>
-                {msg.actions?.length ? (
-                  <div className="pw-chat__actions">
-                    {msg.actions.map((a) => {
-                      if (!a.external) {
-                        return (
-                          <button
-                            key={`${msg.id}-${a.label}`}
-                            type="button"
-                            className="button-outline"
-                            onClick={() => {
-                              navigate(a.to)
-                              setOpen(false)
-                            }}
-                          >
-                            {a.label}
-                          </button>
-                        )
-                      }
-                      const isMailto = a.to.startsWith('mailto:')
+        <div className="pw-chat__header">
+          <span id="pw-chat-title" className="pw-chat__title">
+            Site assistant
+          </span>
+          <button
+            type="button"
+            className="pw-chat__close"
+            onClick={() => setOpen(false)}
+            aria-label="Close assistant"
+          >
+            ×
+          </button>
+        </div>
+        <div className="pw-chat__body" ref={chatBodyRef} aria-live="polite">
+          {messages.map((msg) => (
+            <div key={msg.id} className={`pw-chat__msg pw-chat__msg--${msg.role}`}>
+              <div>{msg.content}</div>
+              {msg.actions?.length ? (
+                <div className="pw-chat__actions">
+                  {msg.actions.map((a) => {
+                    if (!a.external) {
                       return (
-                        <a
+                        <button
                           key={`${msg.id}-${a.label}`}
-                          href={a.to}
+                          type="button"
                           className="button-outline"
-                          {...(isMailto
-                            ? {}
-                            : { target: '_blank', rel: 'noopener noreferrer' })}
+                          onClick={() => {
+                            navigate(a.to)
+                            setOpen(false)
+                          }}
                         >
                           {a.label}
-                        </a>
+                        </button>
                       )
-                    })}
-                  </div>
-                ) : null}
-              </div>
-            ))}
-          </div>
-          <div className="pw-chat__footer">
-            <input
-              className="pw-chat__input"
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={onKeyDown}
-              placeholder="Ask about projects, skills, contact…"
-              aria-label="Message to assistant"
-            />
-            <button type="button" className="button-primary pw-chat__send" onClick={handleSend}>
-              Send
-            </button>
-          </div>
+                    }
+                    const isMailto = a.to.startsWith('mailto:')
+                    return (
+                      <a
+                        key={`${msg.id}-${a.label}`}
+                        href={a.to}
+                        className="button-outline"
+                        {...(isMailto
+                          ? {}
+                          : { target: '_blank', rel: 'noopener noreferrer' })}
+                      >
+                        {a.label}
+                      </a>
+                    )
+                  })}
+                </div>
+              ) : null}
+            </div>
+          ))}
         </div>
+        <div className="pw-chat__footer">
+          <input
+            className="pw-chat__input"
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={onKeyDown}
+            placeholder="Ask about projects, skills, contact…"
+            aria-label="Message to assistant"
+          />
+          <button type="button" className="button-primary pw-chat__send" onClick={handleSend}>
+            Send
+          </button>
+        </div>
+      </dialog>
 
       <button
         type="button"
