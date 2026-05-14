@@ -8,11 +8,19 @@ function ProfessionalProjects() {
     <main className="page">
       <h1>Professional projects</h1>
       <p>
-        Course and team repositories (SWE, OS/Docker, grouped project work) from your public{' '}
-        <a href={githubProfileUrl} className="link" target="_blank" rel="noopener noreferrer">
-          GitHub
-        </a>
-        .
+        {[
+          'Course and team repositories (SWE, OS/Docker, grouped project work) from your public ',
+          <a
+            key="github-profile"
+            href={githubProfileUrl}
+            className="link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>,
+          '.',
+        ]}
       </p>
       <ProjectTable rows={professionalProjectRows} />
     </main>

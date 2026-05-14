@@ -539,6 +539,20 @@ table button:hover,
   font-style: italic;
 }
 
+/* ProjectTable: explicit separator via CSS avoids ambiguous inline spacing between <a> nodes */
+.project-table__links {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+.project-table__live-link::before {
+  content: '\00b7';
+  margin-right: 0.35em;
+  color: var(--pw-muted-text);
+  text-decoration: none;
+}
+
 .projects-lead {
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;

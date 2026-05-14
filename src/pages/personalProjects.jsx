@@ -11,8 +11,7 @@ function PersonalProjects() {
         Hackathons, portfolio, and side builds from{' '}
         <a href={githubProfileUrl} className="link" target="_blank" rel="noopener noreferrer">
           github.com/Leneord1
-        </a>
-        .
+        </a>{'.'}
       </p>
       <ProjectTable rows={personalProjectRows} />
     </main>

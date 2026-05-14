@@ -17,8 +17,7 @@ function AllProjects() {
         Highlights from public work on{' '}
         <a href={githubProfileUrl} className="link" target="_blank" rel="noopener noreferrer">
           GitHub
-        </a>
-        . Open a section for the full lists.
+        </a>{'. Open a section for the full lists.'}
       </p>
       <div>
         <button

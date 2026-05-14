@@ -24,6 +24,18 @@ export default defineConfig([
     },
     rules: {
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'BinaryExpression[operator="instanceof"][right.name="Function"]',
+          message:
+            'Use typeof x === "function" instead of instanceof Function (cross-realm / bundler safe).',
+        },
+        {
+          selector: 'BinaryExpression[operator="instanceof"][right.name="Array"]',
+          message: 'Use Array.isArray(x) instead of instanceof Array.',
+        },
+      ],
     },
   },
 ])
