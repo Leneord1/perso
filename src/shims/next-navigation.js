@@ -5,17 +5,19 @@
  * Prefer `@vercel/speed-insights/react` in this app instead of `/next`.
  */
 export function useParams() {
-    return {};
+  return {}
 }
 
 export function usePathname() {
-    if (typeof window !== 'undefined') {
-        return window.location.pathname;
-    }
-    return '/';
+  const win = globalThis.window
+  if (win) {
+    return win.location.pathname
+  }
+  return '/'
 }
 
 export function useSearchParams() {
-    const search = typeof window !== 'undefined' ? window.location.search : '';
-    return new URLSearchParams(search);
+  const win = globalThis.window
+  const search = win ? win.location.search : ''
+  return new URLSearchParams(search)
 }

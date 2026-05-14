@@ -369,19 +369,20 @@
         border-radius: 0;
         border-top: none;
         border-left: 3px solid var(--pw-secondary);
-        background-color: rgba(255, 255, 255, 0.08);
+        /* Solid dark panel so link text meets WCAG on mobile (was translucent white on navy). */
+        background-color: var(--pw-primary-mid);
         min-width: 100%;
         padding: 0;
     }
 
     .dropdown-link {
-        color: white;
+        color: #f8fafc;
         padding: 10px 30px;
     }
 
     .dropdown-link:hover {
-        background-color: rgba(255, 255, 255, 0.15);
-        color: white;
+        background-color: rgba(255, 255, 255, 0.12);
+        color: #ffffff;
     }
 
     .nav-user-section {
