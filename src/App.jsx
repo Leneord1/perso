@@ -11,6 +11,7 @@ import ProfessionalProjects from './pages/professionalProjects.jsx';
 import Experience from './pages/experience.jsx';
 import Skills from './pages/skills.jsx';
 import Story from './pages/story.jsx';
+import Resume from './pages/resume.jsx';
 import Chatbot from './components/Chatbot.jsx';
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/experience" element={<Experience />} />
           <Route path="/skills" element={<Skills />} />
           <Route path="/story" element={<Story />} />
+          <Route path="/resume" element={<Resume />} />
         </Routes>
       </div>
       <Chatbot />

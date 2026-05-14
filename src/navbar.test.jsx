@@ -25,6 +25,7 @@ describe('Navbar', () => {
     renderNavbar()
     await user.hover(screen.getByRole('button', { name: /about/i }))
     expect(screen.getByRole('link', { name: /my story/i })).toHaveAttribute('href', '/story')
+    expect(screen.getByRole('link', { name: /^resume$/i })).toHaveAttribute('href', '/resume')
     expect(screen.getByRole('link', { name: /skills/i })).toHaveAttribute('href', '/skills')
     expect(screen.getByRole('link', { name: /experience/i })).toHaveAttribute('href', '/experience')
   })

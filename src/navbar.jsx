@@ -8,6 +8,7 @@ const navItems = [
         to: '/about',
         dropdown: [
             { label: 'My Story', to: '/story' },
+            { label: 'Resume', to: '/resume' },
             { label: 'Skills', to: '/skills' },
             { label: 'Experience', to: '/experience' },
         ],
