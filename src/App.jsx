@@ -11,6 +11,7 @@ import ProfessionalProjects from './pages/professionalProjects.jsx';
 import Experience from './pages/experience.jsx';
 import Skills from './pages/skills.jsx';
 import Story from './pages/story.jsx';
+import Chatbot from './components/Chatbot.jsx';
 
 export default function App() {
   const { pathname } = useLocation();
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="/story" element={<Story />} />
         </Routes>
       </div>
+      <Chatbot />
     </>
   )
 }

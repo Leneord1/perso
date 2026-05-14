@@ -21,5 +21,6 @@ export default defineConfig({
     setupFiles: './src/setupTests.js',
     globals: false,
     css: true,
+    exclude: ['**/node_modules/**', '**/dist/**', '**/chatbot/**'],
   },
 })
