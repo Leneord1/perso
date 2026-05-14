@@ -56,6 +56,19 @@ function Navbar() {
                         Sankalp Amaravadi
                     </Link>
 
+                    <button
+                        type="button"
+                        className="hamburger"
+                        onClick={toggleMenu}
+                        aria-expanded={show}
+                        aria-controls="primary-navigation"
+                        aria-label={show ? 'Close menu' : 'Open menu'}
+                    >
+                        <span className={show ? 'open' : ''} />
+                        <span className={show ? 'open' : ''} />
+                        <span className={show ? 'open' : ''} />
+                    </button>
+
                     <ul
                         id="primary-navigation"
                         className={show ? 'nav-menu active' : 'nav-menu'}
@@ -105,19 +118,6 @@ function Navbar() {
                     ))}
                     </ul>
                 </div>
-
-                <button
-                    type="button"
-                    className="hamburger"
-                    onClick={toggleMenu}
-                    aria-expanded={show}
-                    aria-controls="primary-navigation"
-                    aria-label={show ? 'Close menu' : 'Open menu'}
-                >
-                    <span className={show ? 'open' : ''} />
-                    <span className={show ? 'open' : ''} />
-                    <span className={show ? 'open' : ''} />
-                </button>
             </div>
         </nav>
     );
