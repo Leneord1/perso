@@ -44,6 +44,6 @@ describe('App', () => {
 
   it('renders the resume page at /resume', () => {
     renderApp('/resume')
-    expect(screen.getByRole('heading', { level: 1, name: /^resume$/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: /sankalp amaravadi/i })).toBeInTheDocument()
   })
 })
