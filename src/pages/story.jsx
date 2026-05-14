@@ -7,11 +7,11 @@ function Story() {
         <main className="page">
             <h1>My story</h1>
             <p>
-                I am a Software Engineering student at Kennesaw State University (B.S., minor in Computer
-                Science), graduating Fall 2026, focused on building dependable web applications.
+                I am a prospective college student aiming for a bachelor's software engineer with experience
+                building reliable, maintainable web applications.
             </p>
             <p>
-                My background is unusual in a good way: I started in automotive technology—a Tesla service
+                My background started in the automotive repair industry —with a Tesla service
                 internship and high-volume work as an express technician—where I learned structured
                 diagnostics, quality under pressure, and clear communication with technical teams. That same
                 mindset carries into how I debug, ship, and collaborate on software.
@@ -24,17 +24,18 @@ function Story() {
                 coursework and projects.
             </p>
             <p>
-                I am looking for new grad software roles where I can grow as an engineer and keep shipping
-                useful, maintainable systems—frontend, full-stack, or generalist teams are all interesting.
+                I am seeking software engineering internship and early-career opportunities where I can continue
+                developing as an engineer while contributing to the delivery of reliable, maintainable, and
+                impactful systems. I am particularly interested in frontend, full-stack, and generalist engineering roles.
             </p>
 
             <section className="page-section" aria-labelledby="story-lang-heading">
                 <h2 id="story-lang-heading">Languages &amp; stacks</h2>
                 <p>
                     Day to day I lean on Java, JavaScript, and Python, with React and Node.js for web work,
-                    plus HTML, CSS, and SQL when I am shaping interfaces and data. I also use Docker when a
-                    project calls for containerized setups. Approximate depth and time-in-use for each
-                    language and framework live on the{' '}
+                    plus HTML, CSS, and SQL when I am shaping interfaces and data. I have used Docker and other
+                    virtualization systems when a project calls for containerized setups. Approximate depth and
+                    time-in-use for each language and framework live on the{' '}
                     <Link to="/skills" className="link">
                         Skills
                     </Link>{' '}
