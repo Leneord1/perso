@@ -4,11 +4,20 @@ import '../global.css'
 import './chatbot.css'
 import { getAgentReply, getWelcomeMessage } from './chatAgent.js'
 
+let messageIdSeq = 0
+
 function nextMessageId() {
-  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
     return crypto.randomUUID()
   }
-  return `m-${Date.now()}-${Math.random().toString(16).slice(2)}`
+  if (typeof crypto !== 'undefined' && typeof crypto.getRandomValues === 'function') {
+    const bytes = new Uint8Array(16)
+    crypto.getRandomValues(bytes)
+    return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('')
+  }
+  // No Web Crypto API: avoid Math.random (S2245); uniqueness for React keys only.
+  messageIdSeq += 1
+  return `m-${Date.now()}-${messageIdSeq}`
 }
 
 export default function Chatbot() {
