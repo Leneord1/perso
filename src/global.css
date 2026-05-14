@@ -658,6 +658,13 @@ table button:hover,
   margin-top: 0.15rem;
 }
 
+.resume-subitem {
+  margin: 0.25rem 0 0.35rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--pw-dark-text);
+}
+
 .resume-subheading__row {
   display: flex;
   justify-content: space-between;

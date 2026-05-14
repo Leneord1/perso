@@ -16,6 +16,10 @@ function ResumeSubheading({ primary, secondary, tertiary, quaternary }) {
     );
 }
 
+function ResumeSubItem({ children }) {
+    return <p className="resume-subitem">{children}</p>;
+}
+
 function ResumeProjectHeading({ title, stack, dateRange }) {
     return (
         <div className="resume-project-heading">
@@ -54,32 +58,51 @@ function Resume() {
             <header className="resume-heading">
                 <h1 className="resume-heading__name">Sankalp Amaravadi</h1>
                 <p className="resume-heading__contact">
-                    <a href="mailto:Sankalp.Amaravadi33@gmail.com" className="resume-heading__link">
-                        Sankalp.Amaravadi33@gmail.com
+                    <a href="tel:+13092555290" className="resume-heading__link">
+                        (309) 255-5290
+                    </a>
+                    <span className="resume-heading__pipe" aria-hidden>
+                        {" "}
+                        |{" "}
+                    </span>
+                    <a href="mailto:sankalp.amaravadi33@gmail.com" className="resume-heading__link">
+                        sankalp.amaravadi33@gmail.com
                     </a>
                     <span className="resume-heading__pipe" aria-hidden>
                         {" "}
                         |{" "}
                     </span>
                     <a
-                        href="https://linkedin.com/in/sankalp-amaravadi-147202291"
+                        href="https://www.linkedin.com/in/sankalp-amaravadi-147202291"
                         className="resume-heading__link"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        linkedin.com/in/sankalp-amaravadi-147202291
+                        LinkedIn profile
                     </a>
                     <span className="resume-heading__pipe" aria-hidden>
                         {" "}
                         |{" "}
                     </span>
                     <a
-                        href="https://github.com/Leneord1"
+                        href="https://github.com/leneord1"
                         className="resume-heading__link"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        github.com/Leneord1
+                        GitHub Repository
+                    </a>
+                    <span className="resume-heading__pipe" aria-hidden>
+                        {" "}
+                        |{" "}
+                    </span>
+                    <a
+                        href="https://perso-alpha-one.vercel.app/"
+                        className="resume-heading__link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Personal Website
                     </a>
                 </p>
                 <button
@@ -91,17 +114,35 @@ function Resume() {
                 </button>
             </header>
 
-            <ResumeSection id="resume-education" title="Education">
-                <div className="resume-subheading-list">
-                    <ResumeSubheading
-                        primary="Undergraduate studies — software engineering focus"
-                        secondary=""
-                        tertiary={
-                            "Bachelor's in software engineering (in progress); full-stack web, systems (Docker), and team engineering coursework"
-                        }
-                        quaternary=""
-                    />
-                </div>
+            <ResumeSection id="resume-skills" title="Technical Skills">
+                <ul className="resume-skill-block">
+                    <li className="resume-skill-block__item">
+                        <strong>Languages and Scripting</strong>
+                        {": "}
+                        Java, Python, JavaScript, C/C++, SQL (MySQL), Supabase (Postgres), HTML, CSS, R
+                        <br />
+                        <strong>Frameworks and APIs</strong>
+                        {": "}
+                        React.js, Node.js, JUnit, Streamlit, RESTful APIs
+                        <br />
+                        <strong>Developer Tools</strong>
+                        {": "}
+                        Github, JetBrains IDEs, Bash, Google Cloud Services, Arduino IDE, MS Office Suite,
+                        Trello
+                        <br />
+                        <strong>DevOps and CI/CD</strong>
+                        {": "}
+                        Git, GitHub Actions, CI/CD Pipelines (GitHub Actions), Bash, AWS
+                        <br />
+                        <strong>Concepts</strong>
+                        {": "}
+                        Object-Oriented Programming, Data Structures, Algorithms, CI/CD, SDLC
+                        <br />
+                        <strong>Testing</strong>
+                        {": "}
+                        Unit testing, Automated testing, Debugging, Integration testing
+                    </li>
+                </ul>
             </ResumeSection>
 
             <ResumeSection id="resume-experience" title="Experience">
@@ -109,39 +150,88 @@ function Resume() {
                     <article className="resume-entry">
                         <ResumeSubheading
                             primary="Website Development Intern"
-                            secondary="Present"
+                            secondary="August 2025 -- Present"
                             tertiary="Georgia Watch"
-                            quaternary="Georgia"
+                            quaternary="Atlanta, GA"
                         />
+                        <ResumeSubItem>
+                            Delivered a production-ready web application supporting healthcare data access and
+                            user interaction.
+                        </ResumeSubItem>
                         <ResumeItemList>
                             <ResumeItem>
-                                Shipped React-based features and API-driven workflows in a nonprofit product
-                                environment.
+                                Collaborated with stakeholders and developers to translate business requirements
+                                into scalable application features.
                             </ResumeItem>
                             <ResumeItem>
-                                Participated in testing, debugging, and deployment alongside the team.
+                                Developed maintainable frontend components and integrated application workflows
+                                using React and JavaScript.
                             </ResumeItem>
                             <ResumeItem>
-                                Collaborated on maintainable front-end code paths and integration with backend
-                                services.
+                                Assisted with implementing and testing API-driven functionality to support
+                                structured data workflows.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Participated in debugging, issue resolution, and deployment support to improve
+                                application reliability.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Worked within collaborative development workflows using Git-based version control
+                                practices.
                             </ResumeItem>
                         </ResumeItemList>
                     </article>
 
                     <article className="resume-entry">
                         <ResumeSubheading
-                            primary="Express Technician &amp; Intern"
-                            secondary=""
-                            tertiary="Automotive service (including Tesla internship)"
-                            quaternary=""
+                            primary="Express Technician"
+                            secondary="October 2022 -- January 2025"
+                            tertiary="Nalley Lexus"
+                            quaternary="Roswell, GA"
                         />
+                        <ResumeSubItem>
+                            Supported high-volume service operations by ensuring consistent quality standards and
+                            operational efficiency within a collaborative team environment.
+                        </ResumeSubItem>
                         <ResumeItemList>
                             <ResumeItem>
-                                High-volume diagnostics and repair with structured quality checks and safety
-                                standards.
+                                Collaborated in a high-volume team environment to deliver timely and reliable service
+                                outcomes.
                             </ResumeItem>
                             <ResumeItem>
-                                Communicated technical findings clearly to teammates and service leadership.
+                                Applied quality control processes to ensure service accuracy and operational
+                                efficiency.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Worked with customer-facing workflows in fast-paced service environments requiring
+                                accuracy and reliability.
+                            </ResumeItem>
+                        </ResumeItemList>
+                    </article>
+
+                    <article className="resume-entry">
+                        <ResumeSubheading
+                            primary="Service Technician (intern)"
+                            secondary="February 2022 -- August 2022"
+                            tertiary="Tesla"
+                            quaternary="Kennesaw, GA"
+                        />
+                        <ResumeSubItem>
+                            Supported diagnostic and service operations by analyzing vehicle system behavior and
+                            identifying faults in mechanical and electronic components.
+                        </ResumeSubItem>
+                        <ResumeItemList>
+                            <ResumeItem>
+                                Performed system-level diagnostics on automotive electrical and mechanical systems
+                                using manufacturer tools.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Diagnosed and resolved complex automotive system issues using structured
+                                troubleshooting methods.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Interpreted diagnostic system outputs and collaborated with technical teams to
+                                support issue resolution.
                             </ResumeItem>
                         </ResumeItemList>
                     </article>
@@ -152,65 +242,87 @@ function Resume() {
                 <div className="resume-subheading-list">
                     <article className="resume-entry">
                         <ResumeProjectHeading
-                            title="perso"
-                            stack="JavaScript, React, Vite"
-                            dateRange="—"
+                            title="Better Financial Futures"
+                            stack="JavaScript, React, Node, Supabase Database, GitHub Actions, Git"
+                            dateRange="January 2026 -- Present"
                         />
                         <ResumeItemList>
                             <ResumeItem>
-                                Personal portfolio site deployed to Vercel with a component-driven UI and
-                                project highlights sourced from GitHub metadata.
+                                Designed and developed a full-stack financial application using React, Node.js, and
+                                Supabase (PostgreSQL).
+                            </ResumeItem>
+                            <ResumeItem>
+                                Built and integrated RESTful APIs to support frontend and backend communication.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Developed relational database structures and handled structured request/response
+                                data flows.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Implemented CI/CD workflows using GitHub Actions to automate testing and deployment
+                                processes.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Applied modular and maintainable coding practices to improve scalability and
+                                long-term maintainability.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Collaborated using Git-based workflows in an agile-style development environment to
+                                improve reliability and application performance.
                             </ResumeItem>
                         </ResumeItemList>
                     </article>
 
                     <article className="resume-entry">
                         <ResumeProjectHeading
-                            title="SWE4663_Group2_SPR25"
-                            stack="Java"
-                            dateRange="Spring 2025"
+                            title="Georgia Hospital Accountability Scorecard"
+                            stack="JavaScript, React, Git"
+                            dateRange="August 2025 -- Present"
                         />
                         <ResumeItemList>
                             <ResumeItem>
-                                Group software engineering coursework repository (team delivery, design, and
-                                implementation artifacts).
+                                Contributed to development of a data-driven web application using React and
+                                JavaScript.
                             </ResumeItem>
-                        </ResumeItemList>
-                    </article>
-
-                    <article className="resume-entry">
-                        <ResumeProjectHeading
-                            title="UGAHacksX_1"
-                            stack="JavaScript"
-                            dateRange="—"
-                        />
-                        <ResumeItemList>
                             <ResumeItem>
-                                Hackathon project work focused on rapid prototyping and collaborative delivery
-                                under time constraints.
+                                Implemented frontend functionality and assisted with API-connected workflows.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Participated in debugging, testing, and feature enhancement activities to improve
+                                application reliability and usability.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Collaborated with team members to iteratively improve system functionality and user
+                                experience.
                             </ResumeItem>
                         </ResumeItemList>
                     </article>
                 </div>
             </ResumeSection>
 
-            <ResumeSection id="resume-skills" title="Technical Skills">
-                <ul className="resume-skill-block">
-                    <li className="resume-skill-block__item">
-                        <strong>Languages</strong>
-                        {": "}
-                        Java, JavaScript, Python, SQL (PostgreSQL), HTML/CSS
-                        <br />
-                        <strong>Frameworks</strong>
-                        {": "}
-                        React, Node.js
-                        <br />
-                        <strong>Developer tools</strong>
-                        {": "}
-                        Git, GitHub, Docker, JetBrains IDEs, GitHub Actions (CI/CD), Bash, Microsoft Office,
-                        Trello
-                    </li>
-                </ul>
+            <ResumeSection id="resume-education" title="Education">
+                <div className="resume-subheading-list">
+                    <ResumeSubheading
+                        primary="Kennesaw State University"
+                        secondary="Kennesaw, GA"
+                        tertiary="B.S. in Software Engineering, Minor in Computer Science"
+                        quaternary="January 2023 -- Senior graduating in Fall 2026"
+                    />
+                    <ResumeSubheading
+                        primary="Gwinnett Technical College"
+                        secondary="Lawrenceville, GA"
+                        tertiary="Associates in Automotive Technology"
+                        quaternary="August 2019 -- December 2021"
+                    />
+                </div>
+            </ResumeSection>
+
+            <ResumeSection id="resume-awards" title="Awards and Extra Curricular">
+                <ResumeItemList>
+                    <ResumeItem>Participant in UGAHacks 11, February 2026</ResumeItem>
+                    <ResumeItem>Participant in KSU AI Club Hackathon, November 2025</ResumeItem>
+                    <ResumeItem>Participant in UGAHacks 10, February 2025</ResumeItem>
+                </ResumeItemList>
             </ResumeSection>
         </main>
     );
