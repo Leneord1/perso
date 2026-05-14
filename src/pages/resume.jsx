@@ -235,6 +235,123 @@ function Resume() {
                             </ResumeItem>
                         </ResumeItemList>
                     </article>
+
+                    <article className="resume-entry">
+                        <ResumeSubheading
+                            primary="Express Technician"
+                            secondary="November 2020 -- February 2022"
+                            tertiary="Jim Shorkey Nissan"
+                            quaternary="Gainesville, GA"
+                        />
+                        <ResumeSubItem>
+                            Worked flat-rate in dealership production, turning maintenance and light repair jobs from
+                            oil services through basic recalls while keeping documentation and quality consistent.
+                        </ResumeSubItem>
+                        <ResumeItemList>
+                            <ResumeItem>
+                                Completed high-volume maintenance work (including oil changes and fluid services) with
+                                attention to manufacturer specifications and inspection findings.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Executed basic recall and campaign work following documented procedures and parts
+                                handling requirements.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Managed time and bay workflow under flat-rate expectations, coordinating with advisors
+                                and teammates to keep vehicles moving through the shop.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Communicated vehicle condition and completed work clearly to support handoffs and
+                                customer confidence in service outcomes.
+                            </ResumeItem>
+                        </ResumeItemList>
+                    </article>
+
+                    <article className="resume-entry">
+                        <ResumeSubheading
+                            primary="Bay Technician"
+                            secondary="October 2019 -- July 2020"
+                            tertiary="Jiffy Lube"
+                            quaternary="Johns Creek, GA"
+                        />
+                        <ResumeSubItem>
+                            Rotated through bay technician responsibilities in a quick-lube environment, completing
+                            fluid services, inspections, and common under-hood and under-car maintenance with consistent
+                            throughput and quality checks.
+                        </ResumeSubItem>
+                        <ResumeItemList>
+                            <ResumeItem>
+                                Performed oil changes, filter replacements, fluid top-offs, and related preventive
+                                maintenance to manufacturer- and company-defined standards.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Supported tire and basic chassis services where assigned, including torque and safety
+                                verification on completed work.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Kept the bay organized and stocked so the team could maintain service times during peak
+                                traffic.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Communicated vehicle recommendations and completed services clearly to support advisor
+                                and customer understanding.
+                            </ResumeItem>
+                        </ResumeItemList>
+                    </article>
+
+                    <article className="resume-entry">
+                        <ResumeSubheading
+                            primary="Customer Service Associate"
+                            secondary="May 2019 -- July 2019"
+                            tertiary="AutoZone"
+                            quaternary="Bloomington, IL"
+                        />
+                        <ResumeSubItem>
+                            Supported retail automotive customers at the counter with parts lookups, transactions, and
+                            straightforward product guidance in a high-touch summer season.
+                        </ResumeSubItem>
+                        <ResumeItemList>
+                            <ResumeItem>
+                                Assisted customers with part and fluid selection using catalog and system tools while
+                                confirming fitment details when available.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Operated point-of-sale workflows accurately, including returns, exchanges, and
+                                promotional pricing where applicable.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Maintained aisle organization and stocking so high-demand items remained findable during
+                                busy shifts.
+                            </ResumeItem>
+                        </ResumeItemList>
+                    </article>
+
+                    <article className="resume-entry">
+                        <ResumeSubheading
+                            primary="Courtesy Clerk"
+                            secondary="August 2017 -- May 2018"
+                            tertiary="Jewel-Osco"
+                            quaternary="Bloomington, IL"
+                        />
+                        <ResumeSubItem>
+                            Front-end courtesy support in a grocery environment focused on customer experience, safety,
+                            and steady store flow during evenings and weekends.
+                        </ResumeSubItem>
+                        <ResumeItemList>
+                            <ResumeItem>
+                                Bagged purchases carefully, managed cart retrieval, and kept checkout lanes and entry
+                                areas clean and unobstructed.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Assisted customers with directions to products and light carry-out support when
+                                appropriate.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Followed food safety and sanitation expectations while handling customer-facing tasks
+                                alongside the front-end team.
+                            </ResumeItem>
+                        </ResumeItemList>
+                    </article>
                 </div>
             </ResumeSection>
 
@@ -313,6 +430,12 @@ function Resume() {
                         secondary="Lawrenceville, GA"
                         tertiary="Associates in Automotive Technology"
                         quaternary="August 2019 -- December 2021"
+                    />
+                    <ResumeSubheading
+                        primary="Normal Community High School"
+                        secondary="Normal, IL"
+                        tertiary="High School Diploma"
+                        quaternary="August 2014 -- May 2018"
                     />
                 </div>
             </ResumeSection>
