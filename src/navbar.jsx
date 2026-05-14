@@ -50,27 +50,15 @@ function Navbar() {
     return (
         <nav className="navbar" aria-label="Main navigation">
             <div className="navbar-container">
-                <Link to="/" className="navbar-wordmark" onClick={closeAll}>
-                    Sankalp Amaravadi
-                </Link>
+                <div className="navbar-left">
+                    <Link to="/" className="navbar-wordmark" onClick={closeAll}>
+                        Sankalp Amaravadi
+                    </Link>
 
-                <button
-                    type="button"
-                    className="hamburger"
-                    onClick={toggleMenu}
-                    aria-expanded={show}
-                    aria-controls="primary-navigation"
-                    aria-label={show ? 'Close menu' : 'Open menu'}
-                >
-                    <span className={show ? 'open' : ''} />
-                    <span className={show ? 'open' : ''} />
-                    <span className={show ? 'open' : ''} />
-                </button>
-
-                <ul
-                    id="primary-navigation"
-                    className={show ? 'nav-menu active' : 'nav-menu'}
-                >
+                    <ul
+                        id="primary-navigation"
+                        className={show ? 'nav-menu active' : 'nav-menu'}
+                    >
                     {navItems.map((item, index) => (
                         <li
                             key={index}
@@ -114,7 +102,21 @@ function Navbar() {
                             </ul>
                         </li>
                     ))}
-                </ul>
+                    </ul>
+                </div>
+
+                <button
+                    type="button"
+                    className="hamburger"
+                    onClick={toggleMenu}
+                    aria-expanded={show}
+                    aria-controls="primary-navigation"
+                    aria-label={show ? 'Close menu' : 'Open menu'}
+                >
+                    <span className={show ? 'open' : ''} />
+                    <span className={show ? 'open' : ''} />
+                    <span className={show ? 'open' : ''} />
+                </button>
             </div>
         </nav>
     );

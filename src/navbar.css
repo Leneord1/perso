@@ -13,13 +13,22 @@
     max-width: 72rem;
     width: 100%;
     margin: 0 auto;
-    padding: 0 1.25rem;
+    padding-block: 0;
+    padding-inline: max(0.5rem, env(safe-area-inset-left, 0px)) max(0.5rem, env(safe-area-inset-right, 0px));
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     height: 3.75rem;
     position: relative;
     gap: 1rem;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    flex: 1;
+    min-width: 0;
 }
 
 .navbar-wordmark {
@@ -66,14 +75,12 @@
     letter-spacing: 0.5px;
 }
 
-/* Navigation Menu */
-/* Primary nav — right-aligned cluster */
+/* Navigation Menu — inline after wordmark */
 .nav-menu {
     display: flex;
     list-style: none;
     gap: 0.25rem;
     margin: 0;
-    margin-left: auto;
     padding: 0;
     align-items: center;
     position: relative;
@@ -310,7 +317,6 @@
 @media screen and (max-width: 768px) {
     .navbar-container {
         height: 60px;
-        padding: 0 15px;
     }
 
     .navbar-brand {
@@ -398,7 +404,7 @@
 @media screen and (max-width: 480px) {
     .navbar-container {
         height: 50px;
-        padding: 0 10px;
+        padding-inline: max(0.375rem, env(safe-area-inset-left, 0px)) max(0.375rem, env(safe-area-inset-right, 0px));
     }
 
     .navbar-logo-img {
