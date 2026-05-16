@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "../global.css";
 
 function ResumeSubheading({ primary, secondary, tertiary, quaternary }) {
@@ -16,9 +17,20 @@ function ResumeSubheading({ primary, secondary, tertiary, quaternary }) {
     );
 }
 
+ResumeSubheading.propTypes = {
+    primary: PropTypes.string.isRequired,
+    secondary: PropTypes.string,
+    tertiary: PropTypes.string.isRequired,
+    quaternary: PropTypes.string,
+};
+
 function ResumeSubItem({ children }) {
     return <p className="resume-subitem">{children}</p>;
 }
+
+ResumeSubItem.propTypes = {
+    children: PropTypes.node.isRequired,
+};
 
 function ResumeProjectHeading({ title, stack, dateRange }) {
     return (
@@ -33,13 +45,27 @@ function ResumeProjectHeading({ title, stack, dateRange }) {
     );
 }
 
+ResumeProjectHeading.propTypes = {
+    title: PropTypes.string.isRequired,
+    stack: PropTypes.string.isRequired,
+    dateRange: PropTypes.string.isRequired,
+};
+
 function ResumeItemList({ children }) {
     return <ul className="resume-item-list">{children}</ul>;
 }
 
+ResumeItemList.propTypes = {
+    children: PropTypes.node.isRequired,
+};
+
 function ResumeItem({ children }) {
     return <li className="resume-item">{children}</li>;
 }
+
+ResumeItem.propTypes = {
+    children: PropTypes.node.isRequired,
+};
 
 function ResumeSection({ id, title, children }) {
     return (
@@ -51,6 +77,12 @@ function ResumeSection({ id, title, children }) {
         </section>
     );
 }
+
+ResumeSection.propTypes = {
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
+};
 
 function Resume() {
     return (

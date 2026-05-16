@@ -382,7 +382,8 @@
     }
 
     .dropdown-link:hover {
-        background-color: rgba(255, 255, 255, 0.12);
+        /* Darken row on hover so white text keeps ≥ contrast (avoid light-on-light with rgba white overlay). */
+        background-color: rgba(0, 0, 0, 0.2);
         color: #ffffff;
     }
 
