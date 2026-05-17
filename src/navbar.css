@@ -326,6 +326,11 @@
 
     .hamburger {
         display: flex;
+        margin-left: auto;
+    }
+
+    .navbar-left {
+        width: 100%;
     }
 
     .nav-menu {
@@ -335,7 +340,7 @@
         flex-direction: column;
         background-color: var(--pw-primary);
         width: 100%;
-        text-align: center;
+        text-align: start;
         transition: 0.3s;
         box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
         gap: 0;
@@ -351,10 +356,11 @@
     }
 
     .nav-link {
-        padding: 15px 0;
+        padding: 15px 1.25rem;
         border-bottom: none;
         border-right: 4px solid transparent;
-        justify-content: center;
+        justify-content: flex-start;
+        width: 100%;
     }
 
     .nav-link:hover {

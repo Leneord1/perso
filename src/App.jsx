@@ -13,6 +13,7 @@ import Skills from './pages/skills.jsx';
 import Story from './pages/story.jsx';
 import Resume from './pages/resume.jsx';
 import Chatbot from './components/Chatbot.jsx';
+import Photography from './pages/Photography.jsx';
 
 export default function App() {
   const { pathname } = useLocation();
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="/skills" element={<Skills />} />
           <Route path="/story" element={<Story />} />
           <Route path="/resume" element={<Resume />} />
+          <Route path="/photography" element={<Photography />} />
         </Routes>
       </div>
       <Chatbot />

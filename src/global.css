@@ -783,3 +783,62 @@ table button:hover,
     color: #333;
   }
 }
+
+/* Photography portfolio */
+.photography-page {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+.photography-page__header {
+  margin-bottom: 2.5rem;
+}
+
+.photography-page__eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pw-muted-text);
+  margin-bottom: 0.5rem;
+}
+
+.photography-page__header h1 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  margin-bottom: 0.75rem;
+}
+
+.photography-page__lead {
+  max-width: 40rem;
+  color: var(--pw-muted-text);
+  font-size: 1.05rem;
+}
+
+.photography-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.photography-card {
+  background: var(--pw-surface);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: var(--pw-shadow-md);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.photography-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--pw-shadow-lg);
+}
+
+.photography-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--pw-border);
+}

@@ -31,6 +31,14 @@ const navItems = [
             { label: 'GitHub', to: 'https://github.com/Leneord1', external: true },
         ],
     },
+    {
+        label: 'Photography Portfolio',
+        to: '/photography',
+        dropdown: [
+            { label: 'Photography Portfolio', to: '/photography' },
+            { label: 'Photography Blog', to: '/photography/blog' },
+        ],
+    },
 ];
 
 function Navbar() {
@@ -64,6 +72,7 @@ function Navbar() {
                         aria-controls="primary-navigation"
                         aria-label={show ? 'Close menu' : 'Open menu'}
                     >
+                        <span className={show ? 'open' : ''} />
                         <span className={show ? 'open' : ''} />
                         <span className={show ? 'open' : ''} />
                         <span className={show ? 'open' : ''} />
