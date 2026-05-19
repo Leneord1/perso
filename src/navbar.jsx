@@ -36,7 +36,6 @@ const navItems = [
         to: '/photography',
         dropdown: [
             { label: 'Photography Portfolio', to: '/photography' },
-            { label: 'Photography Blog', to: '/photography/blog' },
         ],
     },
 ];

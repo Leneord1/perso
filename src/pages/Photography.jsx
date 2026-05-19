@@ -9,10 +9,6 @@ function Photography() {
         <main className="photography-page">
             <header className="photography-page__header">
                 <p className="photography-page__eyebrow">Gallery</p>
-                <h1>Photography Portfolio</h1>
-                <p className="photography-page__lead">
-                    Selected work from my camera roll.
-                </p>
             </header>
 
             <ul className="photography-grid">
