@@ -20,6 +20,7 @@ const navItems = [
             { label: 'All Projects', to: '/projects' },
             { label: 'Professional', to: '/projects/professional' },
             { label: 'Personal', to: '/projects/personal' },
+            { label: 'Photography Portfolio', to: '/photography' },
         ],
     },
     {
@@ -29,13 +30,6 @@ const navItems = [
             { label: 'Get In Touch', to: '/contact' },
             { label: 'LinkedIn', to: 'https://linkedin.com/in/sankalp-amaravadi-147202291', external: true },
             { label: 'GitHub', to: 'https://github.com/Leneord1', external: true },
-        ],
-    },
-    {
-        label: 'Photography Portfolio',
-        to: '/photography',
-        dropdown: [
-            { label: 'Photography Portfolio', to: '/photography' },
         ],
     },
 ];
