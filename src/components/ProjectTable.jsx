@@ -1,12 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+const documentLinkPropType = PropTypes.shape({
+  label: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+})
+
 const projectRowPropType = PropTypes.shape({
   name: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   stack: PropTypes.string.isRequired,
   repoUrl: PropTypes.string.isRequired,
   liveUrl: PropTypes.string,
+  documentLinks: PropTypes.arrayOf(documentLinkPropType),
 })
 
 function ProjectTableRow({ row }) {
@@ -23,18 +29,26 @@ function ProjectTableRow({ row }) {
             GitHub
           </a>
           {row.liveUrl ? (
-            <>
-              {' '}
-              <a
-                href={row.liveUrl}
-                className="link project-table__live-link"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Live
-              </a>
-            </>
+            <a
+              href={row.liveUrl}
+              className="link project-table__extra-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Live
+            </a>
           ) : null}
+          {row.documentLinks?.map((doc) => (
+            <a
+              key={doc.url}
+              href={doc.url}
+              className="link project-table__extra-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {doc.label}
+            </a>
+          ))}
         </span>
       </td>
     </tr>

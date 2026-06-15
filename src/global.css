@@ -546,7 +546,7 @@ table button:hover,
   align-items: baseline;
 }
 
-.project-table__live-link::before {
+.project-table__extra-link::before {
   content: '\00b7';
   margin-right: 0.35em;
   color: var(--pw-muted-text);
