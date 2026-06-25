@@ -36,28 +36,8 @@ export const personalProjectRows = [
   },
 ]
 
-const cs4632RepoUrl = 'https://github.com/Leneord1/CS4632_Amaravadi_Sankalp'
-const cs4632DocumentsBaseUrl = `${cs4632RepoUrl}/blob/main/documents`
-
 /** Course and structured team engineering work */
 export const professionalProjectRows = [
-  {
-    name: 'CS4632_Amaravadi_Sankalp',
-    description:
-      'CS 4632 — Service Department Operational Optimization Simulator.',
-    stack: 'Java, PlantUML',
-    repoUrl: cs4632RepoUrl,
-    documentLinks: [
-      {
-        label: 'Activity UML',
-        url: `${cs4632DocumentsBaseUrl}/ActivityUML.puml`,
-      },
-      {
-        label: 'Class Diagram',
-        url: `${cs4632DocumentsBaseUrl}/Classdiagram.puml`,
-      },
-    ],
-  },
   {
     name: 'SWE4663_Group2_SPR25',
     description: 'SWE 4663 — Group 2 project, Spring 2025 (pinned on your GitHub).',
