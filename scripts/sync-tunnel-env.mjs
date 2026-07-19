@@ -4,12 +4,31 @@
  * Usage: npm run tunnel:sync
  */
 import { readFileSync, existsSync } from 'node:fs'
-import { resolve, dirname } from 'node:path'
+import { resolve, dirname, delimiter } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawnSync } from 'node:child_process'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const statePath = resolve(root, '.tunnel', 'state.json')
+
+// Hardened env: restrict PATH to fixed, non-writable system dirs (S4036).
+// Node ships npx alongside itself, so its install dir is the only extra entry.
+const SAFE_PATH = [
+  dirname(process.execPath),
+  ...(process.platform === 'win32'
+    ? ['C:\\Windows\\System32', 'C:\\Windows']
+    : ['/usr/local/bin', '/usr/bin', '/bin']),
+].join(delimiter)
+
+const SAFE_ENV = (() => {
+  const env = { ...process.env }
+  // Strip any PATH casing so our value is not shadowed on Windows.
+  for (const key of Object.keys(env)) {
+    if (key.toLowerCase() === 'path') delete env[key]
+  }
+  env.PATH = SAFE_PATH
+  return env
+})()
 
 if (!existsSync(statePath)) {
   console.error('No .tunnel/state.json — run `npm run tunnel` first.')
@@ -39,7 +58,7 @@ function upsertEnv(key, value, target) {
   spawnSync(
     'npx',
     ['vercel', 'env', 'rm', key, target, '-y'],
-    { cwd: root, stdio: 'pipe', shell: true },
+    { cwd: root, stdio: 'pipe', shell: true, env: SAFE_ENV },
   )
   const added = spawnSync(
     'npx',
@@ -49,6 +68,7 @@ function upsertEnv(key, value, target) {
       input: `${value}\n`,
       encoding: 'utf8',
       shell: true,
+      env: SAFE_ENV,
     },
   )
   if (added.status !== 0) {
