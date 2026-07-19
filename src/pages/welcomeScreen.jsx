@@ -20,7 +20,7 @@ function WelcomeScreen() {
                 <div className="welcome-screen__actions">
                     <button
                         type="button"
-                        className="button-primary"
+                        className="button-online"
                         onClick={() => navigate('/projects')}
                     >
                         View projects
@@ -34,14 +34,14 @@ function WelcomeScreen() {
                     </button>
                     <button
                         type="button"
-                        className="button-ghost"
+                        className="button-outline"
                         onClick={() => navigate('/story')}
                     >
                         My story
                     </button>
                     <button
                         type="button"
-                        className="button-primary"
+                        className="button-online"
                         onClick={() => navigate('/chess')}
                     >
                         Chess
