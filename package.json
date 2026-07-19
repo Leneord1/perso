@@ -14,6 +14,7 @@
     "tunnel:sync": "node scripts/sync-tunnel-env.mjs"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "axios": "^1.16.1",
     "chess": "^1.5.1",

@@ -4,6 +4,7 @@ import WelcomeScreen from './pages/welcomeScreen.jsx';
 import Contact from './pages/contact.jsx';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { SpeedInsights } from '@vercel/speed-insights/react';
+import { Analytics } from '@vercel/analytics/react';
 import React from 'react';
 import AllProjects from './pages/allProjects.jsx';
 import PersonalProjects from './pages/personalProjects.jsx';
@@ -22,6 +23,7 @@ export default function App() {
   return (
     <>
       <SpeedInsights route={pathname} />
+      <Analytics route={pathname} path={pathname} />
       <Navbar />
       <div className="app-main">
         <Routes>

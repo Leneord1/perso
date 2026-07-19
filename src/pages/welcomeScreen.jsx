@@ -42,7 +42,7 @@ function WelcomeScreen() {
                     <button
                         type="button"
                         className="button-primary"
-                        onClick={() => navigate('/chess')}
+                        onClick={() => navigate('/projects/chess')}
                     >
                         Chess
                     </button>

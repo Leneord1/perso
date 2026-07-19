@@ -148,7 +148,6 @@ function Chessboard({ mode }) {
 
     let cancelled = false;
     botBusyRef.current = true;
-    setBotStatus('Bot (Black) thinking…');
 
     const game = gameRef.current;
     const legalMoves = game.moves({ verbose: true });

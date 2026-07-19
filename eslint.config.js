@@ -5,7 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist', 'chatbot']),
+  globalIgnores(['dist', 'chatbot', '.vercel', 'scripts/**']),
   {
     files: ['**/*.{js,jsx}'],
     extends: [
@@ -36,6 +36,12 @@ export default defineConfig([
           message: 'Use Array.isArray(x) instead of instanceof Array.',
         },
       ],
+    },
+  },
+  {
+    files: ['api/**/*.{js,mjs,cjs}'],
+    languageOptions: {
+      globals: globals.node,
     },
   },
 ])
