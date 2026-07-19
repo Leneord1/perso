@@ -4,31 +4,53 @@
  * Usage: npm run tunnel:sync
  */
 import { readFileSync, existsSync } from 'node:fs'
-import { resolve, dirname, delimiter } from 'node:path'
+import { resolve, dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawnSync } from 'node:child_process'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const statePath = resolve(root, '.tunnel', 'state.json')
 
-// Hardened env: restrict PATH to fixed, non-writable system dirs (S4036).
-// Node ships npx alongside itself, so its install dir is the only extra entry.
-const SAFE_PATH = [
+// Absolute npx entry — never a bare command name (S4036).
+const NPX_CLI = join(
   dirname(process.execPath),
-  ...(process.platform === 'win32'
-    ? ['C:\\Windows\\System32', 'C:\\Windows']
-    : ['/usr/local/bin', '/usr/bin', '/bin']),
-].join(delimiter)
+  'node_modules',
+  'npm',
+  'bin',
+  'npx-cli.js',
+)
 
-const SAFE_ENV = (() => {
+/**
+ * Builds env with PATH = fixed, unwriteable system dirs only (S4036).
+ */
+function safeEnv() {
   const env = { ...process.env }
-  // Strip any PATH casing so our value is not shadowed on Windows.
   for (const key of Object.keys(env)) {
     if (key.toLowerCase() === 'path') delete env[key]
   }
-  env.PATH = SAFE_PATH
+  // Literals only — no dirname(process.execPath), no /usr/local/bin.
+  env.PATH =
+    process.platform === 'win32'
+      ? 'C:\\Windows\\System32;C:\\Windows'
+      : '/usr/bin:/bin'
   return env
-})()
+}
+
+/**
+ * Runs vercel via absolute node + npx-cli (no PATH, no shell).
+ */
+function runNpx(args, options = {}) {
+  if (!existsSync(NPX_CLI)) {
+    throw new Error(`npx CLI not found at ${NPX_CLI}`)
+  }
+  return spawnSync(process.execPath, [NPX_CLI, ...args], {
+    cwd: root,
+    shell: false,
+    env: safeEnv(),
+    encoding: 'utf8',
+    ...options,
+  })
+}
 
 if (!existsSync(statePath)) {
   console.error('No .tunnel/state.json — run `npm run tunnel` first.')
@@ -55,22 +77,11 @@ const targets = ['production', 'preview']
  */
 function upsertEnv(key, value, target) {
   // Remove existing (ignore failure if missing)
-  spawnSync(
-    'npx',
-    ['vercel', 'env', 'rm', key, target, '-y'],
-    { cwd: root, stdio: 'pipe', shell: true, env: SAFE_ENV },
-  )
-  const added = spawnSync(
-    'npx',
-    ['vercel', 'env', 'add', key, target],
-    {
-      cwd: root,
-      input: `${value}\n`,
-      encoding: 'utf8',
-      shell: true,
-      env: SAFE_ENV,
-    },
-  )
+  runNpx(['vercel', 'env', 'rm', key, target, '-y'], { stdio: 'pipe' })
+  const added = runNpx(['vercel', 'env', 'add', key, target], {
+    input: `${value}\n`,
+    stdio: ['pipe', 'pipe', 'pipe'],
+  })
   if (added.status !== 0) {
     console.error(added.stderr || added.stdout)
     throw new Error(`Failed to set ${key} (${target})`)
