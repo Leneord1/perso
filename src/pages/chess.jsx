@@ -22,9 +22,36 @@ const PROMOTION_CHOICES = [
   { type: 'n', label: 'Knight' },
 ];
 
+// Sort captured pieces by value (queen → pawn).
+const CAPTURE_ORDER = { q: 0, r: 1, b: 2, n: 3, p: 4 };
+
 // Build "a8".."h1" square id from board() indices.
 function squareId(row, col) {
   return FILES[col] + (8 - row);
+}
+
+/**
+ * Replay SAN history; collect pieces each side has taken.
+ * @param {string[]} sanHistory
+ * @returns {{ white: { color: string, type: string }[], black: { color: string, type: string }[] }}
+ */
+function capturedFromHistory(sanHistory) {
+  const game = new Chess();
+  const white = [];
+  const black = [];
+
+  for (const san of sanHistory) {
+    const move = game.move(san);
+    if (!move?.captured) continue;
+    const taken = { color: move.color === 'w' ? 'b' : 'w', type: move.captured };
+    if (move.color === 'w') white.push(taken);
+    else black.push(taken);
+  }
+
+  const byValue = (a, b) => CAPTURE_ORDER[a.type] - CAPTURE_ORDER[b.type];
+  white.sort(byValue);
+  black.sort(byValue);
+  return { white, black };
 }
 
 /**
@@ -58,6 +85,8 @@ function Chessboard({ mode }) {
     const side = turn === 'w' ? 'White' : 'Black';
     return view.inCheck() ? `${side} to move — check` : `${side} to move`;
   }, [view, turn, vsBot, botStatus]);
+
+  const captured = useMemo(() => capturedFromHistory(history), [history]);
 
   function syncPosition() {
     const game = gameRef.current;
@@ -241,6 +270,45 @@ function Chessboard({ mode }) {
           >
             Undo
           </button>
+        </div>
+
+        <div className="chess-captured" aria-label="Captured pieces">
+          <div className="chess-captured__row">
+            <span className="chess-captured__label">White took</span>
+            {captured.white.length === 0 ? (
+              <span className="chess-captured__empty">—</span>
+            ) : (
+              <span className="chess-captured__pieces">
+                {captured.white.map((p, i) => (
+                  <span
+                    key={`w-${i}-${p.type}`}
+                    className={`chess-piece chess-piece--${p.color}`}
+                    aria-label={`captured ${p.type}`}
+                  >
+                    {PIECE_GLYPHS[p.color][p.type]}
+                  </span>
+                ))}
+              </span>
+            )}
+          </div>
+          <div className="chess-captured__row">
+            <span className="chess-captured__label">Black took</span>
+            {captured.black.length === 0 ? (
+              <span className="chess-captured__empty">—</span>
+            ) : (
+              <span className="chess-captured__pieces">
+                {captured.black.map((p, i) => (
+                  <span
+                    key={`b-${i}-${p.type}`}
+                    className={`chess-piece chess-piece--${p.color}`}
+                    aria-label={`captured ${p.type}`}
+                  >
+                    {PIECE_GLYPHS[p.color][p.type]}
+                  </span>
+                ))}
+              </span>
+            )}
+          </div>
         </div>
 
         <div className="chess-moves">
