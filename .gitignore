@@ -17,6 +17,9 @@ dist-ssr
 .env.*
 !.env.example
 
+# Ollama Cloudflare tunnel runtime state (URL + secret)
+.tunnel/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -27,3 +30,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.vercel
+.env*

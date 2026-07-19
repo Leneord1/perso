@@ -9,11 +9,15 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "tunnel": "node scripts/ollama-tunnel.mjs",
+    "tunnel:sync": "node scripts/sync-tunnel-env.mjs"
   },
   "dependencies": {
     "@vercel/speed-insights": "^2.0.0",
     "axios": "^1.16.1",
+    "chess": "^1.5.1",
+    "chess.js": "^1.4.0",
     "prop-types": "^15.8.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",

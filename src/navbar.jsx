@@ -21,6 +21,7 @@ const navItems = [
             { label: 'Professional', to: '/projects/professional' },
             { label: 'Personal', to: '/projects/personal' },
             { label: 'Photography Portfolio', to: '/photography' },
+            { label: 'Play Chess', to: '/projects/chess' },
         ],
     },
     {

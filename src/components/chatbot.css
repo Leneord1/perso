@@ -145,6 +145,17 @@ dialog.pw-chat__panel:not([open]) {
   border: 1px solid var(--pw-border);
 }
 
+.pw-chat__msg--pending {
+  opacity: 0.75;
+  font-style: italic;
+}
+
+.pw-chat__send:disabled,
+.pw-chat__input:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
 .pw-chat__actions {
   display: flex;
   flex-wrap: wrap;

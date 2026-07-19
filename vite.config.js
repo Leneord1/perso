@@ -16,6 +16,23 @@ export default defineConfig({
       'next/navigation': nextNavigationShim,
     },
   },
+  server: {
+    proxy: {
+      // Browser → Vite → local Ollama (avoids CORS in dev)
+      '/api/chat': {
+        target: 'http://127.0.0.1:11434',
+        changeOrigin: true,
+      },
+    },
+  },
+  preview: {
+    proxy: {
+      '/api/chat': {
+        target: 'http://127.0.0.1:11434',
+        changeOrigin: true,
+      },
+    },
+  },
   test: {
     environment: 'jsdom',
     setupFiles: './src/setupTests.js',
@@ -24,3 +41,4 @@ export default defineConfig({
     exclude: ['**/node_modules/**', '**/dist/**', '**/chatbot/**'],
   },
 })
+

@@ -1,3 +1,5 @@
+import { readViteEnv } from '../env.js'
+
 /** In-app routes the assistant can suggest. */
 export const SITE_PATHS = {
   home: '/',
@@ -19,144 +21,164 @@ const DEFAULT_ACTIONS = [
 const LINKEDIN = 'https://linkedin.com/in/sankalp-amaravadi-147202291'
 const GITHUB = 'https://github.com/Leneord1'
 
-/**
- * Returns assistant copy and optional quick actions for the portfolio chat agent.
- * @param {string} raw
- * @returns {{ content: string, actions?: { label: string, to: string, external?: boolean }[] }}
- */
-export function getAgentReply(raw) {
-  const t = raw.trim().toLowerCase()
+const SYSTEM_PROMPT = `You are the site assistant for Sankalp Amaravadi's personal portfolio.
+Answer briefly (2–4 sentences). Stay on portfolio topics: story, skills, experience, projects, contact.
+If unsure, point visitors to the matching page.
 
-  if (!t) {
+Facts:
+- Prospective college student aiming for a bachelor's in software engineering.
+- Background: Tesla service internship, express technician; Website Development Intern at Georgia Watch (React, APIs, testing, deployment).
+- Stack: Java, JavaScript, Python, React, Node.js, HTML, CSS, SQL, Docker; Supabase/PostgreSQL; GitHub Actions CI/CD.
+- Seeking software engineering internships / early-career roles (frontend, full-stack, generalist).
+- Email: Sankalp.Amaravadi33@gmail.com
+- GitHub: ${GITHUB}
+- LinkedIn: ${LINKEDIN}
+- Site paths: / (home), /story, /skills, /experience, /projects, /projects/personal, /projects/professional, /contact`
+
+/**
+ * Quick-nav buttons from user text keywords.
+ * @param {string} raw
+ * @returns {{ label: string, to: string, external?: boolean }[]}
+ */
+export function suggestActions(raw) {
+  const t = raw.trim().toLowerCase()
+  if (!t) return DEFAULT_ACTIONS
+
+  if (/\b(skills?|tech stack|stack|languages|frameworks|tools)\b/.test(t)) {
+    return [
+      { label: 'View Skills', to: SITE_PATHS.skills },
+      { label: 'Projects', to: SITE_PATHS.projects },
+    ]
+  }
+  if (/\b(work history|resume|cv|job|career|employment|experience)\b/.test(t)) {
+    return [
+      { label: 'Experience', to: SITE_PATHS.experience },
+      { label: 'Story', to: SITE_PATHS.story },
+    ]
+  }
+  if (/\b(my story|your story|background|biography|who is|about sankalp)\b/.test(t)) {
+    return [
+      { label: 'Open Story', to: SITE_PATHS.story },
+      { label: 'Experience', to: SITE_PATHS.experience },
+    ]
+  }
+  if (/\b(personal project|side project|hobby project)\b/.test(t)) {
+    return [
+      { label: 'Personal projects', to: SITE_PATHS.projectsPersonal },
+      { label: 'All projects', to: SITE_PATHS.projects },
+    ]
+  }
+  if (/\b(professional|work project|client)\b/.test(t)) {
+    return [
+      { label: 'Professional projects', to: SITE_PATHS.projectsProfessional },
+      { label: 'All projects', to: SITE_PATHS.projects },
+    ]
+  }
+  if (/\b(project|repo|github portfolio|portfolio)\b/.test(t)) {
+    return [
+      { label: 'Projects hub', to: SITE_PATHS.projects },
+      { label: 'GitHub profile', to: GITHUB, external: true },
+    ]
+  }
+  if (/\b(linkedin|linked in)\b/.test(t)) {
+    return [{ label: 'Open LinkedIn', to: LINKEDIN, external: true }]
+  }
+  if (/\b(github|git hub|repos?|repositories)\b/.test(t)) {
+    return [
+      { label: 'GitHub', to: GITHUB, external: true },
+      { label: 'Projects', to: SITE_PATHS.projects },
+    ]
+  }
+  if (/\b(email|mail|contact|reach out|get in touch|message)\b/.test(t)) {
+    return [
+      { label: 'Contact page', to: SITE_PATHS.contact },
+      { label: 'Email', to: 'mailto:Sankalp.Amaravadi33@gmail.com', external: true },
+    ]
+  }
+  if (/\b(home|landing|start|main page)\b/.test(t)) {
+    return [{ label: 'Go home', to: SITE_PATHS.home }]
+  }
+
+  return DEFAULT_ACTIONS
+}
+
+function chatApiUrl() {
+  return readViteEnv('VITE_CHAT_API_URL') || '/api/chat'
+}
+
+function ollamaModel() {
+  return readViteEnv('VITE_OLLAMA_MODEL') || 'llama3.1'
+}
+
+/**
+ * Asks Ollama (via /api/chat) for a reply; attaches keyword quick-actions.
+ * @param {string} raw
+ * @param {{ role: string, content: string }[]} [history]
+ * @returns {Promise<{ content: string, actions?: { label: string, to: string, external?: boolean }[] }>}
+ */
+export async function getAgentReply(raw, history = []) {
+  const text = raw.trim()
+  const actions = suggestActions(text)
+
+  if (!text) {
     return {
       content: 'Ask about projects, skills, experience, or how to reach Sankalp.',
-      actions: DEFAULT_ACTIONS,
+      actions,
     }
   }
 
-  if (/\b(help|what can you|what do you do|capabilities)\b/.test(t)) {
+  const messages = [
+    { role: 'system', content: SYSTEM_PROMPT },
+    ...history
+      .filter((m) => m.role === 'user' || m.role === 'assistant')
+      .map((m) => ({ role: m.role, content: m.content })),
+    { role: 'user', content: text },
+  ]
+
+  const url = chatApiUrl()
+  let res
+  try {
+    res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: ollamaModel(),
+        messages,
+        stream: false,
+      }),
+    })
+  } catch {
     return {
       content:
-        'I answer questions about this portfolio and link you to the right page—projects, story, skills, experience, and contact details.',
-      actions: DEFAULT_ACTIONS,
+        'Could not reach the chat API. Locally: run `ollama serve` and `npm run dev`. On Vercel: run `npm run tunnel` + `npm run tunnel:sync`, then redeploy.',
+      actions,
     }
   }
 
-  if (/(^|\b)(hi|hello|hey|howdy|good (morning|afternoon|evening))\b/.test(t)) {
+  if (!res.ok) {
+    let detail = ''
+    try {
+      const errBody = await res.json()
+      detail = errBody?.error || ''
+    } catch {
+      detail = await res.text().catch(() => '')
+    }
     return {
-      content:
-        'Hi! I’m the site assistant for Sankalp’s portfolio. What would you like to explore?',
-      actions: DEFAULT_ACTIONS,
+      content: `Ollama error (${res.status}).${detail ? ` ${String(detail).slice(0, 200)}` : ' Check Ollama is running and OLLAMA_BASE_URL on deploy.'}`,
+      actions,
     }
   }
 
-  if (/\b(thanks|thank you|ty)\b/.test(t)) {
+  const data = await res.json()
+  const content = data?.message?.content?.trim()
+  if (!content) {
     return {
-      content: 'You’re welcome—enjoy the site.',
-      actions: [{ label: 'Home', to: SITE_PATHS.home }],
+      content: 'Ollama returned an empty reply. Try another model or question.',
+      actions,
     }
   }
 
-  if (/\b(my story|your story|background|biography|who is|about sankalp)\b/.test(t)) {
-    return {
-      content: 'The Story page has background and narrative about Sankalp’s path.',
-      actions: [
-        { label: 'Open Story', to: SITE_PATHS.story },
-        { label: 'Experience', to: SITE_PATHS.experience },
-      ],
-    }
-  }
-
-  if (/\b(skill|tech stack|stack|languages|frameworks|tools)\b/.test(t)) {
-    return {
-      content: 'Skills and technologies are summarized on the Skills page.',
-      actions: [
-        { label: 'View Skills', to: SITE_PATHS.skills },
-        { label: 'Projects', to: SITE_PATHS.projects },
-      ],
-    }
-  }
-
-  if (/\b(work history|resume|cv|job|career|employment|experience)\b/.test(t)) {
-    return {
-      content: 'Work history and roles are on the Experience page.',
-      actions: [
-        { label: 'Experience', to: SITE_PATHS.experience },
-        { label: 'Story', to: SITE_PATHS.story },
-      ],
-    }
-  }
-
-  if (/\b(personal project|side project|hobby project)\b/.test(t)) {
-    return {
-      content: 'Personal projects live in their own section.',
-      actions: [
-        { label: 'Personal projects', to: SITE_PATHS.projectsPersonal },
-        { label: 'All projects', to: SITE_PATHS.projects },
-      ],
-    }
-  }
-
-  if (/\b(professional|work project|client)\b/.test(t)) {
-    return {
-      content: 'Professional highlights are listed separately from personal work.',
-      actions: [
-        { label: 'Professional projects', to: SITE_PATHS.projectsProfessional },
-        { label: 'All projects', to: SITE_PATHS.projects },
-      ],
-    }
-  }
-
-  if (/\b(project|repo|github portfolio|portfolio)\b/.test(t)) {
-    return {
-      content:
-        'The Projects hub summarizes GitHub highlights; you can open personal or professional lists from there.',
-      actions: [
-        { label: 'Projects hub', to: SITE_PATHS.projects },
-        { label: 'GitHub profile', to: GITHUB, external: true },
-      ],
-    }
-  }
-
-  if (/\b(linkedin|linked in)\b/.test(t)) {
-    return {
-      content: 'LinkedIn profile opens in a new tab.',
-      actions: [{ label: 'Open LinkedIn', to: LINKEDIN, external: true }],
-    }
-  }
-
-  if (/\b(github|git hub|repos?|repositories)\b/.test(t)) {
-    return {
-      content: 'Code and repositories are on GitHub.',
-      actions: [
-        { label: 'GitHub', to: GITHUB, external: true },
-        { label: 'Projects', to: SITE_PATHS.projects },
-      ],
-    }
-  }
-
-  if (/\b(email|mail|contact|reach out|get in touch|message)\b/.test(t)) {
-    return {
-      content:
-        'Use the Contact page for email and social links, including Sankalp.Amaravadi33@gmail.com.',
-      actions: [
-        { label: 'Contact page', to: SITE_PATHS.contact },
-        { label: 'Email', to: 'mailto:Sankalp.Amaravadi33@gmail.com', external: true },
-      ],
-    }
-  }
-
-  if (/\b(home|landing|start|main page)\b/.test(t)) {
-    return {
-      content: 'The welcome screen is the home page.',
-      actions: [{ label: 'Go home', to: SITE_PATHS.home }],
-    }
-  }
-
-  return {
-    content: 'I didn’t catch that. Try keywords like projects, skills, experience, story, contact, GitHub, or LinkedIn.',
-    actions: DEFAULT_ACTIONS,
-  }
+  return { content, actions }
 }
 
 export function getWelcomeMessage() {

@@ -1,0 +1,9 @@
+# Keep Vercel uploads small — unused CRA scaffold + local junk
+chatbot
+node_modules
+dist
+.tunnel
+.idea
+.git
+*.log
+.env*.local

@@ -25,6 +25,7 @@ export default function Chatbot() {
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState('')
   const [messages, setMessages] = useState(() => [getWelcomeMessage()])
+  const [pending, setPending] = useState(false)
   const chatBodyRef = useRef(null)
   const dialogRef = useRef(null)
 
@@ -33,7 +34,7 @@ export default function Chatbot() {
     if (el) {
       el.scrollTop = el.scrollHeight
     }
-  }, [messages, open])
+  }, [messages, open, pending])
 
   useEffect(() => {
     const d = dialogRef.current
@@ -48,17 +49,35 @@ export default function Chatbot() {
     }
   }, [open])
 
-  const handleSend = useCallback(() => {
+  const handleSend = useCallback(async () => {
     const text = input.trim()
-    if (!text) return
+    if (!text || pending) return
 
     const userMessage = { id: nextMessageId(), role: 'user', content: text }
-    const { content, actions } = getAgentReply(text)
-    const assistantMessage = { id: nextMessageId(), role: 'assistant', content, actions }
-
-    setMessages((prev) => [...prev, userMessage, assistantMessage])
+    setMessages((prev) => [...prev, userMessage])
     setInput('')
-  }, [input])
+    setPending(true)
+
+    try {
+      const history = [...messages, userMessage]
+        .filter((m) => m.id !== 'welcome')
+        .map((m) => ({ role: m.role, content: m.content }))
+      const { content, actions } = await getAgentReply(text, history.slice(0, -1))
+      const assistantMessage = { id: nextMessageId(), role: 'assistant', content, actions }
+      setMessages((prev) => [...prev, assistantMessage])
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: nextMessageId(),
+          role: 'assistant',
+          content: 'Something went wrong talking to Ollama. Try again in a moment.',
+        },
+      ])
+    } finally {
+      setPending(false)
+    }
+  }, [input, messages, pending])
 
   const onKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -129,6 +148,11 @@ export default function Chatbot() {
               ) : null}
             </div>
           ))}
+          {pending ? (
+            <div className="pw-chat__msg pw-chat__msg--assistant pw-chat__msg--pending" aria-busy="true">
+              Thinking…
+            </div>
+          ) : null}
         </div>
         <div className="pw-chat__footer">
           <input
@@ -139,8 +163,14 @@ export default function Chatbot() {
             onKeyDown={onKeyDown}
             placeholder="Ask about projects, skills, contact…"
             aria-label="Message to assistant"
+            disabled={pending}
           />
-          <button type="button" className="button-primary pw-chat__send" onClick={handleSend}>
+          <button
+            type="button"
+            className="button-primary pw-chat__send"
+            onClick={handleSend}
+            disabled={pending || !input.trim()}
+          >
             Send
           </button>
         </div>
