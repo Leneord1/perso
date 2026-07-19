@@ -292,8 +292,8 @@ function ChessPage() {
       <h1>Play chess</h1>
       <p>
         {mode === 'bot'
-          ? 'You play White. The site agent (Ollama) plays Black as Player 2.'
-          : 'Local two-player game. Moves validated by the chess.js library.'}
+          ? 'You play White. The AI bot plays Black as Player 2.'
+          : 'Two players can play against each other on the same device.'}
       </p>
 
       <div className="chess-mode" role="group" aria-label="Opponent mode">

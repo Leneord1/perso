@@ -163,8 +163,11 @@ export async function getAgentReply(raw, history = []) {
     } catch {
       detail = await res.text().catch(() => '')
     }
+    const suffix = detail
+      ? ` ${String(detail).slice(0, 200)}`
+      : ' Check Ollama is running and OLLAMA_BASE_URL on deploy.'
     return {
-      content: `Ollama error (${res.status}).${detail ? ` ${String(detail).slice(0, 200)}` : ' Check Ollama is running and OLLAMA_BASE_URL on deploy.'}`,
+      content: `Ollama error (${res.status}).${suffix}`,
       actions,
     }
   }
