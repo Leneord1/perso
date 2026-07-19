@@ -20,28 +20,28 @@ function WelcomeScreen() {
                 <div className="welcome-screen__actions">
                     <button
                         type="button"
-                        className="button-outline"
+                        className="button-primary"
                         onClick={() => navigate('/projects')}
                     >
                         View projects
                     </button>
                     <button
                         type="button"
-                        className="button-outline"
+                        className="button-primary"
                         onClick={() => navigate('/contact')}
                     >
                         Contact
                     </button>
                     <button
                         type="button"
-                        className="button-outline"
+                        className="button-primary"
                         onClick={() => navigate('/story')}
                     >
                         My story
                     </button>
                     <button
                         type="button"
-                        className="button-outline"
+                        className="button-primary"
                         onClick={() => navigate('/chess')}
                     >
                         Chess
