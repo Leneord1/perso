@@ -18,15 +18,16 @@ function ollamaModel() {
 
 /**
  * Prefer captures / checks when the LLM is unavailable.
+ * Deterministic pick — no PRNG (S2245).
  * @param {{ san: string, captured?: string, flags: string }[]} legalMoves
  */
 function fallbackMove(legalMoves) {
   if (legalMoves.length === 0) return null
-  const checks = legalMoves.filter((m) => m.san.includes('+') || m.san.includes('#'))
-  if (checks.length) return checks[Math.floor(Math.random() * checks.length)]
-  const captures = legalMoves.filter((m) => m.captured)
-  if (captures.length) return captures[Math.floor(Math.random() * captures.length)]
-  return legalMoves[Math.floor(Math.random() * legalMoves.length)]
+  const check = legalMoves.find((m) => m.san.includes('+') || m.san.includes('#'))
+  if (check) return check
+  const capture = legalMoves.find((m) => m.captured)
+  if (capture) return capture
+  return legalMoves[0]
 }
 
 /**
