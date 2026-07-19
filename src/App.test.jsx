@@ -46,4 +46,28 @@ describe('App', () => {
     renderApp('/resume')
     expect(screen.getByRole('heading', { level: 1, name: /sankalp amaravadi/i })).toBeInTheDocument()
   })
+
+  it('renders photography at /photography', () => {
+    renderApp('/photography')
+    expect(screen.getByText(/^gallery$/i)).toBeInTheDocument()
+  })
+
+  it('renders chess at /projects/chess', () => {
+    renderApp('/projects/chess')
+    expect(screen.getByRole('heading', { level: 1, name: /play chess/i })).toBeInTheDocument()
+  })
+
+  it('renders personal projects at /projects/personal', () => {
+    renderApp('/projects/personal')
+    expect(
+      screen.getByRole('heading', { level: 1, name: /personal projects/i }),
+    ).toBeInTheDocument()
+  })
+
+  it('renders professional projects at /projects/professional', () => {
+    renderApp('/projects/professional')
+    expect(
+      screen.getByRole('heading', { level: 1, name: /professional projects/i }),
+    ).toBeInTheDocument()
+  })
 })

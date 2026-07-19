@@ -11,6 +11,8 @@ function renderWelcomeWithRoutes() {
         <Route path="/" element={<WelcomeScreen />} />
         <Route path="/projects" element={<h1>Projects stub</h1>} />
         <Route path="/contact" element={<h1>Contact stub</h1>} />
+        <Route path="/story" element={<h1>Story stub</h1>} />
+        <Route path="/projects/chess" element={<h1>Chess stub</h1>} />
       </Routes>
     </MemoryRouter>,
   )
@@ -42,5 +44,19 @@ describe('WelcomeScreen', () => {
     expect(
       await ui.findByRole('heading', { name: /contact stub/i }),
     ).toBeInTheDocument()
+  })
+
+  it('navigates to story when My story is clicked', async () => {
+    const user = userEvent.setup()
+    const { ui } = renderWelcomeWithRoutes()
+    await user.click(ui.getByRole('button', { name: /^my story$/i }))
+    expect(await ui.findByRole('heading', { name: /story stub/i })).toBeInTheDocument()
+  })
+
+  it('navigates to chess when Chess is clicked', async () => {
+    const user = userEvent.setup()
+    const { ui } = renderWelcomeWithRoutes()
+    await user.click(ui.getByRole('button', { name: /^chess$/i }))
+    expect(await ui.findByRole('heading', { name: /chess stub/i })).toBeInTheDocument()
   })
 })
