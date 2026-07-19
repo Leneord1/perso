@@ -72,7 +72,7 @@
     color: white;
     font-size: 24px;
     font-weight: 700;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
 }
 
 /* Navigation Menu — inline after wordmark */
@@ -426,6 +426,6 @@
 
     .hamburger span {
         width: 22px;
-        height: 2.5px;
+        height: 3px;
     }
 }

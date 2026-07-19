@@ -1,18 +1,16 @@
-/**
- * Vercel serverless proxy → Ollama /api/chat via tunnel.
- * Env: OLLAMA_BASE_URL (required), OLLAMA_TUNNEL_SECRET (recommended), OLLAMA_MODEL
- */
-export default async function handler(req, res) {
+import process from "prop-types/prop-types.js";
+
+export async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST')
-    return res.status(405).json({ error: 'Method not allowed' })
+    return res.status(405).json({error: 'Method not allowed'})
   }
 
   const base = (process.env.OLLAMA_BASE_URL || '').replace(/\/$/, '')
   if (!base) {
     return res.status(503).json({
       error:
-        'OLLAMA_BASE_URL is not set. Run `npm run tunnel`, then `npm run tunnel:sync`, and redeploy.',
+          'OLLAMA_BASE_URL is not set. Run `npm run tunnel`, then `npm run tunnel:sync`, and redeploy.',
     })
   }
 
@@ -21,10 +19,10 @@ export default async function handler(req, res) {
   const messages = body.messages
 
   if (!Array.isArray(messages) || messages.length === 0) {
-    return res.status(400).json({ error: 'messages array is required' })
+    return res.status(400).json({error: 'messages array is required'})
   }
 
-  const headers = { 'Content-Type': 'application/json' }
+  const headers = {'Content-Type': 'application/json'}
   const secret = process.env.OLLAMA_TUNNEL_SECRET
   if (secret) {
     headers.Authorization = `Bearer ${secret}`

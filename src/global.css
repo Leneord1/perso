@@ -46,7 +46,7 @@ body {
 }
 
 body {
-  font-family: var(--pw-font-sans);
+  font-family: var(--pw-font-sans), serif;
   background-color: var(--pw-canvas);
   color: var(--pw-dark-text);
   line-height: 1.6;
