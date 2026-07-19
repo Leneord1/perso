@@ -1,0 +1,96 @@
+/**
+ * Chess Player-2 bot via site Ollama agent (/api/chat).
+ * Falls back to a simple legal-move pick if the model fails.
+ */
+import { readViteEnv } from '../env.js'
+
+const CHESS_SYSTEM = `You are Player 2 (Black) in a chess game.
+Reply with exactly one legal move from the provided list.
+Use the SAN string only — no commentary, no punctuation beyond the move itself.`
+
+function chatApiUrl() {
+  return readViteEnv('VITE_CHAT_API_URL') || '/api/chat'
+}
+
+function ollamaModel() {
+  return readViteEnv('VITE_OLLAMA_MODEL') || 'llama3.1'
+}
+
+/**
+ * Prefer captures / checks when the LLM is unavailable.
+ * @param {{ san: string, captured?: string, flags: string }[]} legalMoves
+ */
+function fallbackMove(legalMoves) {
+  if (legalMoves.length === 0) return null
+  const checks = legalMoves.filter((m) => m.san.includes('+') || m.san.includes('#'))
+  if (checks.length) return checks[Math.floor(Math.random() * checks.length)]
+  const captures = legalMoves.filter((m) => m.captured)
+  if (captures.length) return captures[Math.floor(Math.random() * captures.length)]
+  return legalMoves[Math.floor(Math.random() * legalMoves.length)]
+}
+
+/**
+ * Pull a SAN that appears in legalMoves from free-form model text.
+ * @param {string} text
+ * @param {{ san: string }[]} legalMoves
+ */
+function parseSan(text, legalMoves) {
+  const cleaned = text.trim().replace(/^["'`]+|["'`]+$/g, '')
+  const byExact = legalMoves.find((m) => m.san === cleaned)
+  if (byExact) return byExact
+
+  // Longest SAN first so "Nxe5+" beats "e5"
+  const sorted = [...legalMoves].sort((a, b) => b.san.length - a.san.length)
+  for (const m of sorted) {
+    if (cleaned.includes(m.san)) return m
+  }
+  return null
+}
+
+/**
+ * Asks the site agent for Black's next move.
+ * @param {string} fen
+ * @param {{ san: string, from: string, to: string, promotion?: string, captured?: string, flags: string }[]} legalMoves
+ * @returns {Promise<{ from: string, to: string, promotion?: string } | null>}
+ */
+export async function getChessBotMove(fen, legalMoves) {
+  if (!legalMoves.length) return null
+
+  const sans = legalMoves.map((m) => m.san)
+  const userPrompt = [
+    `FEN: ${fen}`,
+    `Legal moves (SAN): ${sans.join(', ')}`,
+    'Choose the strongest move for Black. Reply with one SAN from the list only.',
+  ].join('\n')
+
+  let chosen = null
+  try {
+    const res = await fetch(chatApiUrl(), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: ollamaModel(),
+        messages: [
+          { role: 'system', content: CHESS_SYSTEM },
+          { role: 'user', content: userPrompt },
+        ],
+        stream: false,
+      }),
+    })
+
+    if (res.ok) {
+      const data = await res.json()
+      const content = data?.message?.content?.trim() || ''
+      chosen = parseSan(content, legalMoves)
+    }
+  } catch {
+    // Use fallback below.
+  }
+
+  const move = chosen || fallbackMove(legalMoves)
+  if (!move) return null
+
+  const result = { from: move.from, to: move.to }
+  if (move.promotion) result.promotion = move.promotion
+  return result
+}

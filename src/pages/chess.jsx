@@ -1,9 +1,11 @@
-// Local two-player chess. Logic from chess.js; board/UI built here.
-// TODO: none.
-import React, { useMemo, useRef, useState } from 'react';
+// Local chess: human vs human, or human (White) vs site agent (Black).
+
+
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Chess, DEFAULT_POSITION } from 'chess.js';
 import '../global.css';
 import './chess.css';
+import { getChessBotMove } from './chessBot.js';
 
 const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
@@ -25,29 +27,37 @@ function squareId(row, col) {
   return FILES[col] + (8 - row);
 }
 
-function Chessboard() {
+/**
+ * @param {{ mode: 'human' | 'bot' }} props
+ */
+function Chessboard({ mode }) {
   // Authoritative game; mutated only inside handlers, never read during render.
   const gameRef = useRef(new Chess());
+  const botBusyRef = useRef(false);
 
   const [fen, setFen] = useState(DEFAULT_POSITION);
   const [history, setHistory] = useState([]);
   const [selected, setSelected] = useState(null);
   const [legalTargets, setLegalTargets] = useState([]);
   const [pendingPromotion, setPendingPromotion] = useState(null);
+  const [botStatus, setBotStatus] = useState('');
 
   // Rebuild a read-only view from fen for rendering-derived values.
   const view = useMemo(() => new Chess(fen), [fen]);
   const board = view.board();
   const turn = view.turn();
+  const vsBot = mode === 'bot';
+  const humanTurn = !vsBot || turn === 'w';
 
   const status = useMemo(() => {
     if (view.isCheckmate()) return `Checkmate — ${turn === 'w' ? 'Black' : 'White'} wins`;
     if (view.isStalemate()) return 'Draw — stalemate';
     if (view.isInsufficientMaterial()) return 'Draw — insufficient material';
     if (view.isDraw()) return 'Draw';
+    if (vsBot && turn === 'b') return botStatus || 'Bot (Black) thinking…';
     const side = turn === 'w' ? 'White' : 'Black';
     return view.inCheck() ? `${side} to move — check` : `${side} to move`;
-  }, [view, turn]);
+  }, [view, turn, vsBot, botStatus]);
 
   function syncPosition() {
     const game = gameRef.current;
@@ -57,19 +67,21 @@ function Chessboard() {
     setLegalTargets([]);
   }
 
-  // Apply move, deferring to picker when promotion is required.
-  function applyMove(from, to) {
+  // Apply move, deferring to picker when promotion is required (human only).
+  function applyMove(from, to, promotion) {
     const game = gameRef.current;
     const target = game.moves({ square: from, verbose: true }).filter((m) => m.to === to);
-    if (target.length === 0) return;
+    if (target.length === 0) return false;
 
-    if (target.some((m) => m.promotion)) {
+    if (!promotion && target.some((m) => m.promotion)) {
       setPendingPromotion({ from, to });
-      return;
+      return false;
     }
 
-    game.move({ from, to });
+    const result = game.move(promotion ? { from, to, promotion } : { from, to });
+    if (!result) return false;
     syncPosition();
+    return true;
   }
 
   function finishPromotion(pieceType) {
@@ -81,6 +93,7 @@ function Chessboard() {
 
   function handleSquareClick(row, col) {
     if (pendingPromotion || view.isGameOver()) return;
+    if (vsBot && turn === 'b') return;
 
     const id = squareId(row, col);
     const piece = board[row][col];
@@ -98,7 +111,7 @@ function Chessboard() {
     }
 
     // Select own piece and show its legal destinations.
-    if (piece && piece.color === turn) {
+    if (piece && piece.color === turn && humanTurn) {
       setSelected(id);
       setLegalTargets(gameRef.current.moves({ square: id, verbose: true }).map((m) => m.to));
       return;
@@ -111,14 +124,66 @@ function Chessboard() {
   function handleReset() {
     gameRef.current.reset();
     setPendingPromotion(null);
+    setBotStatus('');
+    botBusyRef.current = false;
     syncPosition();
   }
 
   function handleUndo() {
     gameRef.current.undo();
+    // Undo bot reply too so White can retry.
+    if (vsBot && gameRef.current.turn() === 'b') {
+      gameRef.current.undo();
+    }
     setPendingPromotion(null);
+    setBotStatus('');
+    botBusyRef.current = false;
     syncPosition();
   }
+
+  // Agent plays Black after each White move.
+  useEffect(() => {
+    if (!vsBot || turn !== 'b' || view.isGameOver() || pendingPromotion) return;
+    if (botBusyRef.current) return;
+
+    let cancelled = false;
+    botBusyRef.current = true;
+    setBotStatus('Bot (Black) thinking…');
+
+    const game = gameRef.current;
+    const legalMoves = game.moves({ verbose: true });
+    const currentFen = game.fen();
+
+    getChessBotMove(currentFen, legalMoves).then((move) => {
+      if (cancelled || gameRef.current.fen() !== currentFen) {
+        botBusyRef.current = false;
+        return;
+      }
+      if (!move) {
+        setBotStatus('Bot could not move');
+        botBusyRef.current = false;
+        return;
+      }
+      const needsPromo = legalMoves.some(
+        (m) => m.from === move.from && m.to === move.to && m.promotion,
+      );
+      const promotion = move.promotion || (needsPromo ? 'q' : undefined);
+      const result = gameRef.current.move(
+        promotion ? { from: move.from, to: move.to, promotion } : { from: move.from, to: move.to },
+      );
+      if (result) {
+        setBotStatus('');
+        syncPosition();
+      } else {
+        setBotStatus('Bot move failed');
+      }
+      botBusyRef.current = false;
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [fen, vsBot, turn, pendingPromotion, view]);
 
   return (
     <div className="chess-layout">
@@ -134,6 +199,7 @@ function Chessboard() {
               dark ? 'chess-square--dark' : 'chess-square--light',
               isSelected ? 'chess-square--selected' : '',
               isTarget ? 'chess-square--target' : '',
+              vsBot && turn === 'b' ? 'chess-square--locked' : '',
             ]
               .filter(Boolean)
               .join(' ');
@@ -145,6 +211,7 @@ function Chessboard() {
                 className={classes}
                 onClick={() => handleSquareClick(row, col)}
                 aria-label={id}
+                disabled={vsBot && turn === 'b'}
               >
                 {isTarget && !piece ? <span className="chess-dot" aria-hidden /> : null}
                 {piece ? (
@@ -171,7 +238,7 @@ function Chessboard() {
             type="button"
             className="button-outline"
             onClick={handleUndo}
-            disabled={history.length === 0}
+            disabled={history.length === 0 || (vsBot && turn === 'b')}
           >
             Undo
           </button>
@@ -218,11 +285,35 @@ function Chessboard() {
 }
 
 function ChessPage() {
+  const [mode, setMode] = useState('human');
+
   return (
     <main className="page chess-page">
       <h1>Play chess</h1>
-      <p>Local two-player game. Moves validated by the chess.js library.</p>
-      <Chessboard />
+      <p>
+        {mode === 'bot'
+          ? 'You play White. The site agent (Ollama) plays Black as Player 2.'
+          : 'Local two-player game. Moves validated by the chess.js library.'}
+      </p>
+
+      <div className="chess-mode" role="group" aria-label="Opponent mode">
+        <button
+          type="button"
+          className={mode === 'human' ? 'chess-mode__btn chess-mode__btn--active' : 'chess-mode__btn'}
+          onClick={() => setMode('human')}
+        >
+          vs Player
+        </button>
+        <button
+          type="button"
+          className={mode === 'bot' ? 'chess-mode__btn chess-mode__btn--active' : 'chess-mode__btn'}
+          onClick={() => setMode('bot')}
+        >
+          vs Bot
+        </button>
+      </div>
+
+      <Chessboard key={mode} mode={mode} />
     </main>
   );
 }

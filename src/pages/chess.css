@@ -4,6 +4,36 @@
   max-width: 52rem;
 }
 
+.chess-mode {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.chess-mode__btn {
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--pw-border);
+  border-radius: 0.5rem;
+  background: var(--pw-canvas);
+  color: var(--pw-dark-text);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.chess-mode__btn:hover {
+  border-color: var(--pw-accent);
+}
+
+.chess-mode__btn--active {
+  background: var(--pw-accent-muted);
+  border-color: var(--pw-accent);
+  font-weight: 600;
+}
+
+.chess-square--locked {
+  cursor: wait;
+}
+
 .chess-layout {
   display: flex;
   flex-wrap: wrap;
@@ -38,11 +68,11 @@
 }
 
 .chess-square--light {
-  background-color: #eef2f6;
+  background-color: #fefdf5;
 }
 
 .chess-square--dark {
-  background-color: #6f9bb3;
+  background-color: #00642e;
 }
 
 .chess-square--selected {
