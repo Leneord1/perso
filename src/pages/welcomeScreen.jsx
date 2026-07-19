@@ -39,6 +39,13 @@ function WelcomeScreen() {
                     >
                         My story
                     </button>
+                    <button
+                        type="button"
+                        className="button-primary"
+                        onClick={() => navigate('/chess')}
+                    >
+                        Chess
+                    </button>
                 </div>
             </div>
         </main>
