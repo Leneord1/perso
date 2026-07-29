@@ -148,6 +148,43 @@
   cursor: not-allowed;
 }
 
+.chess-captured {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--pw-border);
+  border-radius: 0.5rem;
+  background: var(--pw-canvas);
+}
+
+.chess-captured__row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 1.6rem;
+}
+
+.chess-captured__label {
+  flex: 0 0 5.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--pw-muted-text);
+}
+
+.chess-captured__pieces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.1rem;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.chess-captured__empty {
+  color: var(--pw-muted-text);
+  font-size: 0.9rem;
+}
+
 .chess-moves h2 {
   font-size: 1rem;
   margin-bottom: 0.5rem;
