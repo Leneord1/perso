@@ -1,6 +1,6 @@
 import React from 'react';
 import '../global.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import ProjectTable from '../components/ProjectTable.jsx';
 import {
   githubProfileUrl,

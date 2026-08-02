@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Local Python virtualenv (never commit; not part of the site)
+venv/
+.venv/
+
 # Environment and secrets (keep templates only)
 .env
 .env.*

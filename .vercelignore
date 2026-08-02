@@ -2,6 +2,8 @@
 chatbot
 node_modules
 dist
+venv
+.venv
 .tunnel
 .idea
 .git

@@ -2,7 +2,7 @@ import './App.css'
 import Navbar from './navbar.jsx';
 import WelcomeScreen from './pages/welcomeScreen.jsx';
 import Contact from './pages/contact.jsx';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Analytics } from '@vercel/analytics/react';
 import React from 'react';
