@@ -36,7 +36,7 @@ function fallbackMove(legalMoves) {
  * @param {{ san: string }[]} legalMoves
  */
 function parseSan(text, legalMoves) {
-  const cleaned = text.trim().replace(/\*\*/g, '')
+  const cleaned = text.trim().replaceAll('**', '')
   const byExact = legalMoves.find((m) => m.san === cleaned)
   if (byExact) return byExact
 
