@@ -21,7 +21,7 @@ venv/
 .env.*
 !.env.example
 
-# Ollama Cloudflare tunnel runtime state (URL + secret)
+# Legacy tunnel runtime state (unused after Groq migration)
 .tunnel/
 
 # Editor directories and files

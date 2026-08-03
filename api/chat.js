@@ -1,7 +1,9 @@
 /**
- * Vercel serverless proxy → Ollama /api/chat via tunnel.
- * Env: OLLAMA_BASE_URL (required), OLLAMA_TUNNEL_SECRET (recommended), OLLAMA_MODEL
+ * Vercel serverless proxy → Groq chat completions.
+ * Env: GROQ_API_KEY (required), GROQ_MODEL (optional)
  */
+const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
+const DEFAULT_MODEL = 'llama-3.1-8b-instant'
 const MAX_MESSAGES = 40
 const MAX_CONTENT_CHARS = 4000
 
@@ -14,19 +16,6 @@ function parseBody(req) {
   } catch {
     return null
   }
-}
-
-/** Allow only https remotes or local http loopback (dev). */
-function isAllowedOllamaBase(base) {
-  let url
-  try {
-    url = new URL(base)
-  } catch {
-    return false
-  }
-  if (url.protocol === 'https:') return true
-  if (url.protocol !== 'http:') return false
-  return url.hostname === '127.0.0.1' || url.hostname === 'localhost'
 }
 
 function sanitizeMessages(messages) {
@@ -55,16 +44,11 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const base = (process.env.OLLAMA_BASE_URL || '').replace(/\/$/, '')
-  if (!base) {
+  const apiKey = (process.env.GROQ_API_KEY || '').trim()
+  if (!apiKey) {
     return res.status(503).json({
       error:
-        'OLLAMA_BASE_URL is not set. Run `npm run tunnel`, then `npm run tunnel:sync`, and redeploy.',
-    })
-  }
-  if (!isAllowedOllamaBase(base)) {
-    return res.status(500).json({
-      error: 'OLLAMA_BASE_URL must be https (or http://127.0.0.1 for local).',
+        'GROQ_API_KEY is not set. Add it in Vercel project env (Production + Preview), or in .env.local for local dev.',
     })
   }
 
@@ -73,7 +57,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid JSON body' })
   }
 
-  const model = process.env.OLLAMA_MODEL || 'llama3.1'
+  const model = (process.env.GROQ_MODEL || DEFAULT_MODEL).trim()
   const messages = sanitizeMessages(body.messages)
   if (!messages) {
     return res.status(400).json({
@@ -81,18 +65,14 @@ export default async function handler(req, res) {
     })
   }
 
-  const headers = { 'Content-Type': 'application/json' }
-  const secret = process.env.OLLAMA_TUNNEL_SECRET
-  if (secret) {
-    headers.Authorization = `Bearer ${secret}`
-    headers['x-tunnel-secret'] = secret
-  }
-
   let upstream
   try {
-    upstream = await fetch(`${base}/api/chat`, {
+    upstream = await fetch(GROQ_URL, {
       method: 'POST',
-      headers,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
       body: JSON.stringify({
         model,
         messages,
@@ -101,12 +81,34 @@ export default async function handler(req, res) {
     })
   } catch (err) {
     return res.status(502).json({
-      error: `Could not reach Ollama tunnel: ${err instanceof Error ? err.message : 'network error'}`,
+      error: `Could not reach Groq: ${err instanceof Error ? err.message : 'network error'}`,
     })
   }
 
   const text = await upstream.text()
-  res.status(upstream.status)
-  res.setHeader('Content-Type', 'application/json; charset=utf-8')
-  return res.send(text)
+  let data
+  try {
+    data = JSON.parse(text)
+  } catch {
+    res.status(upstream.status)
+    res.setHeader('Content-Type', 'application/json; charset=utf-8')
+    return res.send(JSON.stringify({ error: text.slice(0, 300) || 'Invalid upstream response' }))
+  }
+
+  if (!upstream.ok) {
+    const detail =
+      data?.error?.message ||
+      (typeof data?.error === 'string' ? data.error : null) ||
+      text.slice(0, 300)
+    return res.status(upstream.status).json({ error: detail })
+  }
+
+  const content = data?.choices?.[0]?.message?.content ?? ''
+  // Keep Ollama-shaped payload so existing clients keep working
+  return res.status(200).json({
+    message: {
+      role: 'assistant',
+      content,
+    },
+  })
 }

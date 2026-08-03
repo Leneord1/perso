@@ -29,7 +29,7 @@ describe('getAgentReply', () => {
       'fetch',
       vi.fn(async () => ({
         ok: true,
-        json: async () => ({ message: { role: 'assistant', content: 'Ollama says hello.' } }),
+        json: async () => ({ message: { role: 'assistant', content: 'Groq says hello.' } }),
       })),
     )
   })
@@ -38,16 +38,16 @@ describe('getAgentReply', () => {
     vi.unstubAllGlobals()
   })
 
-  it('returns guidance for empty input without calling Ollama', async () => {
+  it('returns guidance for empty input without calling chat', async () => {
     const r = await getAgentReply('   ')
     expect(r.content).toMatch(/ask/i)
     expect(r.actions?.length).toBeGreaterThan(0)
     expect(fetch).not.toHaveBeenCalled()
   })
 
-  it('posts to Ollama chat and returns model content', async () => {
+  it('posts to /api/chat and returns model content', async () => {
     const r = await getAgentReply('Tell me about skills')
-    expect(r.content).toBe('Ollama says hello.')
+    expect(r.content).toBe('Groq says hello.')
     expect(r.actions?.some((a) => a.to === SITE_PATHS.skills)).toBe(true)
     expect(fetch).toHaveBeenCalledOnce()
     const [url, opts] = fetch.mock.calls[0]
@@ -59,10 +59,10 @@ describe('getAgentReply', () => {
     expect(body.messages.at(-1)).toEqual({ role: 'user', content: 'Tell me about skills' })
   })
 
-  it('surfaces a clear error when Ollama is unreachable', async () => {
+  it('surfaces a clear error when chat is unreachable', async () => {
     fetch.mockRejectedValueOnce(new Error('network'))
     const r = await getAgentReply('hello')
-    expect(r.content).toMatch(/ollama/i)
+    expect(r.content).toMatch(/chat api|GROQ_API_KEY/i)
   })
 })
 

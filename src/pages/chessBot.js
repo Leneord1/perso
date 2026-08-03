@@ -1,5 +1,5 @@
 /**
- * Chess Player-2 bot via site Ollama agent (/api/chat).
+ * Chess Player-2 bot via site chat agent (/api/chat → Groq).
  * Falls back to a simple legal-move pick if the model fails.
  */
 import { readViteEnv } from '../env.js'
@@ -10,10 +10,6 @@ Use the SAN string only — no commentary, no punctuation beyond the move itself
 
 function chatApiUrl() {
   return readViteEnv('VITE_CHAT_API_URL') || '/api/chat'
-}
-
-function ollamaModel() {
-  return readViteEnv('VITE_OLLAMA_MODEL') || 'llama3.1'
 }
 
 /**
@@ -70,7 +66,6 @@ export async function getChessBotMove(fen, legalMoves) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: ollamaModel(),
         messages: [
           { role: 'system', content: CHESS_SYSTEM },
           { role: 'user', content: userPrompt },

@@ -106,12 +106,8 @@ function chatApiUrl() {
   return readViteEnv('VITE_CHAT_API_URL') || '/api/chat'
 }
 
-function ollamaModel() {
-  return readViteEnv('VITE_OLLAMA_MODEL') || 'llama3.1'
-}
-
 /**
- * Asks Ollama (via /api/chat) for a reply; attaches keyword quick-actions.
+ * Asks Groq (via /api/chat) for a reply; attaches keyword quick-actions.
  * @param {string} raw
  * @param {{ role: string, content: string }[]} [history]
  * @returns {Promise<{ content: string, actions?: { label: string, to: string, external?: boolean }[] }>}
@@ -142,7 +138,6 @@ export async function getAgentReply(raw, history = []) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: ollamaModel(),
         messages,
         stream: false,
       }),
@@ -150,7 +145,7 @@ export async function getAgentReply(raw, history = []) {
   } catch {
     return {
       content:
-        'Could not reach the chat API. Locally: run `ollama serve` and `npm run dev`. On Vercel: run `npm run tunnel` + `npm run tunnel:sync`, then redeploy.',
+        'Could not reach the chat API. Locally: set GROQ_API_KEY in .env.local and run `npm run dev`. On Vercel: set GROQ_API_KEY and redeploy.',
       actions,
     }
   }
@@ -165,9 +160,9 @@ export async function getAgentReply(raw, history = []) {
     }
     const suffix = detail
       ? ` ${String(detail).slice(0, 200)}`
-      : ' Check Ollama is running and OLLAMA_BASE_URL on deploy.'
+      : ' Check GROQ_API_KEY on the server.'
     return {
-      content: `Ollama error (${res.status}).${suffix}`,
+      content: `Chat error (${res.status}).${suffix}`,
       actions,
     }
   }
@@ -176,7 +171,7 @@ export async function getAgentReply(raw, history = []) {
   const content = data?.message?.content?.trim()
   if (!content) {
     return {
-      content: 'Ollama returned an empty reply. Try another model or question.',
+      content: 'Chat returned an empty reply. Try another question.',
       actions,
     }
   }

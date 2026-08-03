@@ -9,9 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "test:run": "vitest run",
-    "tunnel": "node scripts/ollama-tunnel.mjs",
-    "tunnel:sync": "node scripts/sync-tunnel-env.mjs"
+    "test:run": "vitest run"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
