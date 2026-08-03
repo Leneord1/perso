@@ -1,6 +1,9 @@
-# Sankalp Amaravadi — Personal Website
+# perso — Personal Website
 
 React + Vite portfolio site deployed on Vercel. Includes resume, projects, photography, an in-browser chess game, and a Groq-backed chatbot.
+
+Repository: Leneord1/perso
+Updated: 2026-08-03
 
 ## Stack
 
@@ -42,21 +45,19 @@ npm run test:run     # Vitest (CI / once)
 ## Local setup
 
 1. `npm install`
-2. Copy `.env.example` → `.env.local`
-3. Create a key at [console.groq.com/keys](https://console.groq.com/keys) and set `GROQ_API_KEY`
+2. Copy `.env.example` → `.env.local` (optional)
+3. To run the chatbot locally, create a key at [console.groq.com/keys](https://console.groq.com/keys) and set `GROQ_API_KEY` in `.env.local`
 4. `npm run dev` → http://localhost:5173
 
 Dev chat traffic: browser → Vite `/api/chat` middleware → Groq.
 
 ## Production chatbot (Groq)
 
-1. In the Vercel project, set:
-   - `GROQ_API_KEY` (required)
-   - `GROQ_MODEL` (optional; default `llama-3.1-8b-instant`)
-2. Apply to Production and Preview
-3. Redeploy
+1. This repository's Vercel project already has `GROQ_API_KEY` configured in the project environment (server-only).
+2. Optionally set `GROQ_MODEL` in Vercel (default `llama-3.1-8b-instant`) or in `.env.local` for local testing.
+3. Apply to Production and Preview and redeploy if you change Vercel environment variables.
 
-`api/chat.js` proxies chat to Groq. No local machine or tunnel required.
+`api/chat.js` proxies chat to Groq. No local machine or tunnel required for production.
 
 ## Env vars
 
@@ -64,7 +65,7 @@ See `.env.example`.
 
 | Variable | Where | Purpose |
 | --- | --- | --- |
-| `GROQ_API_KEY` | Vercel + `.env.local` | Groq API key (server-only) |
+| `GROQ_API_KEY` | Vercel (configured for this project; server-only) + `.env.local` (optional for local dev) | Groq API key (server-only) |
 | `GROQ_MODEL` | Vercel + `.env.local` (optional) | Model id (default `llama-3.1-8b-instant`) |
 | `VITE_CHAT_API_URL` | local (optional) | Override chat endpoint |
 
@@ -78,3 +79,7 @@ Never commit `.env.local` or real secrets.
 ## Deploy
 
 Configured for Vercel (`vercel.json`: Vite framework, `api/chat.js` max duration 60s, long-cache for hashed assets).
+
+## Contributing
+
+Contributions welcome — open an issue or a pull request with proposed changes.
