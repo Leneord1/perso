@@ -1,6 +1,9 @@
-# Sankalp Amaravadi — Personal Website
+# perso — Personal Website
 
 React + Vite portfolio site deployed on Vercel. Includes resume, projects, photography, an in-browser chess game, and a Groq-backed chatbot.
+
+Repository: Leneord1/perso
+Updated: 2026-08-03
 
 ## Stack
 
@@ -78,3 +81,7 @@ Never commit `.env.local` or real secrets.
 ## Deploy
 
 Configured for Vercel (`vercel.json`: Vite framework, `api/chat.js` max duration 60s, long-cache for hashed assets).
+
+## Contributing
+
+Contributions welcome — open an issue or a pull request with proposed changes.
