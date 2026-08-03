@@ -136,6 +136,12 @@ function Navbar() {
                     ))}
                     </ul>
                 </div>
+                <div className="navbar-right">
+                    <Link to="/contact" className="button-primary" onClick={closeAll}>
+                        Contact
+                    </Link>
+
+                </div>
             </div>
         </nav>
     );
