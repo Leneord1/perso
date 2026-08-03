@@ -7,14 +7,13 @@ function Story() {
         <main className="page">
             <h1>My story</h1>
             <p>
-                I am a prospective college student aiming for a bachelor's software engineer with experience
-                building reliable, maintainable web applications.
+                I am a software engineer with experience building reliable, maintainable web applications.
             </p>
             <p>
-                My background started in the automotive repair industry —with a Tesla service
-                internship and high-volume work as an express technician—where I learned structured
-                diagnostics, quality under pressure, and clear communication with technical teams. That same
-                mindset carries into how I debug, ship, and collaborate on software.
+                My background started in the automotive repair industry at a quick service shop, working in different dealerships
+                as an express technician, finally landing a Tesla Service internship as a repair technician
+                —where I learned structured diagnostics, quality under pressure, and clear communication with technical teams.
+                That same mindset carries into how I debug, ship, and collaborate on software.
             </p>
             <p>
                 Recently I have been a Website Development Intern at Georgia Watch, shipping React-based
