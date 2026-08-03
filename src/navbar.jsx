@@ -39,6 +39,15 @@ const navItems = [
             { label: 'GitHub', to: 'https://github.com/Leneord1', external: true },
         ],
     },
+    {
+        label: 'Utilities',
+        to: '/utilities',
+        dropdown: [
+            { label: 'Utilities', to: '/utilities' },
+            { label: 'Calendar', to: '/calendar' },
+            { label: 'Calculator', to: '/calculator' },
+        ]
+    },
 ];
 
 function Navbar() {

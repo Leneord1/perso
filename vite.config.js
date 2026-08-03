@@ -22,8 +22,9 @@ function withVercelHelpers(res) {
     return res
   }
   res.send = function send(body) {
+    let contentType = res.getHeader('Content-Type')
     if (typeof body === 'object' && body !== null && !Buffer.isBuffer(body)) {
-      if (!res.getHeader('Content-Type')) {
+      if (!contentType) {
         res.setHeader('Content-Type', 'application/json; charset=utf-8')
       }
       res.end(JSON.stringify(body))
