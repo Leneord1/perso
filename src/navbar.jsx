@@ -137,8 +137,8 @@ function Navbar() {
                     </ul>
                 </div>
                 <div className="navbar-right">
-                    <Link to="/contact" className="button-primary" onClick={closeAll}>
-                        Contact
+                    <Link to="/help" className="button-primary" onClick={closeAll}>
+                        Help
                     </Link>
 
                 </div>
