@@ -10,17 +10,18 @@ function Story() {
                 I am a software engineer with experience building reliable, maintainable web applications.
             </p>
             <p>
-                My background started in the automotive repair industry at a quick service shop, working in different dealerships
-                as an express technician, finally landing a Tesla Service internship as a repair technician
-                —where I learned structured diagnostics, quality under pressure, and clear communication with technical teams.
-                That same mindset carries into how I debug, ship, and collaborate on software.
+                My background started in the automotive repair industry at a quick service shop, later working in different
+                dealerships as an express technician, finally landing a Tesla Service internship as a repair technician
+                —where I established skills within structured diagnostics, having quality under pressure, and using clear
+                communication with technical teams and non-technical stakeholders. That same mindset carries into how I
+                debug, ship, and collaborate on software development.
             </p>
             <p>
-                Recently I have been a Website Development Intern at Georgia Watch, shipping React-based
-                features, API-driven workflows, and participating in testing, debugging, and deployment in a
-                real product environment. I have also built full-stack work with Node.js, Supabase
-                (PostgreSQL), and GitHub Actions for CI/CD, and contributed to data-driven React apps through
-                coursework and projects.
+                Recently I did a Website Development internship at Georgia Watch, shipping React.JS-based
+                features and participating in testing, debugging, and deployment in a
+                real production environment. I have also built full-stack web based application with Node.js, Supabase
+                built on PostgreSQL technologies, and GitHub Actions for CI/CD. I have also contributed to various
+                React apps through coursework and projects.
             </p>
             <p>
                 I am seeking software engineering internship and early-career opportunities where I can continue
@@ -45,9 +46,11 @@ function Story() {
             <section className="page-section" aria-labelledby="story-tools-heading">
                 <h2 id="story-tools-heading">Tools &amp; how I ship</h2>
                 <p>
-                    Git and GitHub are central to how I work; JetBrains IDEs are my usual editor home. I have
-                    been building and maintaining CI/CD pipelines for a couple of years, use Bash regularly,
-                    and pick up lighter coordination tools (like Trello) when the team does. The second table on
+                    Tools wise, I utilize a variety of development and deployment tools such as building software primarily
+                    utilizing JetBrains IDES.  Using Github and Github Actions, I have been building and maintaining
+                    CI/CD pipelines- much like the one I have for this website, using Bash & other CLI tools regularly for
+                    version control, and -have experience with containerization and virtualization tools like Docker.
+                    I also use and pick up lighter coordination tools (like Trello) when the team does. The second table on
                     the{' '}
                     <Link to="/skills" className="link">
                         Skills
