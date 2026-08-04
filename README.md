@@ -74,7 +74,7 @@ Never commit `.env.local` or real secrets.
 ## CI
 
 - **CodeQL** — `.github/workflows/codeql.yml`
-- **SonarQube** — `.github/workflows/sonarqube.yml`
+- **SonarQube** — `.github/workflows/sonarqube.yml` (secrets `SONAR_TOKEN`, `SONAR_HOST_URL`; optional inputs on manual run)
 
 ## Deploy
 

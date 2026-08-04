@@ -1,8 +1,12 @@
 # SonarQube Server (self-hosted) analysis via GitHub Actions.
 #
-# Setup:
+# Setup (preferred):
 # 1. Create the project in SonarQube with the same key as sonar.projectKey in sonar-project.properties.
 # 2. Repository secrets: SONAR_TOKEN, SONAR_HOST_URL (e.g. https://sonarqube.example.com).
+#    gh secret set SONAR_TOKEN
+#    gh secret set SONAR_HOST_URL
+#
+# Manual run: Actions → SonarQube → Run workflow — optional token/URL inputs override secrets for that run.
 #
 # SonarCloud: use the SonarCloud GitHub app / sonarcloud action instead; add sonar.organization to sonar-project.properties.
 # Docs: https://docs.sonarsource.com/sonarqube-server/latest/devops-platform-integration/github-integration/integrating-with-github-actions/
@@ -15,6 +19,15 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      sonar_host_url:
+        description: SonarQube server URL (e.g. https://sonarqube.example.com). Leave empty to use secret SONAR_HOST_URL.
+        required: false
+        type: string
+      sonar_token:
+        description: SonarQube token. Leave empty to use secret SONAR_TOKEN. Prefer secrets for lasting config.
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -30,8 +43,26 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Resolve SonarQube credentials
+        id: creds
+        env:
+          INPUT_URL: ${{ inputs.sonar_host_url }}
+          INPUT_TOKEN: ${{ inputs.sonar_token }}
+          SECRET_URL: ${{ secrets.SONAR_HOST_URL }}
+          SECRET_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          URL="${INPUT_URL:-$SECRET_URL}"
+          TOKEN="${INPUT_TOKEN:-$SECRET_TOKEN}"
+          if [ -z "$URL" ] || [ -z "$TOKEN" ]; then
+            echo "::error::Missing SonarQube credentials. Set repository secrets SONAR_TOKEN and SONAR_HOST_URL, or pass them as workflow_dispatch inputs."
+            exit 1
+          fi
+          echo "host_url=$URL" >> "$GITHUB_OUTPUT"
+          echo "::add-mask::$TOKEN"
+          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@689fb39b34b9aa95ebc5f8f119343ddd51542402
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_TOKEN: ${{ steps.creds.outputs.token }}
+          SONAR_HOST_URL: ${{ steps.creds.outputs.host_url }}
