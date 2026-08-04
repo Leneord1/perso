@@ -15,7 +15,7 @@ describe('Story', () => {
   it('renders the story heading and intro', () => {
     renderStory()
     expect(screen.getByRole('heading', { level: 1, name: /my story/i })).toBeInTheDocument()
-    expect(screen.getByText(/prospective college student/i)).toBeInTheDocument()
+    expect(screen.getByText(/software engineer with experience/i)).toBeInTheDocument()
   })
 
   it('renders section headings for languages, tools, and skills CTA', () => {

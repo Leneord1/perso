@@ -70,4 +70,9 @@ describe('App', () => {
       screen.getByRole('heading', { level: 1, name: /professional projects/i }),
     ).toBeInTheDocument()
   })
+
+  it('renders the help page at /help', () => {
+    renderApp('/help')
+    expect(screen.getByRole('heading', { level: 1, name: /^help$/i })).toBeInTheDocument()
+  })
 })
