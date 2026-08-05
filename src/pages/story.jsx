@@ -55,15 +55,14 @@ function Story() {
                     <Link to="/skills" className="link">
                         Skills
                     </Link>{' '}
-                    page breaks those tools out with the same rough tenure labels.
+                    page breaks down the amount of time I have been using these tools.
                 </p>
             </section>
 
             <section className="page-section" aria-labelledby="story-skills-cta-heading">
                 <h2 id="story-skills-cta-heading">Full skills breakdown</h2>
                 <p>
-                    This story is the narrative; for a concise table of languages and tools—so recruiters
-                    and collaborators can scan depth at a glance—head to the{' '}
+                    This page is for the story; for a concise table of languages and tools head to the{' '}
                     <Link to="/skills" className="link">
                         Skills page
                     </Link>
