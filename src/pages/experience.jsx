@@ -20,7 +20,7 @@ function Experience() {
                 <h2 id="exp-capstone">Senior Capstone / Website Development Intern</h2>
                 <p>
                     <strong>Kennesaw State University / Georgia Watch</strong> · Atlanta, GA · August
-                    2025 – December 2025
+                    2025 – June 2026
                 </p>
                 <p>
                     Developed the Georgia Hospital Accountability Scorecard System for Georgia Watch as a

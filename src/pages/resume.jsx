@@ -182,7 +182,7 @@ function Resume() {
                     <article className="resume-entry">
                         <ResumeSubheading
                             primary="Senior Capstone Project Team Member"
-                            secondary="August 2025 -- December 2025"
+                            secondary="August 2025 -- June 2026"
                             tertiary="Kennesaw State University / Georgia Watch"
                             quaternary="Atlanta, GA"
                         />
@@ -419,7 +419,7 @@ function Resume() {
                         <ResumeProjectHeading
                             title="Better Financial Futures"
                             stack="JavaScript, React, Node, Supabase Database, GitHub Actions, Git"
-                            dateRange="January 2026 -- Present"
+                            dateRange="January 2026 -- May 2026"
                         />
                         <ResumeItemList>
                             <ResumeItem>
@@ -452,7 +452,7 @@ function Resume() {
                         <ResumeProjectHeading
                             title="Georgia Hospital Accountability Scorecard"
                             stack="JavaScript, React, Git"
-                            dateRange="August 2025 -- Present"
+                            dateRange="August 2025 -- June 2026"
                         />
                         <ResumeItemList>
                             <ResumeItem>
@@ -472,6 +472,31 @@ function Resume() {
                             </ResumeItem>
                         </ResumeItemList>
                     </article>
+
+                    <article className="resume-entry">
+                        <ResumeProjectHeading
+                            title="Service Department Operational Organization Software"
+                            stack="Java, JavaFX, Git"
+                            dateRange="June 2026 -- August 2026"
+                        />
+                        <ResumeItemList>
+                            <ResumeItem>
+                                Designed and developed a dealership operations platform to improve technician
+                                scheduling, repair order management, and service workflow efficiency.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Translated real-world operational challenges into a developed software project.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Built a relational data model to centralize service information, improving
+                                scheduling accuracy and operational visibility.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Developed a JavaFX interface supporting service advisors and technicians through
+                                streamlined workflow management.
+                            </ResumeItem>
+                        </ResumeItemList>
+                    </article>
                 </div>
             </ResumeSection>
 
@@ -479,15 +504,15 @@ function Resume() {
                 <div className="resume-subheading-list">
                     <ResumeSubheading
                         primary="Kennesaw State University"
-                        secondary="Marietta, GA"
+                        secondary="Kennesaw, GA"
                         tertiary="B.S. in Software Engineering, Minor in Computer Science"
-                        quaternary="Expected graduation Summer 2026"
+                        quaternary="Expected Graduation: December 2026"
                     />
                     <ResumeSubheading
                         primary="Gwinnett Technical College"
                         secondary="Lawrenceville, GA"
                         tertiary="AAS in Automotive Technology, GPA 3.8"
-                        quaternary="Graduation class of 2021"
+                        quaternary="August 2019 -- December 2021"
                     />
                     <ResumeSubheading
                         primary="Normal Community High School"
@@ -504,7 +529,7 @@ function Resume() {
                     <ResumeItem>KSU President&apos;s List, Spring 2023</ResumeItem>
                     <ResumeItem>Participant in UGAHacks 11, February 2026</ResumeItem>
                     <ResumeItem>Participant in KSU AI Club Hackathon, November 2025</ResumeItem>
-                    <ResumeItem>Participant in UGAHacks X, February 2025</ResumeItem>
+                    <ResumeItem>Participant in UGAHacks 10, February 2025</ResumeItem>
                     <ResumeItem>Participant in Kennesaw State University Ideathon 2024</ResumeItem>
                     <ResumeItem>
                         Donation and Volunteer Coordinator and Co-founder, Little Free Pantry, Bloomington, IL
