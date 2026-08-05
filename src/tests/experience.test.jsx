@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
-import Experience from './experience'
+import Experience from '../pages/experience'
 
 function renderExperience() {
   return render(

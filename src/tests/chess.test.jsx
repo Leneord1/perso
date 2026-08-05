@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import ChessPage from './chess'
+import ChessPage from '../pages/chess'
 
 vi.mock('./chessBot.js', () => ({
   getChessBotMove: vi.fn(async () => null),

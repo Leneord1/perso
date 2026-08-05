@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { render, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router'
-import WelcomeScreen from './welcomeScreen'
+import WelcomeScreen from '../pages/welcomeScreen'
 
 function renderWelcomeWithRoutes() {
   const view = render(

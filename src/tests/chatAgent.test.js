@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { getAgentReply, getWelcomeMessage, suggestActions, SITE_PATHS } from './chatAgent.js'
+import { getAgentReply, getWelcomeMessage, suggestActions, SITE_PATHS } from '../components/chatAgent.js'
 
 describe('suggestActions', () => {
   it('returns default actions for empty input', () => {

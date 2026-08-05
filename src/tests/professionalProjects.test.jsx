@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import ProfessionalProjects from './professionalProjects'
+import ProfessionalProjects from '../pages/professionalProjects'
 import { githubProfileUrl, professionalProjectRows } from '../data/githubProjects.js'
 
 describe('ProfessionalProjects', () => {

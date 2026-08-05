@@ -93,7 +93,7 @@ export default defineConfig(({ mode }) => {
     },
     test: {
       environment: 'jsdom',
-      setupFiles: './src/setupTests.js',
+      setupFiles: './src/tests/setupTests.js',
       globals: false,
       css: true,
       exclude: ['**/node_modules/**', '**/dist/**', '**/chatbot/**'],

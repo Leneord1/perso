@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { render, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router'
-import AllProjects from './allProjects'
+import AllProjects from '../pages/allProjects'
 import { githubProfileUrl, highlightedProjectRows } from '../data/githubProjects.js'
 
 function renderAllProjects() {
