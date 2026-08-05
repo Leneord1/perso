@@ -10,23 +10,26 @@ function Story() {
                 I am a software engineer with experience building reliable, maintainable web applications.
             </p>
             <p>
-                My background started in the automotive repair industry at a quick service shop, later working in different
-                dealerships as an express technician, finally landing a Tesla Service internship as a repair technician
-                —where I established skills within structured diagnostics, having quality under pressure, and using clear
-                communication with technical teams and non-technical stakeholders. That same mindset carries into how I
-                debug, ship, and collaborate on software development.
+                My background started in the automotive repair industry at a quick service shop, later working in
+                different dealerships as an express technician at Carriage Nissan and Nalley Lexus, and landing a
+                Tesla Technician role — where I established skills within structured diagnostics, having quality under
+                pressure, and using clear communication with technical teams and non-technical stakeholders. That same
+                mindset carries into how I debug, ship, and collaborate on software development.
             </p>
             <p>
-                Recently I did a Website Development internship at Georgia Watch, shipping React.JS-based
-                features and participating in testing, debugging, and deployment in a
-                real production environment. I have also built full-stack web based application with Node.js, Supabase
-                built on PostgreSQL technologies, and GitHub Actions for CI/CD. I have also contributed to various
-                React apps through coursework and projects.
+                At Kennesaw State University I completed a Senior Capstone as a Website Development Intern for Georgia
+                Watch, building the Georgia Hospital Accountability Scorecard System with React and JavaScript in a
+                real production environment. Alongside that work I serve as Operations Lead at Hamsini Decorations,
+                supporting business growth through project planning and implementation. I have also built full-stack
+                applications with Node.js, Supabase on PostgreSQL, and GitHub Actions for CI/CD, and contributed to
+                React apps through coursework, hackathons, and personal projects.
             </p>
             <p>
-                I am seeking software engineering internship and early-career opportunities where I can continue
-                developing as an engineer while contributing to the delivery of reliable, maintainable, and
-                impactful systems. I am particularly interested in frontend, full-stack, and generalist engineering roles.
+                Outside of class and work, I co-founded and coordinated donations for Little Free Pantry in
+                Bloomington, IL, earned KSU Dean&apos;s and President&apos;s List recognition, and continue to join
+                events like UGAHacks and the KSU AI Club hackathon. I am seeking software engineering internship and
+                early-career opportunities where I can keep developing as an engineer while contributing to reliable,
+                maintainable, and impactful systems — especially frontend, full-stack, and generalist roles.
             </p>
 
             <section className="page-section" aria-labelledby="story-lang-heading">

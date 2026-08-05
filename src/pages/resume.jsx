@@ -181,14 +181,15 @@ function Resume() {
                 <div className="resume-subheading-list">
                     <article className="resume-entry">
                         <ResumeSubheading
-                            primary="Website Development Intern"
-                            secondary="August 2025 -- Present"
-                            tertiary="Georgia Watch"
+                            primary="Senior Capstone Project Team Member"
+                            secondary="August 2025 -- December 2025"
+                            tertiary="Kennesaw State University / Georgia Watch"
                             quaternary="Atlanta, GA"
                         />
                         <ResumeSubItem>
-                            Delivered a production-ready web application supporting healthcare data access and
-                            user interaction.
+                            Developed the Georgia Hospital Accountability Scorecard System for Georgia Watch as a
+                            Website Development Intern, delivering a production-ready web application for
+                            healthcare data access and user interaction.
                         </ResumeSubItem>
                         <ResumeItemList>
                             <ResumeItem>
@@ -210,6 +211,32 @@ function Resume() {
                             <ResumeItem>
                                 Worked within collaborative development workflows using Git-based version control
                                 practices.
+                            </ResumeItem>
+                        </ResumeItemList>
+                    </article>
+
+                    <article className="resume-entry">
+                        <ResumeSubheading
+                            primary="Operations Lead"
+                            secondary="February 2025 -- Present"
+                            tertiary="Hamsini Decorations"
+                            quaternary="Cumming, GA"
+                        />
+                        <ResumeSubItem>
+                            Supported business growth by assisting in project planning and implementation across
+                            decoration and event operations.
+                        </ResumeSubItem>
+                        <ResumeItemList>
+                            <ResumeItem>
+                                Coordinated project planning and day-to-day implementation to keep client work on
+                                schedule.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Supported operational growth by organizing workflows, resources, and team handoffs.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Communicated with stakeholders to clarify requirements and deliver consistent
+                                service outcomes.
                             </ResumeItem>
                         </ResumeItemList>
                     </article>
@@ -243,14 +270,14 @@ function Resume() {
 
                     <article className="resume-entry">
                         <ResumeSubheading
-                            primary="Service Technician (intern)"
+                            primary="Tesla Technician"
                             secondary="February 2022 -- August 2022"
                             tertiary="Tesla"
                             quaternary="Kennesaw, GA"
                         />
                         <ResumeSubItem>
-                            Supported diagnostic and service operations by analyzing vehicle system behavior and
-                            identifying faults in mechanical and electronic components.
+                            Troubleshot and fixed faults on Tesla vehicles by analyzing system behavior and
+                            identifying issues in mechanical and electronic components.
                         </ResumeSubItem>
                         <ResumeItemList>
                             <ResumeItem>
@@ -271,13 +298,13 @@ function Resume() {
                     <article className="resume-entry">
                         <ResumeSubheading
                             primary="Express Technician"
-                            secondary="November 2020 -- February 2022"
-                            tertiary="Jim Shorkey Nissan"
+                            secondary="December 2020 -- February 2022"
+                            tertiary="Carriage Nissan"
                             quaternary="Gainesville, GA"
                         />
                         <ResumeSubItem>
-                            Worked flat-rate in dealership production, turning maintenance and light repair jobs from
-                            oil services through basic recalls while keeping documentation and quality consistent.
+                            Provided efficient light repairs and maintenance on Nissan vehicles in dealership
+                            production, keeping documentation and quality consistent.
                         </ResumeSubItem>
                         <ResumeItemList>
                             <ResumeItem>
@@ -301,15 +328,14 @@ function Resume() {
 
                     <article className="resume-entry">
                         <ResumeSubheading
-                            primary="Bay Technician"
-                            secondary="October 2019 -- July 2020"
+                            primary="Express Technician"
+                            secondary="December 2019 -- July 2020"
                             tertiary="Jiffy Lube"
                             quaternary="Johns Creek, GA"
                         />
                         <ResumeSubItem>
-                            Rotated through bay technician responsibilities in a quick-lube environment, completing
-                            fluid services, inspections, and common under-hood and under-car maintenance with consistent
-                            throughput and quality checks.
+                            Provided team-based quick-lube service, completing fluid services, inspections, and
+                            common maintenance with consistent throughput and quality checks.
                         </ResumeSubItem>
                         <ResumeItemList>
                             <ResumeItem>
@@ -453,15 +479,15 @@ function Resume() {
                 <div className="resume-subheading-list">
                     <ResumeSubheading
                         primary="Kennesaw State University"
-                        secondary="Kennesaw, GA"
+                        secondary="Marietta, GA"
                         tertiary="B.S. in Software Engineering, Minor in Computer Science"
-                        quaternary="January 2023 -- Senior graduating in Fall 2026"
+                        quaternary="Expected graduation Summer 2026"
                     />
                     <ResumeSubheading
                         primary="Gwinnett Technical College"
                         secondary="Lawrenceville, GA"
-                        tertiary="Associates in Automotive Technology"
-                        quaternary="August 2019 -- December 2021"
+                        tertiary="AAS in Automotive Technology, GPA 3.8"
+                        quaternary="Graduation class of 2021"
                     />
                     <ResumeSubheading
                         primary="Normal Community High School"
@@ -474,9 +500,30 @@ function Resume() {
 
             <ResumeSection id="resume-awards" title="Awards and Extra Curricular">
                 <ResumeItemList>
+                    <ResumeItem>KSU Dean&apos;s List, Spring 2024</ResumeItem>
+                    <ResumeItem>KSU President&apos;s List, Spring 2023</ResumeItem>
                     <ResumeItem>Participant in UGAHacks 11, February 2026</ResumeItem>
                     <ResumeItem>Participant in KSU AI Club Hackathon, November 2025</ResumeItem>
-                    <ResumeItem>Participant in UGAHacks 10, February 2025</ResumeItem>
+                    <ResumeItem>Participant in UGAHacks X, February 2025</ResumeItem>
+                    <ResumeItem>Participant in Kennesaw State University Ideathon 2024</ResumeItem>
+                    <ResumeItem>
+                        Donation and Volunteer Coordinator and Co-founder, Little Free Pantry, Bloomington, IL
+                        (November 2016 -- 2019)
+                    </ResumeItem>
+                    <ResumeItem>Volunteer, Parkland Car Show 2019</ResumeItem>
+                    <ResumeItem>
+                        YICU Service Award, &quot;Why I See You,&quot; sponsored by For A Better Tomorrow —
+                        September 2017
+                    </ResumeItem>
+                    <ResumeItem>
+                        Good Actions Award (sponsored by Normal Community High School) — November 2016
+                    </ResumeItem>
+                    <ResumeItem>
+                        YICU Service Award Nominee (sponsored by For a Better Tomorrow) — October 2016
+                    </ResumeItem>
+                    <ResumeItem>
+                        Toastmasters Youth Leadership Program Completion Award — August 2015
+                    </ResumeItem>
                 </ResumeItemList>
             </ResumeSection>
         </main>

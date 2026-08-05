@@ -46,10 +46,14 @@ describe('Resume', () => {
 
   it('lists key roles and education', () => {
     render(<Resume />)
-    expect(screen.getByText(/website development intern/i)).toBeInTheDocument()
-    expect(screen.getByText(/georgia watch/i)).toBeInTheDocument()
-    expect(screen.getByText(/kennesaw state university/i)).toBeInTheDocument()
+    expect(screen.getByText(/senior capstone project team member/i)).toBeInTheDocument()
+    expect(screen.getAllByText(/georgia watch/i).length).toBeGreaterThanOrEqual(1)
+    expect(screen.getByText(/operations lead/i)).toBeInTheDocument()
+    expect(screen.getByText(/hamsini decorations/i)).toBeInTheDocument()
+    expect(screen.getAllByText(/kennesaw state university/i).length).toBeGreaterThanOrEqual(1)
     expect(screen.getByText(/better financial futures/i)).toBeInTheDocument()
+    expect(screen.getByText(/dean/i)).toBeInTheDocument()
+    expect(screen.getByText(/little free pantry/i)).toBeInTheDocument()
   })
 
   it('calls print when Print or save as PDF is clicked', async () => {

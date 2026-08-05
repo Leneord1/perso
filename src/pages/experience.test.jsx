@@ -20,19 +20,24 @@ describe('Experience', () => {
 
   it('renders role section headings', () => {
     renderExperience()
-    expect(screen.getByRole('heading', { name: /website development intern/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: /senior capstone \/ website development intern/i }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /operations lead/i })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /^express technician$/i })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: /service technician \(intern\)/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /^tesla technician$/i })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /earlier service & retail roles/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /community & leadership/i })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /what i am looking for/i })).toBeInTheDocument()
   })
 
   it('lists key employers', () => {
     renderExperience()
-    expect(screen.getByText(/georgia watch/i)).toBeInTheDocument()
+    expect(screen.getAllByText(/georgia watch/i).length).toBeGreaterThanOrEqual(1)
+    expect(screen.getByText(/hamsini decorations/i)).toBeInTheDocument()
     expect(screen.getByText(/nalley lexus/i)).toBeInTheDocument()
     expect(screen.getByText(/^tesla$/i)).toBeInTheDocument()
-    expect(screen.getByText(/jim shorkey nissan/i)).toBeInTheDocument()
+    expect(screen.getByText(/carriage nissan/i)).toBeInTheDocument()
   })
 
   it('links to resume, skills, and story', () => {
