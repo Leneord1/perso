@@ -20,8 +20,8 @@ function Help() {
                 <p>
                     <strong>About</strong> covers story, resume, skills, and experience.{' '}
                     <strong>Projects</strong> lists work, including photography.{' '}
-                    <strong>Games</strong> has chess. <strong>Contact</strong> has email and
-                    social links.
+                    <strong>Games</strong> has chess. <strong>Utilities</strong> has calendar
+                    and calculator. <strong>Contact</strong> has email and social links.
                 </p>
             </section>
 
@@ -97,6 +97,21 @@ function Help() {
                     </Link>
                     {' — '}
                     email, LinkedIn, and GitHub.
+                </p>
+                <p>
+                    <Link to="/utilities" className="link">
+                        Utilities
+                    </Link>
+                    {' — '}
+                    hub for{' '}
+                    <Link to="/calendar" className="link">
+                        calendar
+                    </Link>{' '}
+                    and{' '}
+                    <Link to="/calculator" className="link">
+                        calculator
+                    </Link>
+                    .
                 </p>
             </section>
 

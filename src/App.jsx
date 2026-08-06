@@ -17,6 +17,9 @@ import Chatbot from './components/Chatbot.jsx';
 import Photography from './pages/Photography.jsx';
 import ChessPage from './pages/chess.jsx';
 import Help from './pages/help.jsx';
+import Utilities from './pages/utilities.jsx';
+import Calendar from './pages/calendar.jsx';
+import Calculator from './pages/calculator.jsx';
 
 export default function App() {
   const { pathname } = useLocation();
@@ -40,6 +43,9 @@ export default function App() {
           <Route path="/resume" element={<Resume />} />
           <Route path="/photography" element={<Photography />} />
           <Route path="/projects/chess" element={<ChessPage />} />
+          <Route path="/utilities" element={<Utilities />} />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/calculator" element={<Calculator />} />
           <Route path="/help" element={<Help />} />
         </Routes>
       </div>
