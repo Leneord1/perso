@@ -41,7 +41,8 @@ function compute(a, op, b) {
     case '+': return a + b;
     case '-': return a - b;
     case '*': return a * b;
-    case '/': return b === 0 ? NaN : a / b;
+    case '/': return b === 0 ? Number.NaN : a / b;
+    case '%': return b % a;
     default: return b;
   }
 }
@@ -100,7 +101,7 @@ function Calculator() {
 
   /** Set pending operator; evaluate chain if needed. */
   function inputOperator(op) {
-    const current = parseFloat(display);
+    const current = Number.parseFloat(display);
     if (display === 'Error') {
       clearAll();
       return;
@@ -119,7 +120,7 @@ function Calculator() {
   /** Evaluate pending expression. */
   function equals() {
     if (operator === null || stored === null) return;
-    const current = parseFloat(display);
+    const current = Number.parseFloat(display);
     const result = compute(stored, operator, current);
     setDisplay(formatDisplay(result));
     setStored(null);
@@ -136,7 +137,7 @@ function Calculator() {
   /** Convert display to percent (divide by 100). */
   function percent() {
     if (display === 'Error') return;
-    const value = parseFloat(display) / 100;
+    const value = Number.parseFloat(display) / 100;
     setDisplay(formatDisplay(value));
     setFresh(true);
   }
