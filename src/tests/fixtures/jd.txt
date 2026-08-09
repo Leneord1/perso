@@ -1,0 +1,10 @@
+﻿Software Engineer
+
+Requirements:
+- Strong Python experience
+- REST API design with FastAPI or Flask
+- SQL and data processing with pandas
+- Familiarity with Docker and AWS
+- Experience with machine learning or NLP preferred
+- Git and CI/CD pipelines
+- Strong communication skills

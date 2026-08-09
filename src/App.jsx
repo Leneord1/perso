@@ -20,6 +20,7 @@ import Help from './pages/help.jsx';
 import Utilities from './pages/utilities.jsx';
 import Calendar from './pages/calendar.jsx';
 import Calculator from './pages/calculator.jsx';
+import ResumeParser from './pages/resumeParser.jsx';
 
 export default function App() {
   const { pathname } = useLocation();
@@ -46,6 +47,7 @@ export default function App() {
           <Route path="/utilities" element={<Utilities />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/calculator" element={<Calculator />} />
+          <Route path="/resume-parser" element={<ResumeParser />} />
           <Route path="/help" element={<Help />} />
         </Routes>
       </div>

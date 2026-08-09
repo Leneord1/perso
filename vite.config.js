@@ -36,17 +36,23 @@ function withVercelHelpers(res) {
   return res
 }
 
-/** Mount /api/chat via api/chat.js during Vite server / preview. */
-function groqChatApiPlugin() {
+/** Mount /api/chat and /api/resume during Vite server / preview. */
+function vercelApiPlugin() {
+  const routes = {
+    '/api/chat': './api/chat.js',
+    '/api/resume': './api/resume.js',
+  }
+
   async function mount(middlewares) {
     middlewares.use(async (req, res, next) => {
       const url = req.url?.split('?')[0]
-      if (url !== '/api/chat') {
+      const modulePath = routes[url]
+      if (!modulePath) {
         next()
         return
       }
       try {
-        const { default: handler } = await import('./api/chat.js')
+        const { default: handler } = await import(modulePath)
         const chunks = []
         for await (const chunk of req) chunks.push(chunk)
         req.body = Buffer.concat(chunks).toString('utf8')
@@ -57,7 +63,7 @@ function groqChatApiPlugin() {
         res.setHeader('Content-Type', 'application/json')
         res.end(
           JSON.stringify({
-            error: err instanceof Error ? err.message : 'chat proxy error',
+            error: err instanceof Error ? err.message : 'api proxy error',
           }),
         )
       }
@@ -65,8 +71,8 @@ function groqChatApiPlugin() {
   }
 
   return {
-    name: 'groq-chat-api',
-    // Before Vite internals so /api/chat is not treated as SPA
+    name: 'vercel-api',
+    // Before Vite internals so /api/* is not treated as SPA
     configureServer(server) {
       mount(server.middlewares)
     },
@@ -83,7 +89,7 @@ export default defineConfig(({ mode }) => {
   if (env.GROQ_MODEL) process.env.GROQ_MODEL = env.GROQ_MODEL
 
   return {
-    plugins: [react(), groqChatApiPlugin()],
+    plugins: [react(), vercelApiPlugin()],
     resolve: {
       alias: {
         // @vercel/speed-insights/next expects Next; Vite's optional-peer stub lacks these exports.

@@ -1,0 +1,21 @@
+﻿Jane Doe
+jane.doe@email.com | (555) 123-4567 | linkedin.com/in/janedoe | github.com/janedoe
+
+Summary
+Software engineer with experience in Python, data pipelines, and web APIs.
+
+Experience
+Software Engineering Intern, Acme Corp
+- Built REST APIs in Python and FastAPI serving 10k daily requests
+- Wrote automated tests and CI pipelines with GitHub Actions
+- Collaborated with data team on ETL jobs using pandas and SQL
+
+Education
+B.S. Computer Science, State University
+
+Skills
+Python, FastAPI, SQL, pandas, Git, Docker, AWS, machine learning
+
+Projects
+Resume Parser
+- Prototype resume scoring tool using transformers and PyTorch

@@ -26,6 +26,13 @@ function Utilities() {
           {' — '}
           add, subtract, multiply, and divide.
         </p>
+        <p>
+          <Link to="/resume-parser" className="link">
+            Resume Parser
+          </Link>
+          {' — '}
+          ATS score and optional job-description match.
+        </p>
       </section>
     </main>
   );
