@@ -30,12 +30,14 @@ describe('Navbar', () => {
     expect(screen.getByRole('link', { name: /experience/i })).toHaveAttribute('href', '/experience')
   })
 
-  it('marks external social links with security attributes', async () => {
+  it('opens tools dropdown from the PNG button and links calendar and calculator', async () => {
     const user = userEvent.setup()
     renderNavbar()
-    await user.hover(screen.getByRole('button', { name: /contact/i }))
-    const linkedIn = screen.getByRole('link', { name: /linkedin/i })
-    expect(linkedIn).toHaveAttribute('target', '_blank')
-    expect(linkedIn).toHaveAttribute('rel', 'noopener noreferrer')
+    const toolsBtn = screen.getByRole('button', { name: /calculator and calendar/i })
+    expect(toolsBtn.querySelector('img')).toHaveAttribute('src', '/utilities-icon.png')
+    await user.hover(toolsBtn)
+    const toolsMenu = screen.getByRole('list', { name: /calculator and calendar links/i })
+    expect(toolsMenu.querySelector('a[href="/calendar"]')).toHaveTextContent('Calendar')
+    expect(toolsMenu.querySelector('a[href="/calculator"]')).toHaveTextContent('Calculator')
   })
 })

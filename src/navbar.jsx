@@ -138,10 +138,46 @@ function Navbar() {
                     </ul>
                 </div>
                 <div className="navbar-right">
+                    <div
+                        className={`nav-item nav-tools${openDropdown === 'tools' ? ' open' : ''}`}
+                        onMouseEnter={() => setOpenDropdown('tools')}
+                        onMouseLeave={() => setOpenDropdown(null)}
+                    >
+                        <button
+                            type="button"
+                            className="nav-tools-btn"
+                            onClick={() => handleDropdownToggle('tools')}
+                            aria-expanded={openDropdown === 'tools'}
+                            aria-haspopup="true"
+                            aria-label="Calculator and calendar"
+                        >
+                            <img
+                                src="/utilities-icon.png"
+                                alt=""
+                                className="nav-tools-icon"
+                                width={32}
+                                height={32}
+                            />
+                        </button>
+                        <ul
+                            className={`dropdown-menu dropdown-menu--right${openDropdown === 'tools' ? ' visible' : ''}`}
+                            aria-label="Calculator and calendar links"
+                        >
+                            <li className="dropdown-item">
+                                <Link to="/calendar" className="dropdown-link" onClick={closeAll}>
+                                    Calendar
+                                </Link>
+                            </li>
+                            <li className="dropdown-item">
+                                <Link to="/calculator" className="dropdown-link" onClick={closeAll}>
+                                    Calculator
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
                     <Link to="/help" className="button-primary" onClick={closeAll}>
                         Help
                     </Link>
-
                 </div>
             </div>
         </nav>
