@@ -48,11 +48,11 @@
     border: 1px solid transparent;
     border-radius: 0.5rem;
     cursor: pointer;
+    text-decoration: none;
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-.nav-tools-btn:hover,
-.nav-tools.open .nav-tools-btn {
+.nav-tools-btn:hover {
     background-color: rgba(255, 255, 255, 0.12);
     border-color: rgba(255, 255, 255, 0.2);
 }
@@ -69,10 +69,51 @@
     display: block;
 }
 
-.dropdown-menu--right {
-    left: auto;
+.nav-tool {
+    position: relative;
+}
+
+.nav-tool-dropdown {
+    position: absolute;
+    top: calc(100% + 0.35rem);
     right: 0;
+    left: auto;
     transform: none;
+    min-width: 17rem;
+    padding: 0.75rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border-top: 3px solid var(--pw-secondary);
+    z-index: 200;
+}
+
+.nav-tool-dropdown--calendar {
+    min-width: 20rem;
+}
+
+.nav-tool-dropdown .calc-pad,
+.nav-tool-dropdown .calendar-pad {
+    max-width: none;
+}
+
+.nav-tool-fullpage {
+    display: block;
+    width: 100%;
+    margin-top: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+    background: #e5e7eb;
+    color: var(--pw-primary);
+    border-color: #d1d5db;
+}
+
+.nav-tool-fullpage:hover {
+    background: #d1d5db;
+    border-color: #9ca3af;
+    color: var(--pw-primary);
 }
 
 .navbar-wordmark {
@@ -388,27 +429,12 @@
         height: 1.75rem;
     }
 
-    .dropdown-menu--right {
-        position: absolute;
-        top: 100%;
-        right: 0;
+    .nav-tool-dropdown {
+        position: fixed;
+        top: 60px;
+        right: 0.5rem;
         left: auto;
-        min-width: 10rem;
-        background-color: white;
-        border-top: 3px solid var(--pw-secondary);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-        border-radius: 6px;
-        border-left: none;
-    }
-
-    .dropdown-menu--right .dropdown-link {
-        color: var(--pw-primary);
-        padding: 10px 18px;
-    }
-
-    .dropdown-menu--right .dropdown-link:hover {
-        background-color: var(--pw-accent-muted);
-        color: var(--pw-primary);
+        max-width: calc(100vw - 1rem);
     }
 
     .nav-menu {

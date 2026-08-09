@@ -1,6 +1,8 @@
 import './navbar.css';
 import { Link } from 'react-router';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { CalculatorPad } from './pages/calculator.jsx';
+import { CalendarPad } from './pages/calendar.jsx';
 
 const navItems = [
     {
@@ -54,17 +56,52 @@ const navItems = [
 function Navbar() {
     const [show, setShow] = useState(false);
     const [openDropdown, setOpenDropdown] = useState(null);
+    const [toolOpen, setToolOpen] = useState(null);
+    const calendarRef = useRef(null);
+    const calcRef = useRef(null);
 
     const toggleMenu = () => setShow(!show);
 
     const handleDropdownToggle = (navKey) => {
         setOpenDropdown(openDropdown === navKey ? null : navKey);
+        setToolOpen(null);
     };
 
     const closeAll = () => {
         setShow(false);
         setOpenDropdown(null);
+        setToolOpen(null);
     };
+
+    /** Toggle calendar or calculator panel; closes the other. */
+    const toggleTool = (tool) => {
+        setOpenDropdown(null);
+        setToolOpen((open) => (open === tool ? null : tool));
+    };
+
+    useEffect(() => {
+        if (!toolOpen) return undefined;
+
+        /** Close tool dropdown on outside click or Escape. */
+        function handlePointerDown(event) {
+            const refs = { calendar: calendarRef, calculator: calcRef };
+            const activeRef = refs[toolOpen];
+            if (activeRef?.current && !activeRef.current.contains(event.target)) {
+                setToolOpen(null);
+            }
+        }
+
+        function handleKeyDown(event) {
+            if (event.key === 'Escape') setToolOpen(null);
+        }
+
+        document.addEventListener('pointerdown', handlePointerDown);
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.removeEventListener('pointerdown', handlePointerDown);
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [toolOpen]);
 
     return (
         <nav className="navbar" aria-label="Main navigation">
@@ -96,7 +133,10 @@ function Navbar() {
                         <li
                             key={item.to}
                             className={`nav-item${openDropdown === item.to ? ' open' : ''}`}
-                            onMouseEnter={() => setOpenDropdown(item.to)}
+                            onMouseEnter={() => {
+                                setOpenDropdown(item.to);
+                                setToolOpen(null);
+                            }}
                             onMouseLeave={() => setOpenDropdown(null)}
                         >
                             <button
@@ -139,41 +179,80 @@ function Navbar() {
                 </div>
                 <div className="navbar-right">
                     <div
-                        className={`nav-item nav-tools${openDropdown === 'tools' ? ' open' : ''}`}
-                        onMouseEnter={() => setOpenDropdown('tools')}
-                        onMouseLeave={() => setOpenDropdown(null)}
+                        className={`nav-item nav-tool${toolOpen === 'calendar' ? ' open' : ''}`}
+                        ref={calendarRef}
                     >
                         <button
                             type="button"
                             className="nav-tools-btn"
-                            onClick={() => handleDropdownToggle('tools')}
-                            aria-expanded={openDropdown === 'tools'}
-                            aria-haspopup="true"
-                            aria-label="Calculator and calendar"
+                            onClick={() => toggleTool('calendar')}
+                            aria-expanded={toolOpen === 'calendar'}
+                            aria-controls="nav-calendar-dropdown"
+                            aria-label="Calendar"
                         >
                             <img
-                                src="/utilities-icon.png"
+                                src="/calendar-icon.png"
                                 alt=""
                                 className="nav-tools-icon"
                                 width={32}
                                 height={32}
                             />
                         </button>
-                        <ul
-                            className={`dropdown-menu dropdown-menu--right${openDropdown === 'tools' ? ' visible' : ''}`}
-                            aria-label="Calculator and calendar links"
+                        {toolOpen === 'calendar' ? (
+                            <div
+                                id="nav-calendar-dropdown"
+                                className="nav-tool-dropdown nav-tool-dropdown--calendar"
+                                role="region"
+                                aria-label="Calendar"
+                            >
+                                <CalendarPad />
+                                <Link
+                                    to="/calendar"
+                                    className="button-outline nav-tool-fullpage"
+                                    onClick={closeAll}
+                                >
+                                    Open full page
+                                </Link>
+                            </div>
+                        ) : null}
+                    </div>
+                    <div
+                        className={`nav-item nav-tool${toolOpen === 'calculator' ? ' open' : ''}`}
+                        ref={calcRef}
+                    >
+                        <button
+                            type="button"
+                            className="nav-tools-btn"
+                            onClick={() => toggleTool('calculator')}
+                            aria-expanded={toolOpen === 'calculator'}
+                            aria-controls="nav-calculator-dropdown"
+                            aria-label="Calculator"
                         >
-                            <li className="dropdown-item">
-                                <Link to="/calendar" className="dropdown-link" onClick={closeAll}>
-                                    Calendar
+                            <img
+                                src="/calculator-icon.png"
+                                alt=""
+                                className="nav-tools-icon"
+                                width={32}
+                                height={32}
+                            />
+                        </button>
+                        {toolOpen === 'calculator' ? (
+                            <div
+                                id="nav-calculator-dropdown"
+                                className="nav-tool-dropdown"
+                                role="region"
+                                aria-label="Calculator"
+                            >
+                                <CalculatorPad />
+                                <Link
+                                    to="/calculator"
+                                    className="button-outline nav-tool-fullpage"
+                                    onClick={closeAll}
+                                >
+                                    Open full page
                                 </Link>
-                            </li>
-                            <li className="dropdown-item">
-                                <Link to="/calculator" className="dropdown-link" onClick={closeAll}>
-                                    Calculator
-                                </Link>
-                            </li>
-                        </ul>
+                            </div>
+                        ) : null}
                     </div>
                     <Link to="/help" className="button-primary" onClick={closeAll}>
                         Help

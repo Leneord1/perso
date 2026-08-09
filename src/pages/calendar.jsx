@@ -50,7 +50,8 @@ function sameDay(a, b) {
   );
 }
 
-function Calendar() {
+/** Reusable month grid for page and navbar dropdown. */
+export function CalendarPad() {
   const today = useMemo(() => new Date(), []);
   const [cursor, setCursor] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1));
   const [selected, setSelected] = useState(today);
@@ -76,75 +77,83 @@ function Calendar() {
   }
 
   return (
+    <div className="calendar-pad">
+      <h2 id="calendar-month-label" className="calendar-pad__title">
+        {MONTHS[month]} {year}
+      </h2>
+      <div className="calendar-pad__actions">
+        <button type="button" className="button-outline" onClick={() => shiftMonth(-1)} aria-label="Previous month">
+          Previous
+        </button>
+        <button type="button" className="button-primary" onClick={goToday}>
+          Today
+        </button>
+        <button type="button" className="button-outline" onClick={() => shiftMonth(1)} aria-label="Next month">
+          Next
+        </button>
+      </div>
+
+      <table className="calendar-pad__table" aria-labelledby="calendar-month-label">
+        <thead>
+          <tr>
+            {WEEKDAYS.map((d) => (
+              <th key={d} scope="col">{d}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {weeks.map((week) => (
+            <tr key={week[0].date.toISOString().slice(0, 10)}>
+              {week.map((cell) => {
+                const isToday = sameDay(cell.date, today);
+                const isSelected = sameDay(cell.date, selected);
+                const key = cell.date.toISOString().slice(0, 10);
+                return (
+                  <td key={key}>
+                    {cell.inMonth ? (
+                      <button
+                        type="button"
+                        className={isSelected || isToday ? 'button-primary' : 'button-ghost'}
+                        aria-current={isToday ? 'date' : undefined}
+                        aria-pressed={isSelected}
+                        onClick={() => setSelected(cell.date)}
+                      >
+                        {cell.day}
+                      </button>
+                    ) : (
+                      <button type="button" className="button-ghost" disabled aria-hidden>
+                        {cell.day}
+                      </button>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <p className="calendar-pad__selected" aria-live="polite">
+        Selected:{' '}
+        {selected.toLocaleDateString(undefined, {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}
+      </p>
+    </div>
+  );
+}
+
+function Calendar() {
+  return (
     <main className="page">
       <h1>Calendar</h1>
       <p>Browse months and pick a date.</p>
 
       <section className="page-section" aria-labelledby="calendar-month-label">
-        <h2 id="calendar-month-label">
-          {MONTHS[month]} {year}
-        </h2>
-        <div className="welcome-screen__actions">
-          <button type="button" className="button-outline" onClick={() => shiftMonth(-1)} aria-label="Previous month">
-            Previous
-          </button>
-          <button type="button" className="button-primary" onClick={goToday}>
-            Today
-          </button>
-          <button type="button" className="button-outline" onClick={() => shiftMonth(1)} aria-label="Next month">
-            Next
-          </button>
-        </div>
-
-        <table aria-labelledby="calendar-month-label">
-          <thead>
-            <tr>
-              {WEEKDAYS.map((d) => (
-                <th key={d} scope="col">{d}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {weeks.map((week) => (
-              <tr key={week[0].date.toISOString().slice(0, 10)}>
-                {week.map((cell) => {
-                  const isToday = sameDay(cell.date, today);
-                  const isSelected = sameDay(cell.date, selected);
-                  const key = cell.date.toISOString().slice(0, 10);
-                  return (
-                    <td key={key}>
-                      {cell.inMonth ? (
-                        <button
-                          type="button"
-                          className={isSelected || isToday ? 'button-primary' : 'button-ghost'}
-                          aria-current={isToday ? 'date' : undefined}
-                          aria-pressed={isSelected}
-                          onClick={() => setSelected(cell.date)}
-                        >
-                          {cell.day}
-                        </button>
-                      ) : (
-                        <button type="button" className="button-ghost" disabled aria-hidden>
-                          {cell.day}
-                        </button>
-                      )}
-                    </td>
-                  );
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <p aria-live="polite">
-          Selected:{' '}
-          {selected.toLocaleDateString(undefined, {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })}
-        </p>
+        <CalendarPad />
       </section>
     </main>
   );

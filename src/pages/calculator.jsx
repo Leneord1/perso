@@ -31,7 +31,7 @@ const ROWS = [
   [
     { label: '0', type: 'digit', action: '0' },
     { label: '.', type: 'digit', action: '.' },
-    { label: '=', type: 'equals', action: '=' },
+    { label: '=', type: 'equals', action: '=', wide: true },
   ],
 ];
 
@@ -64,7 +64,8 @@ function buttonClass(type) {
   return 'button-outline';
 }
 
-function Calculator() {
+/** Reusable keypad + display for page and navbar dropdown. */
+export function CalculatorPad() {
   const [display, setDisplay] = useState('0');
   const [stored, setStored] = useState(null);
   const [operator, setOperator] = useState(null);
@@ -153,33 +154,39 @@ function Calculator() {
   }
 
   return (
+    <div className="calc-pad">
+      <p className="calc-pad__display" aria-live="polite" aria-atomic="true">
+        {display}
+      </p>
+      <div className="calc-pad__keys" role="group" aria-label="Calculator keypad">
+        {ROWS.map((row, rowIndex) => (
+          <div key={rowIndex} className="calc-pad__row">
+            {row.map((btn) => (
+              <button
+                key={btn.label}
+                type="button"
+                className={`${buttonClass(btn.type)}${btn.wide ? ' calc-pad__key--wide' : ''}`}
+                onClick={() => handlePress(btn)}
+              >
+                {btn.label}
+              </button>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Calculator() {
+  return (
     <main className="page">
       <h1>Calculator</h1>
       <p>Basic arithmetic for quick math.</p>
 
       <section className="page-section" aria-labelledby="calc-display-heading">
         <h2 id="calc-display-heading">Result</h2>
-        <p aria-live="polite" aria-atomic="true">{display}</p>
-
-        <table aria-label="Calculator keypad">
-          <tbody>
-            {ROWS.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {row.map((btn) => (
-                  <td key={btn.label} colSpan={btn.label === '=' ? 2 : 1}>
-                    <button
-                      type="button"
-                      className={buttonClass(btn.type)}
-                      onClick={() => handlePress(btn)}
-                    >
-                      {btn.label}
-                    </button>
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <CalculatorPad />
       </section>
     </main>
   );
