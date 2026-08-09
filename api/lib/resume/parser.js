@@ -68,6 +68,56 @@ export function parseResume(text) {
   }
 }
 
+/** Prefer requirement-like lines; fall back to bullets or first lines. */
+function pickRequirementLines(lines) {
+  const matched = lines.filter(
+    (ln) =>
+      /^[•\-\*]/.test(ln) ||
+      /\b(require|must|prefer|skill|experience|familiar)\b/i.test(ln),
+  )
+  if (matched.length) return matched
+  const bullets = lines.filter(
+    (ln) => ln.startsWith('-') || ln.startsWith('•') || ln.startsWith('*'),
+  )
+  return bullets.length ? bullets : lines.slice(0, 40)
+}
+
+/** Clean a JD requirement line for skill tokenization. */
+function cleanJdLine(ln) {
+  return ln
+    .replace(/^[•\-\*]+\s*/, '')
+    .replace(
+      /^(strong|proven|solid|familiarity with|experience with|experience in|knowledge of)\s+/i,
+      '',
+    )
+    .replace(/^[ .:]+|[ .:]+$/g, '')
+}
+
+/** Collect unique skill tokens from JD requirement lines. */
+function collectJdSkillTokens(requirementLines) {
+  const tokens = []
+  const seen = new Set()
+  for (const ln of requirementLines) {
+    const cleaned = cleanJdLine(ln)
+    const lower = cleaned.toLowerCase()
+    if (JD_NOISE.has(lower)) continue
+
+    for (const token of tokenizeSkills(cleaned)) {
+      const key = token.toLowerCase()
+      if (JD_NOISE.has(key) || seen.has(key)) continue
+      seen.add(key)
+      tokens.push(token)
+    }
+
+    const words = cleaned.split(/\s+/).filter(Boolean)
+    if (words.length > 1 && words.length <= 6 && !seen.has(lower) && !lower.endsWith('preferred')) {
+      seen.add(lower)
+      tokens.push(cleaned)
+    }
+  }
+  return tokens
+}
+
 /**
  * Light JD parse: lines and skill-like tokens for matching.
  * @param {string} text
@@ -78,50 +128,13 @@ export function parseJd(text) {
     .split('\n')
     .map((ln) => ln.trim())
     .filter(Boolean)
-
-  let requirementLines = lines.filter(
-    (ln) =>
-      /^[•\-\*]/.test(ln) ||
-      /\b(require|must|prefer|skill|experience|familiar)\b/i.test(ln),
-  )
-  if (!requirementLines.length) {
-    const bullets = lines.filter((ln) => ln.startsWith('-') || ln.startsWith('•') || ln.startsWith('*'))
-    requirementLines = bullets.length ? bullets : lines.slice(0, 40)
-  }
-
-  const tokens = []
-  const seen = new Set()
-  for (const ln of requirementLines) {
-    let cleaned = ln.replace(/^[•\-\*]+\s*/, '')
-    cleaned = cleaned.replace(
-      /^(strong|proven|solid|familiarity with|experience with|experience in|knowledge of)\s+/i,
-      '',
-    )
-    cleaned = cleaned.replace(/^[ .:]+|[ .:]+$/g, '')
-    if (JD_NOISE.has(cleaned.toLowerCase())) continue
-
-    for (const token of tokenizeSkills(cleaned)) {
-      const key = token.toLowerCase()
-      if (JD_NOISE.has(key) || seen.has(key)) continue
-      seen.add(key)
-      tokens.push(token)
-    }
-
-    const words = cleaned.split(/\s+/).filter(Boolean)
-    if (words.length > 1 && words.length <= 6 && !JD_NOISE.has(cleaned.toLowerCase())) {
-      const key = cleaned.toLowerCase()
-      if (!seen.has(key) && !key.endsWith('preferred')) {
-        seen.add(key)
-        tokens.push(cleaned)
-      }
-    }
-  }
+  const requirementLines = pickRequirementLines(lines)
 
   return {
     raw_text: normalized,
     lines,
     requirement_lines: requirementLines,
-    skill_tokens: tokens,
+    skill_tokens: collectJdSkillTokens(requirementLines),
     word_count: normalized.split(/\s+/).filter(Boolean).length,
   }
 }

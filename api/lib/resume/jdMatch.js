@@ -15,6 +15,15 @@ function norm(s) {
     .replace(/[^a-z0-9+#.]/g, '')
 }
 
+/** True when JD skill key matches any resume skill (exact or substring). */
+function skillMatches(resumeSet, key) {
+  if (resumeSet.has(key)) return true
+  for (const r of resumeSet) {
+    if (r.length > 2 && (key.includes(r) || r.includes(key))) return true
+  }
+  return false
+}
+
 /**
  * Token overlap score and missing JD skill terms.
  * @param {string[]} resumeSkills
@@ -32,16 +41,7 @@ export function keywordOverlap(resumeSkills, jdSkills) {
   for (const skill of jdSkills) {
     const key = norm(skill)
     if (!key) continue
-    let matched = resumeSet.has(key)
-    if (!matched) {
-      for (const r of resumeSet) {
-        if (r.length > 2 && (key.includes(r) || r.includes(key))) {
-          matched = true
-          break
-        }
-      }
-    }
-    if (matched) hits += 1
+    if (skillMatches(resumeSet, key)) hits += 1
     else missing.push(skill)
   }
   const total = Math.max(1, jdSkills.length)

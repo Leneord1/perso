@@ -37,6 +37,51 @@ function decodeBase64(value, label) {
   return { buffer: buf }
 }
 
+/**
+ * Resolve pasted text or base64+filename into analyze input fields.
+ * @returns {{ ok: true, fields: Record<string, unknown> } | { ok: false, error: string }}
+ */
+function resolveFileInput(body, {
+  textKey,
+  base64Key,
+  filenameKey,
+  textField,
+  bufferField,
+  filenameField,
+  required,
+}) {
+  const text = body[textKey]
+  if (typeof text === 'string' && text.trim()) {
+    if (text.length > MAX_TEXT_CHARS) {
+      return { ok: false, error: `${textKey} exceeds ${MAX_TEXT_CHARS} chars` }
+    }
+    return { ok: true, fields: { [textField]: text } }
+  }
+
+  if (body[base64Key] && body[filenameKey]) {
+    const decoded = decodeBase64(body[base64Key], base64Key)
+    if (decoded.error) return { ok: false, error: decoded.error }
+    if (typeof body[filenameKey] !== 'string' || !body[filenameKey].trim()) {
+      return { ok: false, error: `${filenameKey} is required with ${base64Key}` }
+    }
+    return {
+      ok: true,
+      fields: {
+        [bufferField]: decoded.buffer,
+        [filenameField]: body[filenameKey].trim(),
+      },
+    }
+  }
+
+  if (required) {
+    return {
+      ok: false,
+      error: `Provide ${textKey} or ${base64Key} + ${filenameKey}`,
+    }
+  }
+  return { ok: true, fields: {} }
+}
+
 export default async function handler(req, res) {
   res.setHeader('X-Content-Type-Options', 'nosniff')
   res.setHeader('Cache-Control', 'no-store')
@@ -51,46 +96,32 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid JSON body' })
   }
 
-  /** @type {{ resumeText?: string, resumeBuffer?: Buffer, resumeFilename?: string, jdText?: string, jdBuffer?: Buffer, jdFilename?: string }} */
-  const input = {}
+  const resume = resolveFileInput(body, {
+    textKey: 'resumeText',
+    base64Key: 'resumeBase64',
+    filenameKey: 'resumeFilename',
+    textField: 'resumeText',
+    bufferField: 'resumeBuffer',
+    filenameField: 'resumeFilename',
+    required: true,
+  })
+  if (!resume.ok) return res.status(400).json({ error: resume.error })
 
-  if (typeof body.resumeText === 'string' && body.resumeText.trim()) {
-    if (body.resumeText.length > MAX_TEXT_CHARS) {
-      return res.status(400).json({ error: `resumeText exceeds ${MAX_TEXT_CHARS} chars` })
-    }
-    input.resumeText = body.resumeText
-  } else if (body.resumeBase64 && body.resumeFilename) {
-    const decoded = decodeBase64(body.resumeBase64, 'resumeBase64')
-    if (decoded.error) return res.status(400).json({ error: decoded.error })
-    if (typeof body.resumeFilename !== 'string' || !body.resumeFilename.trim()) {
-      return res.status(400).json({ error: 'resumeFilename is required with resumeBase64' })
-    }
-    input.resumeBuffer = decoded.buffer
-    input.resumeFilename = body.resumeFilename.trim()
-  } else {
-    return res.status(400).json({
-      error: 'Provide resumeText or resumeBase64 + resumeFilename',
-    })
-  }
-
-  if (typeof body.jdText === 'string' && body.jdText.trim()) {
-    if (body.jdText.length > MAX_TEXT_CHARS) {
-      return res.status(400).json({ error: `jdText exceeds ${MAX_TEXT_CHARS} chars` })
-    }
-    input.jdText = body.jdText
-  } else if (body.jdBase64 && body.jdFilename) {
-    const decoded = decodeBase64(body.jdBase64, 'jdBase64')
-    if (decoded.error) return res.status(400).json({ error: decoded.error })
-    if (typeof body.jdFilename !== 'string' || !body.jdFilename.trim()) {
-      return res.status(400).json({ error: 'jdFilename is required with jdBase64' })
-    }
-    input.jdBuffer = decoded.buffer
-    input.jdFilename = body.jdFilename.trim()
-  }
+  const jd = resolveFileInput(body, {
+    textKey: 'jdText',
+    base64Key: 'jdBase64',
+    filenameKey: 'jdFilename',
+    textField: 'jdText',
+    bufferField: 'jdBuffer',
+    filenameField: 'jdFilename',
+    required: false,
+  })
+  if (!jd.ok) return res.status(400).json({ error: jd.error })
 
   try {
     const report = await analyze({
-      ...input,
+      ...resume.fields,
+      ...jd.fields,
       groqApiKey: process.env.GROQ_API_KEY,
       groqModel: process.env.GROQ_MODEL,
     })
