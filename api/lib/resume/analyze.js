@@ -30,7 +30,7 @@ export async function analyze(input) {
   } else if (typeof input.resumeText === 'string') {
     extracted = extractFromText(input.resumeText, 'txt')
   } else {
-    throw new Error('Provide resumeText or resumeBase64 + resumeFilename')
+    throw new TypeError('Provide resumeText or resumeBuffer + resumeFilename')
   }
 
   const parsed = parseResume(extracted.text)

@@ -57,7 +57,7 @@ export function keywordOverlap(resumeSkills, jdSkills) {
 async function groqSemantic(parsedResume, parsedJd, opts) {
   const resumeSkills = /** @type {string[]} */ (parsedResume.skills || [])
   const experience =
-    (/** @type {Record<string, string>} */ (parsedResume.sections) || {}).experience ||
+      parsedResume.sections?.experience ||
     ''
   const jdText = String(parsedJd.raw_text || '').slice(0, 4000)
   const resumeSnippet = [
