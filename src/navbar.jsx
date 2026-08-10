@@ -46,8 +46,6 @@ const navItems = [
         to: '/utilities',
         dropdown: [
             { label: 'Utilities', to: '/utilities' },
-            { label: 'Calendar', to: '/calendar' },
-            { label: 'Calculator', to: '/calculator' },
             { label: 'Resume Parser', to: '/resume-parser' },
         ]
     },
