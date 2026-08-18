@@ -188,32 +188,39 @@ export function CalculatorPad({ extended = false }) {
     else if (btn.action === 'percent') percent();
   }
 
-  const rows = extended ? [EXTENDED_ROW, ...BASIC_ROWS] : BASIC_ROWS;
+  /** Shared keypad button. */
+  function renderKey(btn) {
+    return (
+      <button
+        key={btn.label}
+        type="button"
+        className={`${buttonClass(btn.type)}${btn.wide ? ' calc-pad__key--wide' : ''}`}
+        aria-label={btn.ariaLabel}
+        onClick={() => handlePress(btn)}
+      >
+        {btn.label}
+      </button>
+    );
+  }
 
   return (
     <div className={`calc-pad${extended ? ' calc-pad--extended' : ''}`}>
       <p className="calc-pad__display" aria-live="polite" aria-atomic="true">
         {display}
       </p>
-      <div className="calc-pad__keys" role="group" aria-label="Calculator keypad">
-        {rows.map((row, rowIndex) => (
-          <div
-            key={rowIndex}
-            className={`calc-pad__row${row.length === 5 ? ' calc-pad__row--five' : ''}`}
-          >
-            {row.map((btn) => (
-              <button
-                key={btn.label}
-                type="button"
-                className={`${buttonClass(btn.type)}${btn.wide ? ' calc-pad__key--wide' : ''}`}
-                aria-label={btn.ariaLabel}
-                onClick={() => handlePress(btn)}
-              >
-                {btn.label}
-              </button>
-            ))}
+      <div className="calc-pad__body">
+        <div className="calc-pad__keys" role="group" aria-label="Calculator keypad">
+          {BASIC_ROWS.map((row, rowIndex) => (
+            <div key={rowIndex} className="calc-pad__row">
+              {row.map((btn) => renderKey(btn))}
+            </div>
+          ))}
+        </div>
+        {extended ? (
+          <div className="calc-pad__fns" role="group" aria-label="Calculator functions">
+            {EXTENDED_ROW.map((btn) => renderKey(btn))}
           </div>
-        ))}
+        ) : null}
       </div>
     </div>
   );

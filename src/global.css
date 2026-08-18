@@ -346,20 +346,31 @@ img {
   word-break: break-all;
 }
 
+.calc-pad__body {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.calc-pad__fns {
+  display: grid;
+  grid-template-rows: repeat(5, minmax(2.5rem, 1fr));
+  gap: 0.5rem;
+  flex: 0 0 3.25rem;
+}
+
 .calc-pad__keys {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .calc-pad__row {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.5rem;
-}
-
-.calc-pad__row--five {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .calc-pad .button-primary,
