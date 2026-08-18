@@ -327,6 +327,10 @@ img {
   max-width: 18rem;
 }
 
+.calc-pad--extended {
+  max-width: 22rem;
+}
+
 .calc-pad__display {
   margin: 0;
   padding: 0.75rem 1rem;
@@ -352,6 +356,10 @@ img {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.5rem;
+}
+
+.calc-pad__row--five {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .calc-pad .button-primary,

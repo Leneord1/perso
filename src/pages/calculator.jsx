@@ -1,9 +1,10 @@
 // Four-function calculator with chained operations.
+// Page pad adds sqrt, square, reciprocal, power, and modulo.
 
 import React, { useState } from 'react';
 import '../global.css';
 
-const ROWS = [
+const BASIC_ROWS = [
   [
     { label: 'C', type: 'action', action: 'clear' },
     { label: '±', type: 'action', action: 'sign' },
@@ -35,6 +36,14 @@ const ROWS = [
   ],
 ];
 
+const EXTENDED_ROW = [
+  { label: '√', type: 'unary', action: 'sqrt', ariaLabel: 'Square root' },
+  { label: 'x²', type: 'unary', action: 'square', ariaLabel: 'Square' },
+  { label: '1/x', type: 'unary', action: 'reciprocal', ariaLabel: 'Reciprocal' },
+  { label: 'xʸ', type: 'op', action: '^', ariaLabel: 'Power' },
+  { label: 'mod', type: 'op', action: 'mod', ariaLabel: 'Modulo' },
+];
+
 /** Apply binary operator to two numbers. */
 function compute(a, op, b) {
   switch (op) {
@@ -42,6 +51,8 @@ function compute(a, op, b) {
     case '-': return a - b;
     case '*': return a * b;
     case '/': return b === 0 ? Number.NaN : a / b;
+    case '^': return a ** b;
+    case 'mod': return b === 0 ? Number.NaN : a % b;
     case '%': return b % a;
     default: return b;
   }
@@ -60,12 +71,12 @@ function formatDisplay(value) {
 /** Map button type to existing global button class. */
 function buttonClass(type) {
   if (type === 'op' || type === 'equals') return 'button-primary';
-  if (type === 'action') return 'button-ghost';
+  if (type === 'action' || type === 'unary') return 'button-ghost';
   return 'button-outline';
 }
 
 /** Reusable keypad + display for page and navbar dropdown. */
-export function CalculatorPad() {
+export function CalculatorPad({ extended = false }) {
   const [display, setDisplay] = useState('0');
   const [stored, setStored] = useState(null);
   const [operator, setOperator] = useState(null);
@@ -143,29 +154,52 @@ export function CalculatorPad() {
     setFresh(true);
   }
 
+  /** Apply sqrt, square, or reciprocal to display. */
+  function applyUnary(action) {
+    if (display === 'Error') return;
+    const current = Number.parseFloat(display);
+    let result = current;
+    if (action === 'sqrt') {
+      result = current < 0 ? Number.NaN : Math.sqrt(current);
+    } else if (action === 'square') {
+      result = current * current;
+    } else if (action === 'reciprocal') {
+      result = current === 0 ? Number.NaN : 1 / current;
+    }
+    setDisplay(formatDisplay(result));
+    setFresh(true);
+  }
+
   /** Route button press to the right handler. */
   function handlePress(btn) {
     if (btn.type === 'digit') inputDigit(btn.action);
     else if (btn.type === 'op') inputOperator(btn.action);
     else if (btn.type === 'equals') equals();
+    else if (btn.type === 'unary') applyUnary(btn.action);
     else if (btn.action === 'clear') clearAll();
     else if (btn.action === 'sign') toggleSign();
     else if (btn.action === 'percent') percent();
   }
 
+  const rows = extended ? [EXTENDED_ROW, ...BASIC_ROWS] : BASIC_ROWS;
+
   return (
-    <div className="calc-pad">
+    <div className={`calc-pad${extended ? ' calc-pad--extended' : ''}`}>
       <p className="calc-pad__display" aria-live="polite" aria-atomic="true">
         {display}
       </p>
       <div className="calc-pad__keys" role="group" aria-label="Calculator keypad">
-        {ROWS.map((row, rowIndex) => (
-          <div key={rowIndex} className="calc-pad__row">
+        {rows.map((row, rowIndex) => (
+          <div
+            key={rowIndex}
+            className={`calc-pad__row${row.length === 5 ? ' calc-pad__row--five' : ''}`}
+          >
             {row.map((btn) => (
               <button
                 key={btn.label}
                 type="button"
                 className={`${buttonClass(btn.type)}${btn.wide ? ' calc-pad__key--wide' : ''}`}
+                aria-label={btn.ariaLabel}
                 onClick={() => handlePress(btn)}
               >
                 {btn.label}
@@ -182,11 +216,11 @@ function Calculator() {
   return (
     <main className="page">
       <h1>Calculator</h1>
-      <p>Basic arithmetic for quick math.</p>
+      <p>Arithmetic plus square root, square, reciprocal, power, and modulo.</p>
 
       <section className="page-section" aria-labelledby="calc-display-heading">
         <h2 id="calc-display-heading">Result</h2>
-        <CalculatorPad />
+        <CalculatorPad extended />
       </section>
     </main>
   );

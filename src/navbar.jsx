@@ -199,10 +199,10 @@ function Navbar() {
                         {toolOpen === 'calendar' ? (
                             <div
                                 id="nav-calendar-dropdown"
-                                className="nav-tool-dropdown nav-tool-dropdown--calendar"
+                                className="nav-tool-dropdown"
                                 role="region"
                                 aria-label="Calendar"
-                            >
+                                >
                                 <CalendarPad />
                                 <Link
                                     to="/calendar"

@@ -54,12 +54,11 @@ describe('Navbar', () => {
     expect(screen.getByRole('link', { name: /open full page/i })).toHaveAttribute('href', '/calculator')
   })
 
-  it('keeps Utilities as a dropdown with calendar and calculator links', async () => {
+  it('keeps Utilities as a dropdown with hub and resume parser links', async () => {
     const user = userEvent.setup()
     renderNavbar()
     await user.hover(screen.getByRole('button', { name: /utilities/i }))
     expect(screen.getByRole('link', { name: /^utilities$/i })).toHaveAttribute('href', '/utilities')
-    expect(screen.getAllByRole('link', { name: /^calendar$/i }).some((el) => el.getAttribute('href') === '/calendar')).toBe(true)
-    expect(screen.getAllByRole('link', { name: /^calculator$/i }).some((el) => el.getAttribute('href') === '/calculator')).toBe(true)
+    expect(screen.getByRole('link', { name: /resume parser/i })).toHaveAttribute('href', '/resume-parser')
   })
 })
