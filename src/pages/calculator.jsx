@@ -14,8 +14,8 @@ import {
 const BASIC_ROWS = [
   [
     { label: 'C', type: 'action', action: 'clear' },
-    { label: '±', type: 'action', action: 'sign' },
-    { label: '%', type: 'action', action: 'percent' },
+    { label: '±', type: 'op', action: 'sign' },
+    { label: '%', type: 'op', action: 'percent' },
     { label: '÷', type: 'op', action: '/' },
   ],
   [
@@ -60,7 +60,7 @@ function compute(a, op, b) {
     case '/': return b === 0 ? Number.NaN : a / b;
     case '^': return a ** b;
     case 'mod': return b === 0 ? Number.NaN : a % b;
-    case '%': return b % a;
+    case '%': return b === 0 ? Number.NaN : a % b;
     default: return b;
   }
 }
@@ -121,6 +121,9 @@ export function CalculatorPad({ extended = false }) {
   /** Set pending operator; evaluate chain if needed. */
   function inputOperator(op) {
     const current = Number.parseFloat(display);
+    // #region agent log
+    fetch('http://127.0.0.1:7645/ingest/7462127c-ab7c-4f81-90d6-79df06872850',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'21b054'},body:JSON.stringify({sessionId:'21b054',runId:'pre-fix',hypothesisId:'C',location:'calculator.jsx:inputOperator',message:'inputOperator called',data:{op,display,stored,operator,fresh,current},timestamp:Date.now()})}).catch(()=>{});
+    // #endregion
     if (display === 'Error') {
       clearAll();
       return;
@@ -134,6 +137,9 @@ export function CalculatorPad({ extended = false }) {
     }
     setOperator(op);
     setFresh(true);
+    // #region agent log
+    fetch('http://127.0.0.1:7645/ingest/7462127c-ab7c-4f81-90d6-79df06872850',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'21b054'},body:JSON.stringify({sessionId:'21b054',runId:'pre-fix',hypothesisId:'D',location:'calculator.jsx:inputOperator:exit',message:'inputOperator left display unchanged',data:{op,displayAfter:display,storedSetTo:stored !== null && operator && !fresh ? 'compute' : current,nextOperator:op},timestamp:Date.now()})}).catch(()=>{});
+    // #endregion
   }
 
   /** Evaluate pending expression. */
@@ -163,6 +169,9 @@ export function CalculatorPad({ extended = false }) {
 
   /** Apply sqrt, square, or reciprocal to display. */
   function applyUnary(action) {
+    // #region agent log
+    fetch('http://127.0.0.1:7645/ingest/7462127c-ab7c-4f81-90d6-79df06872850',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'21b054'},body:JSON.stringify({sessionId:'21b054',runId:'pre-fix',hypothesisId:'B',location:'calculator.jsx:applyUnary',message:'applyUnary called',data:{action,display},timestamp:Date.now()})}).catch(()=>{});
+    // #endregion
     if (display === 'Error') return;
     const current = Number.parseFloat(display);
     let result = current;
@@ -175,10 +184,17 @@ export function CalculatorPad({ extended = false }) {
     }
     setDisplay(formatDisplay(result));
     setFresh(true);
+    // #region agent log
+    fetch('http://127.0.0.1:7645/ingest/7462127c-ab7c-4f81-90d6-79df06872850',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'21b054'},body:JSON.stringify({sessionId:'21b054',runId:'post-fix',hypothesisId:'B',location:'calculator.jsx:applyUnary:exit',message:'applyUnary result',data:{action,current,result,display:formatDisplay(result)},timestamp:Date.now()})}).catch(()=>{});
+    // #endregion
   }
 
   /** Route button press to the right handler. */
   function handlePress(btn) {
+    const branch = btn.type === 'digit' ? 'digit' : btn.type === 'op' ? 'op' : btn.type === 'equals' ? 'equals' : btn.type === 'unary' ? 'unary' : btn.action;
+    // #region agent log
+    fetch('http://127.0.0.1:7645/ingest/7462127c-ab7c-4f81-90d6-79df06872850',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'21b054'},body:JSON.stringify({sessionId:'21b054',runId:'pre-fix',hypothesisId:'A',location:'calculator.jsx:handlePress',message:'handlePress route',data:{label:btn.label,type:btn.type,action:btn.action,branch},timestamp:Date.now()})}).catch(()=>{});
+    // #endregion
     if (btn.type === 'digit') inputDigit(btn.action);
     else if (btn.type === 'op') inputOperator(btn.action);
     else if (btn.type === 'equals') equals();
@@ -203,27 +219,29 @@ export function CalculatorPad({ extended = false }) {
     );
   }
 
-  return (
-    <div className={`calc-pad${extended ? ' calc-pad--extended' : ''}`}>
+  const pad = (
+    <div className="calc-pad">
       <p className="calc-pad__display" aria-live="polite" aria-atomic="true">
         {display}
       </p>
-      <div className="calc-pad__body">
-        <div className="calc-pad__keys" role="group" aria-label="Calculator keypad">
-          {BASIC_ROWS.map((row, rowIndex) => (
-            <div key={rowIndex} className="calc-pad__row">
-              {row.map((btn) => renderKey(btn))}
-            </div>
-          ))}
-        </div>
+      <div className="calc-pad__keys" role="group" aria-label="Calculator keypad">
         {extended ? (
-          <div className="calc-pad__fns" role="group" aria-label="Calculator functions">
+          <div className="calc-pad__row calc-pad__row--fns" role="group" aria-label="Calculator functions">
             {EXTENDED_ROW.map((btn) => renderKey(btn))}
           </div>
         ) : null}
+        {BASIC_ROWS.map((row, rowIndex) => (
+          <div key={rowIndex} className="calc-pad__row">
+            {row.map((btn) => renderKey(btn))}
+          </div>
+        ))}
       </div>
     </div>
   );
+
+  if (!extended) return pad;
+
+  return <div className="calc-box">{pad}</div>;
 }
 
 /** Omni-style fields that fill missing values from locked inputs. */
@@ -294,40 +312,48 @@ function FormulaPanel({ formula }) {
   );
 }
 
-function Calculator() {
+/** Formula picker and solver in one box beside the pad. */
+function FormulasBox() {
   const [formulaId, setFormulaId] = useState(null);
   const active = FORMULAS.find((item) => item.id === formulaId) || null;
 
+  return (
+    <div className="calc-box calc-box--formulas">
+      <div className="calc-formulas" role="group" aria-label="Formula calculators">
+        {FORMULAS.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            className={item.id === formulaId ? 'button-primary' : 'button-outline'}
+            aria-pressed={item.id === formulaId}
+            onClick={() => setFormulaId(item.id === formulaId ? null : item.id)}
+          >
+            {item.title}
+          </button>
+        ))}
+      </div>
+      {active ? <FormulaPanel key={active.id} formula={active} /> : (
+          <p>Select a formula to get started.</p>
+      )}
+    </div>
+  );
+}
+
+function Calculator() {
   return (
     <main className="page">
       <h1>Calculator</h1>
       <p>
         Arithmetic plus square root, square, reciprocal, power, and modulo.
-        Formula buttons fill missing values from the ones you enter.
+        Formula buttons automatically fill missing values from the ones you enter.
       </p>
 
       <section className="page-section" aria-labelledby="calc-display-heading">
         <h2 id="calc-display-heading">Result</h2>
-        <CalculatorPad extended />
-      </section>
-
-      <section className="page-section" aria-labelledby="calc-formulas-heading">
-        <h2 id="calc-formulas-heading">Formulas</h2>
-        <p>Pick a formula, then enter known values. Remaining fields update on their own.</p>
-        <div className="calc-formulas" role="group" aria-label="Formula calculators">
-          {FORMULAS.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className={item.id === formulaId ? 'button-primary' : 'button-outline'}
-              aria-pressed={item.id === formulaId}
-              onClick={() => setFormulaId(item.id === formulaId ? null : item.id)}
-            >
-              {item.title}
-            </button>
-          ))}
+        <div className="calc-row">
+          <CalculatorPad extended />
+          <FormulasBox />
         </div>
-        {active ? <FormulaPanel key={active.id} formula={active} /> : null}
       </section>
     </main>
   );

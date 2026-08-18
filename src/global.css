@@ -320,6 +320,30 @@ img {
 /* ------------------------------------------------------------------
    Calculator pad (page + navbar dropdown)
    ------------------------------------------------------------------ */
+.calc-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.calc-box {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background: var(--pw-surface);
+  border: 1px solid var(--pw-border);
+  border-radius: 0.75rem;
+  box-shadow: var(--pw-shadow-md);
+}
+
+.calc-box--formulas {
+  flex: 1;
+  min-width: 16rem;
+}
+
 .calc-pad {
   display: flex;
   flex-direction: column;
@@ -327,8 +351,9 @@ img {
   max-width: 18rem;
 }
 
-.calc-pad--extended {
-  max-width: 22rem;
+.calc-box .calc-pad {
+  width: 18rem;
+  max-width: 100%;
 }
 
 .calc-pad__display {
@@ -346,31 +371,27 @@ img {
   word-break: break-all;
 }
 
-.calc-pad__body {
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-}
-
-.calc-pad__fns {
-  display: grid;
-  grid-template-rows: repeat(5, minmax(2.5rem, 1fr));
-  gap: 0.5rem;
-  flex: 0 0 3.25rem;
-}
-
 .calc-pad__keys {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  flex: 1;
-  min-width: 0;
 }
 
 .calc-pad__row {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.5rem;
+}
+
+.calc-pad__row--fns {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.calc-pad__row--fns .button-primary,
+.calc-pad__row--fns .button-outline,
+.calc-pad__row--fns .button-ghost {
+  font-size: 0.9rem;
+  padding: 0.5rem 0.2rem;
 }
 
 .calc-pad .button-primary,
@@ -382,6 +403,19 @@ img {
   font-size: 1rem;
 }
 
+.calc-pad .button-ghost {
+  background-color: var(--pw-muted-text);
+  color: var(--pw-light-text);
+  box-shadow: var(--pw-shadow-sm);
+}
+
+.calc-pad .button-ghost:hover {
+  background-color: var(--pw-muted-text);
+  color: var(--pw-light-text);
+  box-shadow: var(--pw-shadow-md);
+  filter: brightness(0.9);
+}
+
 .calc-pad__key--wide {
   grid-column: span 2;
 }
@@ -390,11 +424,21 @@ img {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 0.75rem;
+}
+
+.calc-box--formulas .calc-formulas .button-primary,
+.calc-box--formulas .calc-formulas .button-outline {
+  min-height: 2.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+}
+
+.calc-box--formulas > p {
+  margin: 0.75rem 0 0;
 }
 
 .calc-formula-panel {
-  margin-top: 1.25rem;
+  margin-top: 0.75rem;
 }
 
 .calc-formula-panel h3 {
