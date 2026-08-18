@@ -1,8 +1,15 @@
 // Four-function calculator with chained operations.
-// Page pad adds sqrt, square, reciprocal, power, and modulo.
+// Page pad adds sqrt, square, reciprocal, power, modulo, and formula solvers.
 
 import React, { useState } from 'react';
 import '../global.css';
+import {
+  FORMULAS,
+  capLocked,
+  emptyValues,
+  initialLocked,
+  solveFormula,
+} from './calculatorFormulas.js';
 
 const BASIC_ROWS = [
   [
@@ -212,15 +219,108 @@ export function CalculatorPad({ extended = false }) {
   );
 }
 
+/** Omni-style fields that fill missing values from locked inputs. */
+function FormulaPanel({ formula }) {
+  const [values, setValues] = useState(() => emptyValues(formula));
+  const [locked, setLocked] = useState(() => initialLocked(formula));
+
+  /** Update one field and re-solve the rest. */
+  function applyChange(key, raw) {
+    const nextValues = { ...values, [key]: raw };
+    const nextLocked = raw === ''
+      ? locked.filter((item) => item !== key)
+      : capLocked(formula, [...locked.filter((item) => item !== key), key]);
+    setLocked(nextLocked);
+    setValues(solveFormula(formula, nextValues, nextLocked));
+  }
+
+  /** Restore empty fields and default locked keys. */
+  function clearAll() {
+    setValues(emptyValues(formula));
+    setLocked(initialLocked(formula));
+  }
+
+  return (
+    <div className="calc-formula-panel">
+      <h3>{formula.title}</h3>
+      <p className="calc-formula-panel__eq">{formula.equation}</p>
+      <p>{formula.hint}</p>
+      <div className="calc-formula-fields">
+        {formula.fields.map((field) => (
+          <div key={field.key} className="calc-formula-field">
+            <label htmlFor={`calc-field-${formula.id}-${field.key}`}>
+              {field.label}
+            </label>
+            {field.options ? (
+              <select
+                id={`calc-field-${formula.id}-${field.key}`}
+                className="select"
+                value={values[field.key]}
+                onChange={(event) => applyChange(field.key, event.target.value)}
+              >
+                {field.options.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                id={`calc-field-${formula.id}-${field.key}`}
+                type="text"
+                inputMode="decimal"
+                autoComplete="off"
+                value={values[field.key]}
+                onChange={(event) => applyChange(field.key, event.target.value)}
+              />
+            )}
+            {field.unit ? <p className="calc-formula-field__unit">{field.unit}</p> : null}
+          </div>
+        ))}
+      </div>
+      <div className="calc-formula-actions">
+        <button type="button" className="button-ghost" onClick={clearAll}>
+          Clear
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function Calculator() {
+  const [formulaId, setFormulaId] = useState(null);
+  const active = FORMULAS.find((item) => item.id === formulaId) || null;
+
   return (
     <main className="page">
       <h1>Calculator</h1>
-      <p>Arithmetic plus square root, square, reciprocal, power, and modulo.</p>
+      <p>
+        Arithmetic plus square root, square, reciprocal, power, and modulo.
+        Formula buttons fill missing values from the ones you enter.
+      </p>
 
       <section className="page-section" aria-labelledby="calc-display-heading">
         <h2 id="calc-display-heading">Result</h2>
         <CalculatorPad extended />
+      </section>
+
+      <section className="page-section" aria-labelledby="calc-formulas-heading">
+        <h2 id="calc-formulas-heading">Formulas</h2>
+        <p>Pick a formula, then enter known values. Remaining fields update on their own.</p>
+        <div className="calc-formulas" role="group" aria-label="Formula calculators">
+          {FORMULAS.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              className={item.id === formulaId ? 'button-primary' : 'button-outline'}
+              aria-pressed={item.id === formulaId}
+              onClick={() => setFormulaId(item.id === formulaId ? null : item.id)}
+            >
+              {item.title}
+            </button>
+          ))}
+        </div>
+        {active ? <FormulaPanel key={active.id} formula={active} /> : null}
       </section>
     </main>
   );

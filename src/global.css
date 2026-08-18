@@ -375,6 +375,68 @@ img {
   grid-column: span 2;
 }
 
+.calc-formulas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.calc-formula-panel {
+  margin-top: 1.25rem;
+}
+
+.calc-formula-panel h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.25rem;
+}
+
+.calc-formula-panel__eq {
+  font-variant-numeric: tabular-nums;
+}
+
+.calc-formula-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem 1rem;
+  margin-top: 1rem;
+}
+
+.calc-formula-field label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+  color: var(--pw-dark-text);
+}
+
+.calc-formula-field input,
+.calc-formula-field select {
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--pw-border);
+  border-radius: 0.5rem;
+  background: var(--pw-surface);
+  color: var(--pw-dark-text);
+}
+
+.calc-formula-field__unit {
+  margin: 0.25rem 0 0;
+  font-size: 0.8rem;
+  color: var(--pw-muted-text);
+}
+
+.calc-formula-actions {
+  margin-top: 1rem;
+}
+
+@media (max-width: 32rem) {
+  .calc-formula-fields {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ------------------------------------------------------------------
    Calendar pad (page + navbar dropdown)
    ------------------------------------------------------------------ */

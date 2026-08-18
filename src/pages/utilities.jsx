@@ -24,7 +24,7 @@ function Utilities() {
             Calculator
           </Link>
           {' — '}
-          add, subtract, multiply, divide, plus roots, powers, and modulo.
+          add, subtract, multiply, divide, plus formula solvers.
         </p>
         <p>
           <Link to="/resume-parser" className="link">

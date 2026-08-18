@@ -77,3 +77,25 @@ describe('CalculatorPad compact', () => {
     expect(screen.queryByRole('button', { name: /^modulo$/i })).not.toBeInTheDocument()
   })
 })
+
+describe('Calculator formulas', () => {
+  it('shows formula buttons on the page', () => {
+    renderPage()
+    expect(screen.getByRole('button', { name: /^wattage$/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /ohm's law/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /newton's second law/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /^torque$/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /acceleration & velocity/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /compound interest/i })).toBeInTheDocument()
+  })
+
+  it('fills wattage fields from voltage and current', async () => {
+    const user = userEvent.setup()
+    renderPage()
+    await user.click(screen.getByRole('button', { name: /^wattage$/i }))
+    await user.type(screen.getByLabelText('Voltage (V)'), '120')
+    await user.type(screen.getByLabelText('Current (I)'), '0.5')
+    expect(screen.getByLabelText('Power (P)')).toHaveValue('60')
+    expect(screen.getByLabelText('Resistance (R)')).toHaveValue('240')
+  })
+})
