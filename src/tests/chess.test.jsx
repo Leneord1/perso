@@ -7,6 +7,11 @@ vi.mock('./chessBot.js', () => ({
   getChessBotMove: vi.fn(async () => null),
 }))
 
+/** Square buttons use aria-label={id}; avoid getByRole name scans over the 64-cell board. */
+function square(id) {
+  return screen.getByLabelText(id, { selector: 'button' })
+}
+
 describe('ChessPage', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -41,8 +46,8 @@ describe('ChessPage', () => {
   it('plays a pawn move and records it in history', async () => {
     const user = userEvent.setup()
     render(<ChessPage />)
-    await user.click(screen.getByRole('button', { name: /^e2$/i }))
-    await user.click(screen.getByRole('button', { name: /^e4$/i }))
+    await user.click(square('e2'))
+    await user.click(square('e4'))
     expect(screen.getByText(/black to move/i)).toBeInTheDocument()
     const moves = screen.getByRole('list')
     expect(within(moves).getByText('e4')).toBeInTheDocument()
@@ -52,16 +57,16 @@ describe('ChessPage', () => {
     const user = userEvent.setup()
     render(<ChessPage />)
     // Scholar's mate setup to capture: e4 e5 Qh5 Nc6 Qxe5
-    await user.click(screen.getByRole('button', { name: /^e2$/i }))
-    await user.click(screen.getByRole('button', { name: /^e4$/i }))
-    await user.click(screen.getByRole('button', { name: /^e7$/i }))
-    await user.click(screen.getByRole('button', { name: /^e5$/i }))
-    await user.click(screen.getByRole('button', { name: /^d1$/i }))
-    await user.click(screen.getByRole('button', { name: /^h5$/i }))
-    await user.click(screen.getByRole('button', { name: /^b8$/i }))
-    await user.click(screen.getByRole('button', { name: /^c6$/i }))
-    await user.click(screen.getByRole('button', { name: /^h5$/i }))
-    await user.click(screen.getByRole('button', { name: /^e5$/i }))
+    await user.click(square('e2'))
+    await user.click(square('e4'))
+    await user.click(square('e7'))
+    await user.click(square('e5'))
+    await user.click(square('d1'))
+    await user.click(square('h5'))
+    await user.click(square('b8'))
+    await user.click(square('c6'))
+    await user.click(square('h5'))
+    await user.click(square('e5'))
 
     const captured = screen.getByLabelText(/captured pieces/i)
     expect(within(captured).getByLabelText(/captured p/i)).toBeInTheDocument()
@@ -70,8 +75,8 @@ describe('ChessPage', () => {
   it('resets the board with New game', async () => {
     const user = userEvent.setup()
     render(<ChessPage />)
-    await user.click(screen.getByRole('button', { name: /^e2$/i }))
-    await user.click(screen.getByRole('button', { name: /^e4$/i }))
+    await user.click(square('e2'))
+    await user.click(square('e4'))
     await user.click(screen.getByRole('button', { name: /new game/i }))
     expect(screen.getByText(/white to move/i)).toBeInTheDocument()
     expect(screen.getByText(/no moves yet/i)).toBeInTheDocument()
@@ -80,8 +85,8 @@ describe('ChessPage', () => {
   it('undoes the last move', async () => {
     const user = userEvent.setup()
     render(<ChessPage />)
-    await user.click(screen.getByRole('button', { name: /^e2$/i }))
-    await user.click(screen.getByRole('button', { name: /^e4$/i }))
+    await user.click(square('e2'))
+    await user.click(square('e4'))
     await user.click(screen.getByRole('button', { name: /^undo$/i }))
     expect(screen.getByText(/white to move/i)).toBeInTheDocument()
     expect(screen.getByText(/no moves yet/i)).toBeInTheDocument()
