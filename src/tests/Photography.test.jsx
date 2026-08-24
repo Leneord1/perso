@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/react'
-import Photography from '../pages/Photography'
+import Photography from '../pages/photography/Photography'
 import { photographyPhotos } from '../data/photographyPhotos.js'
 
 describe('Photography', () => {

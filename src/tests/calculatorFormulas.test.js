@@ -5,7 +5,7 @@ import {
   emptyValues,
   initialLocked,
   solveFormula,
-} from '../pages/calculatorFormulas.js'
+} from '../pages/calculator/calculatorFormulas.js'
 
 function formula(id) {
   return FORMULAS.find((item) => item.id === id)

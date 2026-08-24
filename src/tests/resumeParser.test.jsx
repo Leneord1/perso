@@ -2,8 +2,8 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router'
-import ResumeParser from '../pages/resumeParser'
-import Utilities from '../pages/utilities'
+import ResumeParser from '../pages/resumeParser/resumeParser'
+import Utilities from '../pages/utilities/utilities'
 
 function renderPage(ui) {
   return render(<MemoryRouter>{ui}</MemoryRouter>)

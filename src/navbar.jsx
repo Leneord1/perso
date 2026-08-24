@@ -1,8 +1,8 @@
 import './navbar.css';
 import { Link } from 'react-router';
 import { useEffect, useRef, useState } from 'react';
-import { CalculatorPad } from './pages/calculator.jsx';
-import { CalendarPad } from './pages/calendar.jsx';
+import { CalculatorPad } from './pages/calculator/calculator.jsx';
+import { CalendarPad } from './pages/calendar/calendar.jsx';
 
 const navItems = [
     {
@@ -30,6 +30,7 @@ const navItems = [
         to: '/games',
         dropdown: [
             { label: 'Play Chess', to: '/projects/chess' },
+            { label: 'Play 2048', to: '/projects/2048' },
         ],
     },
     {

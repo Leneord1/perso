@@ -1,7 +1,7 @@
 // Month calendar with prev/next navigation and today highlight.
 
 import React, { useMemo, useState } from 'react';
-import '../global.css';
+import '../../global.css';
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = [

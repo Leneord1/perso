@@ -54,6 +54,20 @@ describe('Navbar', () => {
     expect(screen.getByRole('link', { name: /open full page/i })).toHaveAttribute('href', '/calculator')
   })
 
+  it('opens the Games dropdown with chess and 2048 links', async () => {
+    const user = userEvent.setup()
+    renderNavbar()
+    await user.hover(screen.getByRole('button', { name: /games/i }))
+    expect(screen.getByRole('link', { name: /play chess/i })).toHaveAttribute(
+      'href',
+      '/projects/chess',
+    )
+    expect(screen.getByRole('link', { name: /play 2048/i })).toHaveAttribute(
+      'href',
+      '/projects/2048',
+    )
+  })
+
   it('keeps Utilities as a dropdown with hub and resume parser links', async () => {
     const user = userEvent.setup()
     renderNavbar()

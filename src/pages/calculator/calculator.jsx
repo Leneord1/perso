@@ -2,7 +2,7 @@
 // Page pad adds sqrt, square, reciprocal, power, modulo, and formula solvers.
 
 import React, { useState } from 'react';
-import '../global.css';
+import '../../global.css';
 import {
   FORMULAS,
   capLocked,

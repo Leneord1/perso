@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-import '../global.css';
+import '../../global.css';
 
 function Utilities() {
   return (

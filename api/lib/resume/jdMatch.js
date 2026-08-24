@@ -3,7 +3,7 @@
  */
 
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
-const DEFAULT_MODEL = 'llama-3.1-8b-instant'
+const DEFAULT_MODEL = 'openai/gpt-oss-20b'
 
 /**
  * Normalize skill token for overlap checks.

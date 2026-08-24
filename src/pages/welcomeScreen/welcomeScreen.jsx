@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
-import '../global.css';
-import logo from '../assets/2Logo.jpg';
+import '../../global.css';
+import logo from '../../assets/2Logo.jpg';
 
 function WelcomeScreen() {
     const navigate = useNavigate();
@@ -45,6 +45,13 @@ function WelcomeScreen() {
                         onClick={() => navigate('/projects/chess')}
                     >
                         Chess
+                    </button>
+                    <button
+                        type="button"
+                        className="button-primary"
+                        onClick={() => navigate('/projects/2048')}
+                    >
+                        2048
                     </button>
                 </div>
             </div>

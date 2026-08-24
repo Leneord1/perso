@@ -57,6 +57,11 @@ describe('App', () => {
     expect(screen.getByRole('heading', { level: 1, name: /play chess/i })).toBeInTheDocument()
   })
 
+  it('renders 2048 at /projects/2048', () => {
+    renderApp('/projects/2048')
+    expect(screen.getByRole('heading', { level: 1, name: /play 2048/i })).toBeInTheDocument()
+  })
+
   it('renders personal projects at /projects/personal', () => {
     renderApp('/projects/personal')
     expect(

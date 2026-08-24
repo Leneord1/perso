@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
-import Skills from '../pages/skills'
+import Skills from '../pages/skills/skills'
 
 describe('Skills', () => {
   it('renders the heading and intro', () => {

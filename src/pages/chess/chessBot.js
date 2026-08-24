@@ -2,7 +2,7 @@
  * Chess Player-2 bot via site chat agent (/api/chat → Groq).
  * Falls back to a simple legal-move pick if the model fails.
  */
-import { readViteEnv } from '../env.js'
+import { readViteEnv } from '../../env.js'
 
 const CHESS_SYSTEM = `You are Player 2 (Black) in a chess game.
 Reply with exactly one legal move from the provided list.

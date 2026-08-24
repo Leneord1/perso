@@ -3,7 +3,7 @@
  * Env: GROQ_API_KEY (required), GROQ_MODEL (optional)
  */
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
-const DEFAULT_MODEL = 'llama-3.1-8b-instant'
+const DEFAULT_MODEL = 'openai/gpt-oss-20b'
 const MAX_MESSAGES = 40
 const MAX_CONTENT_CHARS = 4000
 

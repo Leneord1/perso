@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "../global.css";
+import "../../global.css";
 
 function ResumeSubheading({ primary, secondary, tertiary, quaternary }) {
     return (

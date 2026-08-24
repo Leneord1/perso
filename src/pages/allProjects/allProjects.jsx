@@ -1,11 +1,11 @@
 import React from 'react';
-import '../global.css';
+import '../../global.css';
 import { useNavigate } from 'react-router';
-import ProjectTable from '../components/ProjectTable.jsx';
+import ProjectTable from '../../components/ProjectTable.jsx';
 import {
   githubProfileUrl,
   highlightedProjectRows,
-} from '../data/githubProjects.js';
+} from '../../data/githubProjects.js';
 
 function AllProjects() {
   const navigate = useNavigate();

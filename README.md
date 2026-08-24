@@ -54,7 +54,7 @@ Dev chat traffic: browser → Vite `/api/chat` middleware → Groq.
 ## Production chatbot (Groq)
 
 1. This repository's Vercel project already has `GROQ_API_KEY` configured in the project environment (server-only).
-2. Optionally set `GROQ_MODEL` in Vercel (default `llama-3.1-8b-instant`) or in `.env.local` for local testing.
+2. Optionally set `GROQ_MODEL` in Vercel (default `openai/gpt-oss-20b`) or in `.env.local` for local testing.
 3. Apply to Production and Preview and redeploy if you change Vercel environment variables.
 
 `api/chat.js` proxies chat to Groq. No local machine or tunnel required for production.
@@ -66,7 +66,7 @@ See `.env.example`.
 | Variable | Where | Purpose |
 | --- | --- | --- |
 | `GROQ_API_KEY` | Vercel (configured for this project; server-only) + `.env.local` (optional for local dev) | Groq API key (server-only) |
-| `GROQ_MODEL` | Vercel + `.env.local` (optional) | Model id (default `llama-3.1-8b-instant`) |
+| `GROQ_MODEL` | Vercel + `.env.local` (optional) | Model id (default `openai/gpt-oss-20b`) |
 | `VITE_CHAT_API_URL` | local (optional) | Override chat endpoint |
 
 Never commit `.env.local` or real secrets.

@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { render, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router'
-import WelcomeScreen from '../pages/welcomeScreen'
+import WelcomeScreen from '../pages/welcomeScreen/welcomeScreen'
 
 function renderWelcomeWithRoutes() {
   const view = render(
@@ -13,6 +13,7 @@ function renderWelcomeWithRoutes() {
         <Route path="/contact" element={<h1>Contact stub</h1>} />
         <Route path="/story" element={<h1>Story stub</h1>} />
         <Route path="/projects/chess" element={<h1>Chess stub</h1>} />
+        <Route path="/projects/2048" element={<h1>2048 stub</h1>} />
       </Routes>
     </MemoryRouter>,
   )
@@ -58,5 +59,12 @@ describe('WelcomeScreen', () => {
     const { ui } = renderWelcomeWithRoutes()
     await user.click(ui.getByRole('button', { name: /^chess$/i }))
     expect(await ui.findByRole('heading', { name: /chess stub/i })).toBeInTheDocument()
+  })
+
+  it('navigates to 2048 when 2048 is clicked', async () => {
+    const user = userEvent.setup()
+    const { ui } = renderWelcomeWithRoutes()
+    await user.click(ui.getByRole('button', { name: /^2048$/i }))
+    expect(await ui.findByRole('heading', { name: /2048 stub/i })).toBeInTheDocument()
   })
 })

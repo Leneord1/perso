@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import PersonalProjects from '../pages/personalProjects'
+import PersonalProjects from '../pages/personalProjects/personalProjects'
 import { githubProfileUrl, personalProjectRows } from '../data/githubProjects.js'
 
 describe('PersonalProjects', () => {

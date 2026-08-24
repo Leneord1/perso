@@ -1,7 +1,7 @@
 import React from 'react';
-import '../global.css';
-import ProjectTable from '../components/ProjectTable.jsx';
-import { githubProfileUrl, personalProjectRows } from '../data/githubProjects.js';
+import '../../global.css';
+import ProjectTable from '../../components/ProjectTable.jsx';
+import { githubProfileUrl, personalProjectRows } from '../../data/githubProjects.js';
 
 function PersonalProjects() {
   return (

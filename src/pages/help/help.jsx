@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import '../global.css';
+import '../../global.css';
 
 function Help() {
     return (
@@ -20,7 +20,7 @@ function Help() {
                 <p>
                     <strong>About</strong> covers story, resume, skills, and experience.{' '}
                     <strong>Projects</strong> lists work, including photography.{' '}
-                    <strong>Games</strong> has chess. <strong>Utilities</strong> has calendar
+                    <strong>Games</strong> has chess and 2048. <strong>Utilities</strong> has calendar
                     and calculator. <strong>Contact</strong> has email and social links.
                 </p>
             </section>
@@ -32,7 +32,7 @@ function Help() {
                         Home
                     </Link>
                     {' — '}
-                    short intro and jumps into projects, contact, story, and chess.
+                    short intro and jumps into projects, contact, story, chess, and 2048.
                 </p>
                 <p>
                     <Link to="/story" className="link">
@@ -90,6 +90,13 @@ function Help() {
                     </Link>
                     {' — '}
                     play against the on-site bot.
+                </p>
+                <p>
+                    <Link to="/projects/2048" className="link">
+                        2048
+                    </Link>
+                    {' — '}
+                    slide tiles and merge equals to reach 2048.
                 </p>
                 <p>
                     <Link to="/contact" className="link">

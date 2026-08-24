@@ -3,7 +3,7 @@
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Chess, DEFAULT_POSITION } from 'chess.js';
-import '../global.css';
+import '../../global.css';
 import './chess.css';
 import { getChessBotMove } from './chessBot.js';
 

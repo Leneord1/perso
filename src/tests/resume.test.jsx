@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import Resume from '../pages/resume'
+import Resume from '../pages/resume/resume'
 
 describe('Resume', () => {
   beforeEach(() => {

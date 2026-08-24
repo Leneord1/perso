@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
-import Story from '../pages/story'
+import Story from '../pages/story/story'
 
 function renderStory() {
   return render(

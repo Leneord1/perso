@@ -1,6 +1,6 @@
 import React from 'react';
-import '../global.css';
-import { photographyPhotos } from '../data/photographyPhotos.js';
+import '../../global.css';
+import { photographyPhotos } from '../../data/photographyPhotos.js';
 
 function Photography() {
     const photos = [...photographyPhotos].sort((a, b) => b.createdAt.localeCompare(a.createdAt));

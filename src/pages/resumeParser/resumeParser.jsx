@@ -4,8 +4,8 @@
 
 import React, { useState } from 'react'
 import { Link } from 'react-router'
-import { readViteEnv } from '../env.js'
-import '../global.css'
+import { readViteEnv } from '../../env.js'
+import '../../global.css'
 
 const ACCEPTED = '.pdf,.docx,.txt,.md,application/pdf,text/plain,text/markdown'
 

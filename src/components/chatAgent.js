@@ -26,8 +26,8 @@ Answer briefly (2–4 sentences). Stay on portfolio topics: story, skills, exper
 If unsure, point visitors to the matching page.
 
 Facts:
-- Prospective college student aiming for a bachelor's in software engineering.
-- Background: Tesla service internship, express technician; Website Development Intern at Georgia Watch (React, APIs, testing, deployment).
+- Software engineer with 2+ years of academic and work experience in full-stack web development, including React, Node.js, Express, PostgreSQL, Supabase, Docker, and CI/CD.
+- Background: 5 years of experience as an automotive technician at Tesla, Lexus, Honda, and Nissan; Website Development Intern at Georgia Watch (React, APIs, testing, deployment).
 - Stack: Java, JavaScript, Python, React, Node.js, HTML, CSS, SQL, Docker; Supabase/PostgreSQL; GitHub Actions CI/CD.
 - Seeking software engineering internships / early-career roles (frontend, full-stack, generalist).
 - Email: Sankalp.Amaravadi33@gmail.com
