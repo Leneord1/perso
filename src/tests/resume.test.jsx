@@ -37,23 +37,28 @@ describe('Resume', () => {
 
   it('renders main resume sections', () => {
     render(<Resume />)
+    expect(screen.getByRole('heading', { name: /professional summary/i })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /technical skills/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /professional skills/i })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /^experience$/i })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /^projects$/i })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /^education$/i })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: /awards and extra curricular/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: /awards and extracurricular activities/i }),
+    ).toBeInTheDocument()
   })
 
-  it('lists key roles and education', () => {
+  it('lists key roles, summary, and professional skills', () => {
     render(<Resume />)
-    expect(screen.getByText(/senior capstone project team member/i)).toBeInTheDocument()
+    expect(screen.getByText(/early-career software engineer/i)).toBeInTheDocument()
+    expect(screen.getByText(/cross-functional collaboration/i)).toBeInTheDocument()
+    expect(screen.getByText(/attention to quality/i)).toBeInTheDocument()
+    expect(screen.getByText(/website developer/i)).toBeInTheDocument()
     expect(screen.getAllByText(/georgia watch/i).length).toBeGreaterThanOrEqual(1)
-    expect(screen.getByText(/operations lead/i)).toBeInTheDocument()
-    expect(screen.getByText(/hamsini decorations/i)).toBeInTheDocument()
+    expect(screen.getByText(/service technician intern/i)).toBeInTheDocument()
     expect(screen.getAllByText(/kennesaw state university/i).length).toBeGreaterThanOrEqual(1)
     expect(screen.getByText(/better financial futures/i)).toBeInTheDocument()
-    expect(screen.getByText(/dean/i)).toBeInTheDocument()
-    expect(screen.getByText(/little free pantry/i)).toBeInTheDocument()
+    expect(screen.getByText(/ugahacks 11/i)).toBeInTheDocument()
   })
 
   it('calls print when Print or save as PDF is clicked', async () => {
@@ -61,5 +66,17 @@ describe('Resume', () => {
     render(<Resume />)
     await user.click(screen.getByRole('button', { name: /print or save as pdf/i }))
     expect(globalThis.print).toHaveBeenCalledTimes(1)
+  })
+
+  it('names the print download Sankalp_Resume', async () => {
+    const user = userEvent.setup()
+    document.title = 'Original Title'
+    globalThis.print.mockImplementation(() => {
+      expect(document.title).toBe('Sankalp_Resume')
+      globalThis.dispatchEvent(new Event('afterprint'))
+    })
+    render(<Resume />)
+    await user.click(screen.getByRole('button', { name: /print or save as pdf/i }))
+    expect(document.title).toBe('Original Title')
   })
 })

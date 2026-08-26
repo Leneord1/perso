@@ -2,6 +2,17 @@ import React from "react";
 import PropTypes from "prop-types";
 import "../../global.css";
 
+const PROFESSIONAL_SKILLS = [
+    "Cross-Functional Collaboration",
+    "Communication",
+    "Technical Problem Solving",
+    "Adaptability",
+    "Ownership",
+    "Team Leadership",
+    "Customer Focus",
+    "Attention to Quality",
+];
+
 function ResumeSubheading({ primary, secondary, tertiary, quaternary }) {
     return (
         <div className="resume-subheading">
@@ -22,14 +33,6 @@ ResumeSubheading.propTypes = {
     secondary: PropTypes.string,
     tertiary: PropTypes.string.isRequired,
     quaternary: PropTypes.string,
-};
-
-function ResumeSubItem({ children }) {
-    return <p className="resume-subitem">{children}</p>;
-}
-
-ResumeSubItem.propTypes = {
-    children: PropTypes.node.isRequired,
 };
 
 function ResumeProjectHeading({ title, stack, dateRange }) {
@@ -83,6 +86,20 @@ ResumeSection.propTypes = {
     title: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
 };
+
+const RESUME_DOWNLOAD_NAME = "Sankalp_Resume";
+
+/** Name the saved PDF then open the print dialog. */
+function printResume() {
+    const previousTitle = document.title;
+    document.title = RESUME_DOWNLOAD_NAME;
+    const restore = () => {
+        document.title = previousTitle;
+        globalThis.removeEventListener("afterprint", restore);
+    };
+    globalThis.addEventListener("afterprint", restore);
+    globalThis.print();
+}
 
 function Resume() {
     return (
@@ -140,40 +157,55 @@ function Resume() {
                 <button
                     type="button"
                     className="button-outline resume-heading__print resume-print-hide"
-                    onClick={() => globalThis.print()}
+                    onClick={printResume}
                 >
                     Print or save as PDF
                 </button>
             </header>
 
+            <ResumeSection id="resume-summary" title="Professional Summary">
+                <p className="resume-summary">
+                    Early-career Software Engineer with hands-on experience building full-stack applications
+                    using Java, JavaScript, React, Node.js, PostgreSQL, and REST APIs, along with experience
+                    in Swift and SwiftUI. Strong foundation in software development, testing, debugging,
+                    object-oriented design, data structures, and algorithms. Collaborative and adaptable team
+                    contributor with experience leading development teams, working with cross-functional
+                    stakeholders, translating requirements into features, and taking ownership of solutions
+                    from development through testing and delivery.
+                </p>
+            </ResumeSection>
+
             <ResumeSection id="resume-skills" title="Technical Skills">
                 <ul className="resume-skill-block">
                     <li className="resume-skill-block__item">
-                        <strong>Languages and Scripting</strong>
+                        <strong>Languages</strong>
                         {": "}
-                        Java, Python, JavaScript, C/C++, SQL (MySQL), Supabase (Postgres), HTML, CSS, R
+                        Java, JavaScript, Swift, Python, SQL (MySQL), HTML, CSS, C/C++, R
                         <br />
                         <strong>Frameworks and APIs</strong>
                         {": "}
-                        React.js, Node.js, JUnit, Streamlit, RESTful APIs
+                        SwiftUI, React.js, Node.js, RESTful APIs, JUnit, Streamlit
                         <br />
                         <strong>Developer Tools</strong>
                         {": "}
-                        Github, JetBrains IDEs, Bash, Google Cloud Services, Arduino IDE, MS Office Suite,
-                        Trello
-                        <br />
-                        <strong>DevOps and CI/CD</strong>
-                        {": "}
-                        Git, GitHub Actions, CI/CD Pipelines (GitHub Actions), Bash, AWS
+                        Git, GitHub, GitHub Actions, PowerShell, SonarQube, Google Cloud Platform, JetBrains
+                        IDEs, Trello
                         <br />
                         <strong>Concepts</strong>
                         {": "}
-                        Object-Oriented Programming, Data Structures, Algorithms, CI/CD, SDLC
-                        <br />
-                        <strong>Testing</strong>
-                        {": "}
-                        Unit testing, Automated testing, Debugging, Integration testing
+                        Object-Oriented Programming, Data Structures, Algorithms, Swift Fundamentals, SDLC,
+                        Agile Development, REST API Development, Relational Databases, Version Control, CI/CD,
+                        Unit Testing, Integration Testing, Debugging, Modular Software Design, AI-Assisted
+                        Development
                     </li>
+                </ul>
+            </ResumeSection>
+
+            <ResumeSection id="resume-professional-skills" title="Professional Skills">
+                <ul className="resume-pro-skills">
+                    {PROFESSIONAL_SKILLS.map((skill) => (
+                        <li key={skill}>{skill}</li>
+                    ))}
                 </ul>
             </ResumeSection>
 
@@ -181,62 +213,31 @@ function Resume() {
                 <div className="resume-subheading-list">
                     <article className="resume-entry">
                         <ResumeSubheading
-                            primary="Senior Capstone Project Team Member"
+                            primary="Website Developer"
                             secondary="August 2025 -- June 2026"
-                            tertiary="Kennesaw State University / Georgia Watch"
+                            tertiary="Georgia Watch"
                             quaternary="Atlanta, GA"
                         />
-                        <ResumeSubItem>
-                            Developed the Georgia Hospital Accountability Scorecard System for Georgia Watch as a
-                            Website Development Intern, delivering a production-ready web application for
-                            healthcare data access and user interaction.
-                        </ResumeSubItem>
                         <ResumeItemList>
                             <ResumeItem>
-                                Collaborated with stakeholders and developers to translate business requirements
-                                into scalable application features.
+                                Gathered requirements from 6 stakeholders across development and policy teams,
+                                helping shape 3 feature releases.
                             </ResumeItem>
                             <ResumeItem>
-                                Developed maintainable frontend components and integrated application workflows
-                                using React and JavaScript.
+                                Partnered with cross-functional stakeholders to clarify requirements, prioritize
+                                application enhancements, and translate feedback into user-focused improvements.
                             </ResumeItem>
                             <ResumeItem>
-                                Assisted with implementing and testing API-driven functionality to support
-                                structured data workflows.
+                                Delivered 5 major features across a 4-month Agile development cycle, contributing
+                                to an approximately 20% reduction in the open bug backlog.
                             </ResumeItem>
                             <ResumeItem>
-                                Participated in debugging, issue resolution, and deployment support to improve
-                                application reliability.
+                                Supported application quality through testing, debugging, and iterative feature
+                                improvements.
                             </ResumeItem>
                             <ResumeItem>
-                                Worked within collaborative development workflows using Git-based version control
-                                practices.
-                            </ResumeItem>
-                        </ResumeItemList>
-                    </article>
-
-                    <article className="resume-entry">
-                        <ResumeSubheading
-                            primary="Operations Lead"
-                            secondary="February 2025 -- Present"
-                            tertiary="Hamsini Decorations"
-                            quaternary="Cumming, GA"
-                        />
-                        <ResumeSubItem>
-                            Supported business growth by assisting in project planning and implementation across
-                            decoration and event operations.
-                        </ResumeSubItem>
-                        <ResumeItemList>
-                            <ResumeItem>
-                                Coordinated project planning and day-to-day implementation to keep client work on
-                                schedule.
-                            </ResumeItem>
-                            <ResumeItem>
-                                Supported operational growth by organizing workflows, resources, and team handoffs.
-                            </ResumeItem>
-                            <ResumeItem>
-                                Communicated with stakeholders to clarify requirements and deliver consistent
-                                service outcomes.
+                                Maintained clear project documentation across 3 concurrent workstreams, keeping
+                                team members aligned on priorities and deliverables.
                             </ResumeItem>
                         </ResumeItemList>
                     </article>
@@ -245,168 +246,40 @@ function Resume() {
                         <ResumeSubheading
                             primary="Express Technician"
                             secondary="October 2022 -- January 2025"
-                            tertiary="Nalley Lexus"
+                            tertiary="Nalley Lexus Roswell"
                             quaternary="Roswell, GA"
                         />
-                        <ResumeSubItem>
-                            Supported high-volume service operations by ensuring consistent quality standards and
-                            operational efficiency within a collaborative team environment.
-                        </ResumeSubItem>
                         <ResumeItemList>
                             <ResumeItem>
-                                Collaborated in a high-volume team environment to deliver timely and reliable service
-                                outcomes.
+                                Performed preventative maintenance and inspections on at least 30 vehicles per
+                                day while consistently meeting quality and productivity standards.
                             </ResumeItem>
                             <ResumeItem>
-                                Applied quality control processes to ensure service accuracy and operational
-                                efficiency.
+                                Applied standardized quality-control procedures to support service accuracy and
+                                customer satisfaction.
                             </ResumeItem>
                             <ResumeItem>
-                                Worked with customer-facing workflows in fast-paced service environments requiring
-                                accuracy and reliability.
+                                Coordinated with technicians and service stakeholders to resolve issues and meet
+                                time-sensitive customer commitments.
                             </ResumeItem>
                         </ResumeItemList>
                     </article>
 
                     <article className="resume-entry">
                         <ResumeSubheading
-                            primary="Tesla Technician"
+                            primary="Service Technician Intern"
                             secondary="February 2022 -- August 2022"
                             tertiary="Tesla"
                             quaternary="Kennesaw, GA"
                         />
-                        <ResumeSubItem>
-                            Troubleshot and fixed faults on Tesla vehicles by analyzing system behavior and
-                            identifying issues in mechanical and electronic components.
-                        </ResumeSubItem>
                         <ResumeItemList>
                             <ResumeItem>
-                                Performed system-level diagnostics on automotive electrical and mechanical systems
-                                using manufacturer tools.
+                                Performed root-cause analysis across multiple vehicle subsystems to isolate
+                                complex technical faults and support accurate repairs.
                             </ResumeItem>
                             <ResumeItem>
-                                Diagnosed and resolved complex automotive system issues using structured
-                                troubleshooting methods.
-                            </ResumeItem>
-                            <ResumeItem>
-                                Interpreted diagnostic system outputs and collaborated with technical teams to
-                                support issue resolution.
-                            </ResumeItem>
-                        </ResumeItemList>
-                    </article>
-
-                    <article className="resume-entry">
-                        <ResumeSubheading
-                            primary="Express Technician"
-                            secondary="December 2020 -- February 2022"
-                            tertiary="Carriage Nissan"
-                            quaternary="Gainesville, GA"
-                        />
-                        <ResumeSubItem>
-                            Provided efficient light repairs and maintenance on Nissan vehicles in dealership
-                            production, keeping documentation and quality consistent.
-                        </ResumeSubItem>
-                        <ResumeItemList>
-                            <ResumeItem>
-                                Completed high-volume maintenance work (including oil changes and fluid services) with
-                                attention to manufacturer specifications and inspection findings.
-                            </ResumeItem>
-                            <ResumeItem>
-                                Executed basic recall and campaign work following documented procedures and parts
-                                handling requirements.
-                            </ResumeItem>
-                            <ResumeItem>
-                                Managed time and bay workflow under flat-rate expectations, coordinating with advisors
-                                and teammates to keep vehicles moving through the shop.
-                            </ResumeItem>
-                            <ResumeItem>
-                                Communicated vehicle condition and completed work clearly to support handoffs and
-                                customer confidence in service outcomes.
-                            </ResumeItem>
-                        </ResumeItemList>
-                    </article>
-
-                    <article className="resume-entry">
-                        <ResumeSubheading
-                            primary="Express Technician"
-                            secondary="December 2019 -- July 2020"
-                            tertiary="Jiffy Lube"
-                            quaternary="Johns Creek, GA"
-                        />
-                        <ResumeSubItem>
-                            Provided team-based quick-lube service, completing fluid services, inspections, and
-                            common maintenance with consistent throughput and quality checks.
-                        </ResumeSubItem>
-                        <ResumeItemList>
-                            <ResumeItem>
-                                Performed oil changes, filter replacements, fluid top-offs, and related preventive
-                                maintenance to manufacturer- and company-defined standards.
-                            </ResumeItem>
-                            <ResumeItem>
-                                Supported tire and basic chassis services where assigned, including torque and safety
-                                verification on completed work.
-                            </ResumeItem>
-                            <ResumeItem>
-                                Kept the bay organized and stocked so the team could maintain service times during peak
-                                traffic.
-                            </ResumeItem>
-                            <ResumeItem>
-                                Communicated vehicle recommendations and completed services clearly to support advisor
-                                and customer understanding.
-                            </ResumeItem>
-                        </ResumeItemList>
-                    </article>
-
-                    <article className="resume-entry">
-                        <ResumeSubheading
-                            primary="Customer Service Associate"
-                            secondary="May 2019 -- July 2019"
-                            tertiary="AutoZone"
-                            quaternary="Bloomington, IL"
-                        />
-                        <ResumeSubItem>
-                            Supported retail automotive customers at the counter with parts lookups, transactions, and
-                            straightforward product guidance in a high-touch summer season.
-                        </ResumeSubItem>
-                        <ResumeItemList>
-                            <ResumeItem>
-                                Assisted customers with part and fluid selection using catalog and system tools while
-                                confirming fitment details when available.
-                            </ResumeItem>
-                            <ResumeItem>
-                                Operated point-of-sale workflows accurately, including returns, exchanges, and
-                                promotional pricing where applicable.
-                            </ResumeItem>
-                            <ResumeItem>
-                                Maintained aisle organization and stocking so high-demand items remained findable during
-                                busy shifts.
-                            </ResumeItem>
-                        </ResumeItemList>
-                    </article>
-
-                    <article className="resume-entry">
-                        <ResumeSubheading
-                            primary="Courtesy Clerk"
-                            secondary="August 2017 -- May 2018"
-                            tertiary="Jewel-Osco"
-                            quaternary="Bloomington, IL"
-                        />
-                        <ResumeSubItem>
-                            Front-end courtesy support in a grocery environment focused on customer experience, safety,
-                            and steady store flow during evenings and weekends.
-                        </ResumeSubItem>
-                        <ResumeItemList>
-                            <ResumeItem>
-                                Bagged purchases carefully, managed cart retrieval, and kept checkout lanes and entry
-                                areas clean and unobstructed.
-                            </ResumeItem>
-                            <ResumeItem>
-                                Assisted customers with directions to products and light carry-out support when
-                                appropriate.
-                            </ResumeItem>
-                            <ResumeItem>
-                                Followed food safety and sanitation expectations while handling customer-facing tasks
-                                alongside the front-end team.
+                                Collaborated with technicians and engineering support to troubleshoot and resolve
+                                system issues while maintaining quality and safety standards.
                             </ResumeItem>
                         </ResumeItemList>
                     </article>
@@ -418,57 +291,26 @@ function Resume() {
                     <article className="resume-entry">
                         <ResumeProjectHeading
                             title="Better Financial Futures"
-                            stack="JavaScript, React, Node, Supabase Database, GitHub Actions, Git"
+                            stack="JavaScript, React, Node.js, PostgreSQL, GitHub Actions, Vercel"
                             dateRange="January 2026 -- May 2026"
                         />
                         <ResumeItemList>
                             <ResumeItem>
-                                Designed and developed a full-stack financial application using React, Node.js, and
-                                Supabase (PostgreSQL).
+                                Led a 5-member development team in designing and delivering a full-stack financial
+                                application, coordinating responsibilities and collaborating on technical
+                                decisions throughout the project.
                             </ResumeItem>
                             <ResumeItem>
-                                Built and integrated RESTful APIs to support frontend and backend communication.
+                                Designed the Supabase database schema and integrated APIs to support application
+                                data storage and retrieval.
                             </ResumeItem>
                             <ResumeItem>
-                                Developed relational database structures and handled structured request/response
-                                data flows.
+                                Collaborated remotely using Trello, GitHub, and messaging tools to coordinate
+                                work and deliver the project using Agile development practices.
                             </ResumeItem>
                             <ResumeItem>
-                                Implemented CI/CD workflows using GitHub Actions to automate testing and deployment
-                                processes.
-                            </ResumeItem>
-                            <ResumeItem>
-                                Applied modular and maintainable coding practices to improve scalability and
-                                long-term maintainability.
-                            </ResumeItem>
-                            <ResumeItem>
-                                Collaborated using Git-based workflows in an agile-style development environment to
-                                improve reliability and application performance.
-                            </ResumeItem>
-                        </ResumeItemList>
-                    </article>
-
-                    <article className="resume-entry">
-                        <ResumeProjectHeading
-                            title="Georgia Hospital Accountability Scorecard"
-                            stack="JavaScript, React, Git"
-                            dateRange="August 2025 -- June 2026"
-                        />
-                        <ResumeItemList>
-                            <ResumeItem>
-                                Contributed to development of a data-driven web application using React and
-                                JavaScript.
-                            </ResumeItem>
-                            <ResumeItem>
-                                Implemented frontend functionality and assisted with API-connected workflows.
-                            </ResumeItem>
-                            <ResumeItem>
-                                Participated in debugging, testing, and feature enhancement activities to improve
-                                application reliability and usability.
-                            </ResumeItem>
-                            <ResumeItem>
-                                Collaborated with team members to iteratively improve system functionality and user
-                                experience.
+                                Implemented CI/CD workflows using GitHub Actions to streamline testing and
+                                deployment.
                             </ResumeItem>
                         </ResumeItemList>
                     </article>
@@ -481,19 +323,20 @@ function Resume() {
                         />
                         <ResumeItemList>
                             <ResumeItem>
-                                Designed and developed a dealership operations platform to improve technician
-                                scheduling, repair order management, and service workflow efficiency.
+                                Designed and developed a Java-based service department management application to
+                                organize repair orders, technician scheduling, and service bay allocation.
                             </ResumeItem>
                             <ResumeItem>
-                                Translated real-world operational challenges into a developed software project.
+                                Applied object-oriented programming and data structures to model real-world
+                                service department workflows and operational constraints.
                             </ResumeItem>
                             <ResumeItem>
-                                Built a relational data model to centralize service information, improving
-                                scheduling accuracy and operational visibility.
+                                Developed a user interface to simplify operational workflows and improve
+                                usability.
                             </ResumeItem>
                             <ResumeItem>
-                                Developed a JavaFX interface supporting service advisors and technicians through
-                                streamlined workflow management.
+                                Applied Git version control, testing, debugging, and modular software design
+                                throughout development.
                             </ResumeItem>
                         </ResumeItemList>
                     </article>
@@ -502,53 +345,34 @@ function Resume() {
 
             <ResumeSection id="resume-education" title="Education">
                 <div className="resume-subheading-list">
-                    <ResumeSubheading
-                        primary="Kennesaw State University"
-                        secondary="Kennesaw, GA"
-                        tertiary="B.S. in Software Engineering, Minor in Computer Science"
-                        quaternary="Expected Graduation: December 2026"
-                    />
+                    <article className="resume-entry">
+                        <ResumeSubheading
+                            primary="Kennesaw State University"
+                            secondary="Kennesaw, GA"
+                            tertiary="Bachelor of Science in Software Engineering, Minor in Computer Science"
+                            quaternary="January 2023 -- December 2026"
+                        />
+                        <ResumeItemList>
+                            <ResumeItem>
+                                Degree requirements completed; continuing additional coursework through December
+                                2026.
+                            </ResumeItem>
+                        </ResumeItemList>
+                    </article>
                     <ResumeSubheading
                         primary="Gwinnett Technical College"
                         secondary="Lawrenceville, GA"
-                        tertiary="AAS in Automotive Technology, GPA 3.8"
+                        tertiary="Associate of Applied Science in Automotive Technology"
                         quaternary="August 2019 -- December 2021"
-                    />
-                    <ResumeSubheading
-                        primary="Normal Community High School"
-                        secondary="Normal, IL"
-                        tertiary="High School Diploma"
-                        quaternary="August 2014 -- May 2018"
                     />
                 </div>
             </ResumeSection>
 
-            <ResumeSection id="resume-awards" title="Awards and Extra Curricular">
+            <ResumeSection id="resume-awards" title="Awards and Extracurricular Activities">
                 <ResumeItemList>
-                    <ResumeItem>KSU Dean&apos;s List, Spring 2024</ResumeItem>
-                    <ResumeItem>KSU President&apos;s List, Spring 2023</ResumeItem>
-                    <ResumeItem>Participant in UGAHacks 11, February 2026</ResumeItem>
-                    <ResumeItem>Participant in KSU AI Club Hackathon, November 2025</ResumeItem>
-                    <ResumeItem>Participant in UGAHacks 10, February 2025</ResumeItem>
-                    <ResumeItem>Participant in Kennesaw State University Ideathon 2024</ResumeItem>
-                    <ResumeItem>
-                        Donation and Volunteer Coordinator and Co-founder, Little Free Pantry, Bloomington, IL
-                        (November 2016 -- 2019)
-                    </ResumeItem>
-                    <ResumeItem>Volunteer, Parkland Car Show 2019</ResumeItem>
-                    <ResumeItem>
-                        YICU Service Award, &quot;Why I See You,&quot; sponsored by For A Better Tomorrow —
-                        September 2017
-                    </ResumeItem>
-                    <ResumeItem>
-                        Good Actions Award (sponsored by Normal Community High School) — November 2016
-                    </ResumeItem>
-                    <ResumeItem>
-                        YICU Service Award Nominee (sponsored by For a Better Tomorrow) — October 2016
-                    </ResumeItem>
-                    <ResumeItem>
-                        Toastmasters Youth Leadership Program Completion Award — August 2015
-                    </ResumeItem>
+                    <ResumeItem>UGAHacks 11 — February 2026</ResumeItem>
+                    <ResumeItem>KSU AI Club Hackathon — November 2025</ResumeItem>
+                    <ResumeItem>UGAHacks 10 — February 2025</ResumeItem>
                 </ResumeItemList>
             </ResumeSection>
         </main>
