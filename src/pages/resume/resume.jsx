@@ -244,6 +244,25 @@ function Resume() {
 
                     <article className="resume-entry">
                         <ResumeSubheading
+                            primary="Operations Lead"
+                            secondary="February 2025 -- Present"
+                            tertiary="Hamsini Decorations"
+                            quaternary="Cumming, GA"
+                        />
+                        <ResumeItemList>
+                            <ResumeItem>
+                                Supported business growth by assisting in project planning and implementation
+                                across decoration and event operations.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Coordinated schedules, resources, and stakeholder communication so client work
+                                stayed on track.
+                            </ResumeItem>
+                        </ResumeItemList>
+                    </article>
+
+                    <article className="resume-entry">
+                        <ResumeSubheading
                             primary="Express Technician"
                             secondary="October 2022 -- January 2025"
                             tertiary="Nalley Lexus Roswell"
@@ -280,6 +299,76 @@ function Resume() {
                             <ResumeItem>
                                 Collaborated with technicians and engineering support to troubleshoot and resolve
                                 system issues while maintaining quality and safety standards.
+                            </ResumeItem>
+                        </ResumeItemList>
+                    </article>
+
+                    <article className="resume-entry">
+                        <ResumeSubheading
+                            primary="Express Technician"
+                            secondary="December 2020 -- February 2022"
+                            tertiary="Carriage Nissan"
+                        />
+                        <ResumeItemList>
+                            <ResumeItem>
+                                Performed express production and service work in a high-volume dealership
+                                environment.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Supported throughput, quality checks, and time-sensitive customer handoffs.
+                            </ResumeItem>
+                        </ResumeItemList>
+                    </article>
+
+                    <article className="resume-entry">
+                        <ResumeSubheading
+                            primary="Express Technician"
+                            secondary="December 2019 -- July 2020"
+                            tertiary="Jiffy Lube"
+                        />
+                        <ResumeItemList>
+                            <ResumeItem>
+                                Completed express maintenance and service work in a high-volume quick-service
+                                shop.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Followed standardized service procedures to support quality and turnaround time.
+                            </ResumeItem>
+                        </ResumeItemList>
+                    </article>
+
+                    <article className="resume-entry">
+                        <ResumeSubheading
+                            primary="Parts and POS Support"
+                            tertiary="AutoZone"
+                            quaternary="Bloomington, IL"
+                        />
+                        <ResumeItemList>
+                            <ResumeItem>
+                                Provided parts lookup and point-of-sale support in a retail auto-parts
+                                environment.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Communicated product and service information clearly to keep transactions
+                                accurate.
+                            </ResumeItem>
+                        </ResumeItemList>
+                    </article>
+
+                    <article className="resume-entry">
+                        <ResumeSubheading
+                            primary="Courtesy Clerk"
+                            tertiary="Jewel-Osco"
+                            quaternary="Bloomington, IL"
+                        />
+                        <ResumeItemList>
+                            <ResumeItem>
+                                Supported customer-facing retail operations, including checkout assistance and
+                                store upkeep.
+                            </ResumeItem>
+                            <ResumeItem>
+                                Practiced clear customer communication and quality checks in a high-traffic
+                                grocery environment.
                             </ResumeItem>
                         </ResumeItemList>
                     </article>
@@ -373,6 +462,14 @@ function Resume() {
                     <ResumeItem>UGAHacks 11 — February 2026</ResumeItem>
                     <ResumeItem>KSU AI Club Hackathon — November 2025</ResumeItem>
                     <ResumeItem>UGAHacks 10 — February 2025</ResumeItem>
+                    <ResumeItem>
+                        Co-founded Little Free Pantry; Donation and Volunteer Coordinator, Bloomington, IL
+                        (2016 -- 2019)
+                    </ResumeItem>
+                    <ResumeItem>Parkland Car Show volunteer — 2019</ResumeItem>
+                    <ResumeItem>YICU Service Award</ResumeItem>
+                    <ResumeItem>Toastmasters Youth Leadership Program Completion</ResumeItem>
+                    <ResumeItem>Kennesaw State University Dean&apos;s List and President&apos;s List</ResumeItem>
                 </ResumeItemList>
             </ResumeSection>
         </main>
