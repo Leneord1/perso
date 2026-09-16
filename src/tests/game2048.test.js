@@ -145,6 +145,55 @@ describe('2048 engine', () => {
     expect(canMove(full)).toBe(true)
   })
 
+  it('traces a lone tile sliding right', () => {
+    const { traces } = move(
+      [
+        [2, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+      ],
+      'right',
+    )
+    expect(traces).toEqual([
+      { from: [0, 0], to: [0, 3], value: 2, merged: false },
+    ])
+  })
+
+  it('traces a left merge and leftover tile', () => {
+    const { traces } = move(
+      [
+        [2, 2, 2, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+      ],
+      'left',
+    )
+    expect(traces).toEqual([
+      { from: [0, 0], to: [0, 0], value: 2, merged: true, mergeValue: 4 },
+      { from: [0, 1], to: [0, 0], value: 2, merged: true, mergeValue: 4 },
+      { from: [0, 2], to: [0, 1], value: 2, merged: false },
+    ])
+  })
+
+  it('sends both merge partners to the same cell', () => {
+    const { traces } = move(
+      [
+        [2, 0, 0, 0],
+        [2, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+      ],
+      'up',
+    )
+    const merged = traces.filter((t) => t.merged)
+    expect(merged).toHaveLength(2)
+    expect(merged[0].to).toEqual(merged[1].to)
+    expect(merged[0].to).toEqual([0, 0])
+    expect(merged[0].mergeValue).toBe(4)
+  })
+
   it('finds a target tile value', () => {
     const board = [
       [2, 4, 8, 16],

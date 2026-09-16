@@ -13,11 +13,9 @@
 }
 
 .game2048-board {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, 1fr);
-  gap: 0.55rem;
-  padding: 0.55rem;
+  --pad: 0.55rem;
+  --gap: 0.55rem;
+  position: relative;
   width: min(90vw, 26rem);
   aspect-ratio: 1 / 1;
   border-radius: 0.5rem;
@@ -27,18 +25,65 @@
   user-select: none;
 }
 
-.game2048-cell {
+.game2048-slots {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: var(--gap);
+  padding: var(--pad);
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.game2048-slot {
+  border-radius: 0.35rem;
+  background: #cdc1b4;
+}
+
+.game2048-tiles {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.game2048-tile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: calc((100% - 2 * var(--pad) - 3 * var(--gap)) / 4);
+  height: calc((100% - 2 * var(--pad) - 3 * var(--gap)) / 4);
+  transform: translate(
+    calc(var(--pad) + var(--c) * (100% + var(--gap))),
+    calc(var(--pad) + var(--r) * (100% + var(--gap)))
+  );
+  transition: transform 120ms ease-in;
+}
+
+.game2048-tile--merged {
+  z-index: 2;
+}
+
+.game2048-tile__inner {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  height: 100%;
   border-radius: 0.35rem;
   font-weight: 700;
   font-size: clamp(1.1rem, 5vw, 1.85rem);
   line-height: 1;
 }
 
-.game2048-cell--spawn {
+.game2048-tile__inner--spawn {
   animation: game2048-pop 0.18s ease-out;
+}
+
+.game2048-tile__inner--merge {
+  animation: game2048-merge 0.18s ease-out;
 }
 
 @keyframes game2048-pop {
@@ -47,6 +92,29 @@
   }
   to {
     transform: scale(1);
+  }
+}
+
+@keyframes game2048-merge {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game2048-tile {
+    transition: none;
+  }
+
+  .game2048-tile__inner--spawn,
+  .game2048-tile__inner--merge {
+    animation: none;
   }
 }
 

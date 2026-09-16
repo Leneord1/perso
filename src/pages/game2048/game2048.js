@@ -42,23 +42,50 @@ export function newGame(rng = Math.random) {
 
 /** Slide non-zero tiles left and merge equal neighbors once. */
 function slideRowLeft(row) {
-  const tiles = row.filter((n) => n !== 0);
+  const tiles = [];
+  for (let c = 0; c < SIZE; c++) {
+    if (row[c] !== 0) tiles.push({ fromCol: c, value: row[c] });
+  }
   const merged = [];
+  const traces = [];
   let score = 0;
   let i = 0;
+  let dest = 0;
   while (i < tiles.length) {
-    if (i + 1 < tiles.length && tiles[i] === tiles[i + 1]) {
-      const val = tiles[i] * 2;
+    if (i + 1 < tiles.length && tiles[i].value === tiles[i + 1].value) {
+      const val = tiles[i].value * 2;
+      traces.push({
+        fromCol: tiles[i].fromCol,
+        toCol: dest,
+        value: tiles[i].value,
+        merged: true,
+        mergeValue: val,
+      });
+      traces.push({
+        fromCol: tiles[i + 1].fromCol,
+        toCol: dest,
+        value: tiles[i + 1].value,
+        merged: true,
+        mergeValue: val,
+      });
       merged.push(val);
       score += val;
+      dest += 1;
       i += 2;
     } else {
-      merged.push(tiles[i]);
+      traces.push({
+        fromCol: tiles[i].fromCol,
+        toCol: dest,
+        value: tiles[i].value,
+        merged: false,
+      });
+      merged.push(tiles[i].value);
+      dest += 1;
       i += 1;
     }
   }
   while (merged.length < SIZE) merged.push(0);
-  return { row: merged, score };
+  return { row: merged, score, traces };
 }
 
 /** Rotate the board 90 degrees clockwise. */
@@ -77,6 +104,20 @@ function rotateTimes(board, times) {
   let out = board;
   for (let i = 0; i < times; i++) out = rotateClockwise(out);
   return out;
+}
+
+/** Rotate (r, c) clockwise `times` times on a SIZE grid. */
+function rotateCoord(r, c, times) {
+  let row = r;
+  let col = c;
+  const n = ((times % 4) + 4) % 4;
+  for (let i = 0; i < n; i++) {
+    const nextR = col;
+    const nextC = SIZE - 1 - row;
+    row = nextR;
+    col = nextC;
+  }
+  return [row, col];
 }
 
 const ROTATIONS_TO_LEFT = {
@@ -100,22 +141,43 @@ function boardsEqual(a, b) {
  * Slide the board in one direction.
  * @param {number[][]} board
  * @param {'left'|'right'|'up'|'down'} direction
- * @returns {{ board: number[][], scoreDelta: number, moved: boolean }}
+ * @returns {{ board: number[][], scoreDelta: number, moved: boolean, traces: object[] }}
  */
 export function move(board, direction) {
   const toLeft = ROTATIONS_TO_LEFT[direction];
   if (toLeft === undefined) {
-    return { board, scoreDelta: 0, moved: false };
+    return { board, scoreDelta: 0, moved: false, traces: [] };
   }
   const rotated = rotateTimes(board, toLeft);
   let scoreDelta = 0;
-  const slid = rotated.map((row) => {
+  const rotatedTraces = [];
+  const slid = rotated.map((row, r) => {
     const result = slideRowLeft(row);
     scoreDelta += result.score;
+    for (const t of result.traces) {
+      rotatedTraces.push({
+        from: [r, t.fromCol],
+        to: [r, t.toCol],
+        value: t.value,
+        merged: t.merged,
+        ...(t.merged ? { mergeValue: t.mergeValue } : {}),
+      });
+    }
     return result.row;
   });
   const restored = rotateTimes(slid, (4 - toLeft) % 4);
-  return { board: restored, scoreDelta, moved: !boardsEqual(board, restored) };
+  const moved = !boardsEqual(board, restored);
+  const back = (4 - toLeft) % 4;
+  const traces = moved
+    ? rotatedTraces.map((t) => ({
+        from: rotateCoord(t.from[0], t.from[1], back),
+        to: rotateCoord(t.to[0], t.to[1], back),
+        value: t.value,
+        merged: t.merged,
+        ...(t.merged ? { mergeValue: t.mergeValue } : {}),
+      }))
+    : [];
+  return { board: restored, scoreDelta, moved, traces };
 }
 
 /** True if any slide would change the board. */

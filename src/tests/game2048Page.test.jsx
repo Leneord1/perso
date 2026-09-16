@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Game2048Page from '../pages/game2048/game2048.jsx'
 
@@ -58,5 +58,34 @@ describe('Game2048Page', () => {
     localStorage.setItem(BEST_KEY, '88')
     render(<Game2048Page rng={() => 0} spawnFn={noSpawn} />)
     expect(screen.getByText('88')).toBeInTheDocument()
+  })
+
+  it('merges overlay tiles after the slide, not immediately', async () => {
+    const user = userEvent.setup()
+    render(<Game2048Page rng={() => 0} spawnFn={noSpawn} />)
+    const overlay = document.querySelector('.game2048-tiles')
+    expect(overlay.querySelectorAll('.game2048-tile')).toHaveLength(2)
+    await user.keyboard('{ArrowLeft}')
+    expect(overlay.querySelectorAll('.game2048-tile')).toHaveLength(2)
+    expect(overlay.textContent.replace(/\s/g, '')).toBe('22')
+    await waitFor(() => {
+      expect(overlay.querySelectorAll('.game2048-tile')).toHaveLength(1)
+    })
+    expect(overlay.textContent.replace(/\s/g, '')).toBe('4')
+  })
+
+  it('spawns the new overlay tile after the slide', async () => {
+    const user = userEvent.setup()
+    render(<Game2048Page rng={() => 0} />)
+    const overlay = document.querySelector('.game2048-tiles')
+    await user.keyboard('{ArrowLeft}')
+    expect(overlay.querySelectorAll('.game2048-tile')).toHaveLength(2)
+    expect(overlay.textContent.replace(/\s/g, '')).toBe('22')
+    await waitFor(() => {
+      expect(overlay.querySelector('.game2048-tile__inner--spawn')).toBeTruthy()
+    })
+    const values = [...overlay.querySelectorAll('.game2048-tile__inner')].map((el) => el.textContent)
+    expect(values.sort()).toEqual(['2', '4'])
+    expect(overlay.querySelector('.game2048-tile__inner--merge')).toBeTruthy()
   })
 })

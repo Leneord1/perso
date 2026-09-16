@@ -15,6 +15,7 @@ import {
 
 const BEST_KEY = 'pw-2048-best';
 const SWIPE_MIN = 30;
+const SLIDE_MS = 120;
 
 const KEY_TO_DIR = {
   ArrowLeft: 'left',
@@ -50,11 +51,113 @@ function writeBest(value) {
   }
 }
 
-/** CSS class for a cell value. */
-function cellClass(value, spawned) {
-  const parts = ['game2048-cell', `game2048-cell--${value}`];
-  if (value > WIN_VALUE) parts.push('game2048-cell--super');
-  if (spawned) parts.push('game2048-cell--spawn');
+/** True when the user asked to skip motion. */
+function prefersReducedMotion() {
+  try {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  } catch {
+    return false;
+  }
+}
+
+/** Build overlay tiles from a number board. */
+function tilesFromBoard(board, idRef, spawnAt = null) {
+  const list = [];
+  for (let r = 0; r < SIZE; r++) {
+    for (let c = 0; c < SIZE; c++) {
+      const value = board[r][c];
+      if (!value) continue;
+      const at = `${r}-${c}`;
+      list.push({
+        id: idRef.current++,
+        value,
+        r,
+        c,
+        pop: spawnAt === at ? 'spawn' : null,
+      });
+    }
+  }
+  return list;
+}
+
+/** Slide overlay tiles to traced destinations. */
+function applyTraces(prev, traces) {
+  const byFrom = new Map();
+  for (const t of traces) {
+    byFrom.set(`${t.from[0]}-${t.from[1]}`, t);
+  }
+  return prev.map((tile) => {
+    const t = byFrom.get(`${tile.r}-${tile.c}`);
+    if (!t) return { ...tile, pop: null };
+    return {
+      id: tile.id,
+      value: tile.value,
+      r: t.to[0],
+      c: t.to[1],
+      merged: t.merged,
+      mergeValue: t.mergeValue,
+      pop: null,
+    };
+  });
+}
+
+/** Collapse merged tiles and add the spawn. */
+function finishSlide(prev, nextBoard, spawnAt, idRef) {
+  const seen = new Set();
+  const kept = [];
+  for (const tile of prev) {
+    if (tile.merged) {
+      const dest = `${tile.r}-${tile.c}`;
+      if (seen.has(dest)) continue;
+      seen.add(dest);
+      kept.push({
+        id: tile.id,
+        value: tile.mergeValue,
+        r: tile.r,
+        c: tile.c,
+        pop: 'merge',
+      });
+    } else {
+      kept.push({
+        id: tile.id,
+        value: tile.value,
+        r: tile.r,
+        c: tile.c,
+        pop: null,
+      });
+    }
+  }
+  if (spawnAt) {
+    const [sr, sc] = spawnAt.split('-').map(Number);
+    kept.push({
+      id: idRef.current++,
+      value: nextBoard[sr][sc],
+      r: sr,
+      c: sc,
+      pop: 'spawn',
+    });
+  }
+  return kept;
+}
+
+/** Find the cell that received a newly spawned tile. */
+function findSpawnAt(beforeSpawn, next) {
+  for (let r = 0; r < SIZE; r++) {
+    for (let c = 0; c < SIZE; c++) {
+      if (beforeSpawn[r][c] === 0 && next[r][c] !== 0) {
+        return `${r}-${c}`;
+      }
+    }
+  }
+  return null;
+}
+
+/** CSS classes for an overlay tile face. */
+function tileInnerClass(tile) {
+  const parts = ['game2048-tile__inner', `game2048-cell--${tile.value}`];
+  if (tile.value > WIN_VALUE) parts.push('game2048-cell--super');
+  if (tile.pop === 'spawn') parts.push('game2048-tile__inner--spawn');
+  if (tile.pop === 'merge') parts.push('game2048-tile__inner--merge');
   return parts.join(' ');
 }
 
@@ -62,35 +165,41 @@ function cellClass(value, spawned) {
  * @param {{ rng?: () => number, spawnFn?: typeof spawnTile }} props
  */
 function Game2048Page({ rng = Math.random, spawnFn = spawnTile } = {}) {
+  const tileIdRef = useRef(1);
+  const animTimerRef = useRef(null);
   const [board, setBoard] = useState(() => newGame(rng));
+  const [tiles, setTiles] = useState(() => tilesFromBoard(board, tileIdRef));
   const [score, setScore] = useState(0);
   const [best, setBest] = useState(readBest);
   const [won, setWon] = useState(false);
   const [continued, setContinued] = useState(false);
   const [over, setOver] = useState(false);
   const [undo, setUndo] = useState(null);
-  const [spawned, setSpawned] = useState(null);
+  const animLockRef = useRef(false);
   const swipeRef = useRef(null);
 
   const blocked = over || (won && !continued);
 
+  /** Snap overlay tiles to a board with no slide. */
+  const snapTiles = useCallback((nextBoard, spawnAt = null) => {
+    if (animTimerRef.current) {
+      clearTimeout(animTimerRef.current);
+      animTimerRef.current = null;
+    }
+    animLockRef.current = false;
+    setTiles(tilesFromBoard(nextBoard, tileIdRef, spawnAt));
+  }, []);
+
   /** Apply a slide; spawn if the board changed. */
   const handleMove = useCallback(
     (direction) => {
-      if (blocked) return;
+      if (blocked || animLockRef.current) return;
       const result = move(board, direction);
       if (!result.moved) return;
 
       const beforeSpawn = result.board;
       const next = spawnFn(beforeSpawn, rng);
-      let spawnAt = null;
-      for (let r = 0; r < SIZE; r++) {
-        for (let c = 0; c < SIZE; c++) {
-          if (beforeSpawn[r][c] === 0 && next[r][c] !== 0) {
-            spawnAt = `${r}-${c}`;
-          }
-        }
-      }
+      const spawnAt = findSpawnAt(beforeSpawn, next);
 
       const nextScore = score + result.scoreDelta;
       const reachedWin = !won && hasTile(next, WIN_VALUE);
@@ -99,27 +208,41 @@ function Game2048Page({ rng = Math.random, spawnFn = spawnTile } = {}) {
       setUndo({ board, score, won, continued, over });
       setBoard(next);
       setScore(nextScore);
-      setSpawned(spawnAt);
       if (reachedWin) setWon(true);
       if (nextOver) setOver(true);
       if (nextScore > best) {
         setBest(nextScore);
         writeBest(nextScore);
       }
+
+      if (prefersReducedMotion()) {
+        snapTiles(next);
+        return;
+      }
+
+      animLockRef.current = true;
+      setTiles((prev) => applyTraces(prev, result.traces));
+      if (animTimerRef.current) clearTimeout(animTimerRef.current);
+      animTimerRef.current = setTimeout(() => {
+        setTiles((prev) => finishSlide(prev, next, spawnAt, tileIdRef));
+        animLockRef.current = false;
+        animTimerRef.current = null;
+      }, SLIDE_MS);
     },
-    [blocked, board, score, won, continued, over, best, rng, spawnFn],
+    [blocked, board, score, won, continued, over, best, rng, spawnFn, snapTiles],
   );
 
   /** Reset board, score, and flags. Keep best. */
   const handleReset = useCallback(() => {
-    setBoard(newGame(rng));
+    const next = newGame(rng);
+    setBoard(next);
     setScore(0);
     setWon(false);
     setContinued(false);
     setOver(false);
     setUndo(null);
-    setSpawned(null);
-  }, [rng]);
+    snapTiles(next);
+  }, [rng, snapTiles]);
 
   /** Restore the previous board snapshot. */
   const handleUndo = useCallback(() => {
@@ -130,12 +253,16 @@ function Game2048Page({ rng = Math.random, spawnFn = spawnTile } = {}) {
     setContinued(undo.continued);
     setOver(undo.over);
     setUndo(null);
-    setSpawned(null);
-  }, [undo]);
+    snapTiles(undo.board);
+  }, [undo, snapTiles]);
 
   /** Dismiss win overlay and keep playing. */
   const handleContinue = useCallback(() => {
     setContinued(true);
+  }, []);
+
+  useEffect(() => {
+    return () => clearTimeout(animTimerRef.current);
   }, []);
 
   useEffect(() => {
@@ -193,18 +320,29 @@ function Game2048Page({ rng = Math.random, spawnFn = spawnTile } = {}) {
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
         >
-          {board.flatMap((row, r) =>
-            row.map((value, c) => (
+          <div className="game2048-slots">
+            {board.flatMap((row, r) =>
+              row.map((value, c) => (
+                <div
+                  key={`${r}-${c}`}
+                  role="gridcell"
+                  className="game2048-slot"
+                  aria-label={value ? String(value) : 'empty'}
+                />
+              )),
+            )}
+          </div>
+          <div className="game2048-tiles" aria-hidden="true">
+            {tiles.map((tile) => (
               <div
-                key={`${r}-${c}`}
-                role="gridcell"
-                className={cellClass(value, spawned === `${r}-${c}`)}
-                aria-label={value ? String(value) : 'empty'}
+                key={tile.id}
+                className={tile.merged ? 'game2048-tile game2048-tile--merged' : 'game2048-tile'}
+                style={{ '--r': String(tile.r), '--c': String(tile.c) }}
               >
-                {value || ''}
+                <div className={tileInnerClass(tile)}>{tile.value}</div>
               </div>
-            )),
-          )}
+            ))}
+          </div>
         </div>
 
         <aside className="game2048-panel">
