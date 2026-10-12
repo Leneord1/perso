@@ -197,6 +197,10 @@ function Resume() {
                         Agile Development, REST API Development, Relational Databases, Version Control, CI/CD,
                         Unit Testing, Integration Testing, Debugging, Modular Software Design, AI-Assisted
                         Development
+                        <strong>Bootcamps</strong>
+                        {": "}
+                        VT Agentic AI bootcamp October 2026 to December 2026 (expected)
+                        <br />
                     </li>
                 </ul>
             </ResumeSection>
@@ -459,6 +463,7 @@ function Resume() {
 
             <ResumeSection id="resume-awards" title="Awards and Extracurricular Activities">
                 <ResumeItemList>
+                    <ResumeItem>HackGT 13 Participant — September 2026</ResumeItem>
                     <ResumeItem>UGAHacks 11 — February 2026</ResumeItem>
                     <ResumeItem>KSU AI Club Hackathon — November 2025</ResumeItem>
                     <ResumeItem>UGAHacks 10 — February 2025</ResumeItem>
